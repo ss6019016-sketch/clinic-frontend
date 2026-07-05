@@ -1,0 +1,179 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">{{ isEditMode ? 'Edit Invoice' : 'Create Invoice' }}</div>
+    <div class="page-subtitle">{{ isEditMode ? 'Update invoice details' : 'Generate a new invoice for patient' }}</div>
+  </div>
+
+  <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
+    <div class="row g-4">
+
+      <div class="col-md-8">
+
+        <!-- Invoice Info -->
+        <div class="card mb-4">
+          <div class="card-header bg-white">
+            <div class="form-card-title">🧾 Invoice Information</div>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label class="form-label">Patient <span class="req">*</span></label>
+                <select class="form-select" formControlName="patientId"
+                  [class.is-invalid]="f['patientId'].invalid && f['patientId'].touched">
+                  <option value="">-- Select Patient --</option>
+                  <option *ngFor="let p of patients" [value]="p.id">
+                    {{ p.name || p.fullName }}
+                  </option>
+                </select>
+                <div class="invalid-feedback">Patient is required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Invoice Date <span class="req">*</span></label>
+                <input type="date" class="form-control" formControlName="invoiceDate"
+                  [class.is-invalid]="f['invoiceDate'].invalid && f['invoiceDate'].touched" />
+                <div class="invalid-feedback">Date is required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Payment Method</label>
+                <select class="form-select" formControlName="paymentMethod">
+                  <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Payment Status</label>
+                <select class="form-select" formControlName="status">
+                  <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoice Items -->
+        <div class="card">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div class="form-card-title">📋 Invoice Items</div>
+            <button type="button" class="add-item-btn" (click)="addItem()">
+              + Add Item
+            </button>
+          </div>
+          <div class="card-body p-4">
+
+            <div class="items-header">
+              <div class="item-col-name">Item / Service</div>
+              <div class="item-col-qty">Qty</div>
+              <div class="item-col-price">Price (Rs.)</div>
+              <div class="item-col-total">Total</div>
+              <div class="item-col-action"></div>
+            </div>
+
+            <div formArrayName="items">
+              <div *ngFor="let item of items.controls; let i = index"
+                [formGroupName]="i" class="item-row">
+
+                <div class="item-col-name">
+                  <input type="text" class="form-control" formControlName="itemName"
+                    placeholder="e.g. Consultation Fee, Lab Test, Medicine"
+                    [class.is-invalid]="item.get('itemName')!.invalid && item.get('itemName')!.touched" />
+                </div>
+                <div class="item-col-qty">
+                  <input type="number" class="form-control" formControlName="quantity"
+                    min="1" placeholder="1" />
+                </div>
+                <div class="item-col-price">
+                  <input type="number" class="form-control" formControlName="price"
+                    min="0" placeholder="0" />
+                </div>
+                <div class="item-col-total">
+                  <span class="item-total">Rs. {{ getItemTotal(i) | number }}</span>
+                </div>
+                <div class="item-col-action">
+                  <button type="button" class="remove-item-btn"
+                    (click)="removeItem(i)"
+                    *ngIf="items.length > 1">✕</button>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Totals -->
+            <div class="totals-section">
+              <div class="total-row">
+                <span>Subtotal</span>
+                <span>Rs. {{ subtotal | number }}</span>
+              </div>
+              <div class="total-row">
+                <span>Discount (Rs.)</span>
+                <input type="number" class="discount-input"
+                  formControlName="discount" min="0" placeholder="0" />
+              </div>
+              <div class="total-row">
+                <span>Tax (%)</span>
+                <input type="number" class="discount-input"
+                  formControlName="tax" min="0" placeholder="0" />
+              </div>
+              <div class="total-row grand-total">
+                <span>Grand Total</span>
+                <span>Rs. {{ grandTotal | number:'1.0-0' }}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Panel -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="form-card-title">⚡ Actions</div>
+          </div>
+          <div class="card-body p-4">
+
+            <button type="submit" class="btn-primary-custom btn w-100 mb-3"
+              [disabled]="isLoading">
+              <span *ngIf="!isLoading">
+                {{ isEditMode ? '✏️ Update Invoice' : '💾 Save Invoice' }}
+              </span>
+              <span *ngIf="isLoading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Saving...
+              </span>
+            </button>
+            <a routerLink="/billing" class="btn-cancel w-100 text-center d-block mb-4">
+              Cancel
+            </a>
+
+            <div class="invoice-summary-box">
+              <div class="isb-title">💰 Invoice Summary</div>
+              <div class="isb-row">
+                <span>Items</span>
+                <span>{{ items.length }}</span>
+              </div>
+              <div class="isb-row">
+                <span>Subtotal</span>
+                <span>Rs. {{ subtotal | number }}</span>
+              </div>
+              <div class="isb-row">
+                <span>Discount</span>
+                <span>- Rs. {{ discountVal | number }}</span>
+              </div>
+              <div class="isb-row isb-total">
+                <span>Total</span>
+                <span>Rs. {{ grandTotal | number:'1.0-0' }}</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>

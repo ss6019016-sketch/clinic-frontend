@@ -1,0 +1,26 @@
+<nav class="top-navbar">
+  <div class="navbar-left">
+    <div class="page-breadcrumb">
+      <span class="breadcrumb-home">Home</span>
+      <span class="breadcrumb-sep">/</span>
+      <span class="breadcrumb-current">Dashboard</span>
+    </div>
+  </div>
+
+  <div class="navbar-right">
+    <div class="navbar-date">
+      📅 {{ today | date:'EEE, MMM d, y' }}
+    </div>
+    <div class="navbar-divider"></div>
+    <div class="navbar-user">
+      <div class="user-avatar">{{ userName.charAt(0) }}</div>
+      <div class="user-info">
+        <div class="user-name">{{ userName }}</div>
+        <div class="user-role">{{ userRole }}</div>
+      </div>
+    </div>
+    <button class="logout-btn" (click)="logout()">
+      🚪 Logout
+    </button>
+  </div>
+</nav>

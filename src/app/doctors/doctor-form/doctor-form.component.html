@@ -1,0 +1,147 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">{{ isEditMode ? 'Edit Doctor' : 'Add New Doctor' }}</div>
+    <div class="page-subtitle">{{ isEditMode ? 'Update doctor information' : 'Register a new doctor in the system' }}</div>
+  </div>
+
+  <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
+    <div class="row g-4">
+
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="form-card-title">👨‍⚕️ Doctor Information</div>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label class="form-label">Full Name <span class="req">*</span></label>
+                <input type="text" class="form-control" formControlName="fullName"
+                  placeholder="e.g. Dr. Ahmed Raza"
+                  [class.is-invalid]="f['fullName'].invalid && f['fullName'].touched" />
+                <div class="invalid-feedback">Name is required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Specialization <span class="req">*</span></label>
+                <select class="form-select" formControlName="specialization"
+                  [class.is-invalid]="f['specialization'].invalid && f['specialization'].touched">
+                  <option value="">Select Specialization</option>
+                  <option value="Cardiologist">Cardiologist</option>
+                  <option value="Dermatologist">Dermatologist</option>
+                  <option value="General Physician">General Physician</option>
+                  <option value="Neurologist">Neurologist</option>
+                  <option value="Orthopedic">Orthopedic</option>
+                  <option value="Pediatrician">Pediatrician</option>
+                  <option value="Psychiatrist">Psychiatrist</option>
+                  <option value="Gynecologist">Gynecologist</option>
+                  <option value="ENT Specialist">ENT Specialist</option>
+                  <option value="Dentist">Dentist</option>
+                  <option value="Eye Specialist">Eye Specialist</option>
+                  <option value="Urologist">Urologist</option>
+                </select>
+                <div class="invalid-feedback">Specialization is required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Phone Number <span class="req">*</span></label>
+                <input type="text" class="form-control" formControlName="phone"
+                  placeholder="03001234567"
+                  [class.is-invalid]="f['phone'].invalid && f['phone'].touched" />
+                <div class="invalid-feedback">Valid 11-digit phone required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Email <span class="req">*</span></label>
+                <input type="email" class="form-control" formControlName="email"
+                  placeholder="doctor@clinic.com"
+                  [class.is-invalid]="f['email'].invalid && f['email'].touched" />
+                <div class="invalid-feedback">Valid email is required</div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Experience (Years) <span class="req">*</span></label>
+                <input type="number" class="form-control" formControlName="experience"
+                  placeholder="e.g. 5"
+                  [class.is-invalid]="f['experience'].invalid && f['experience'].touched" />
+                <div class="invalid-feedback">Experience is required</div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Consultation Fee (Rs.) <span class="req">*</span></label>
+                <input type="number" class="form-control" formControlName="fee"
+                  placeholder="e.g. 1500"
+                  [class.is-invalid]="f['fee'].invalid && f['fee'].touched" />
+                <div class="invalid-feedback">Fee is required</div>
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label">Available Days</label>
+                <input type="text" class="form-control" formControlName="availableDays"
+                  placeholder="e.g. Mon-Fri" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Qualification</label>
+                <input type="text" class="form-control" formControlName="qualification"
+                  placeholder="e.g. MBBS, FCPS" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">PMDC / License Number</label>
+                <input type="text" class="form-control" formControlName="licenseNumber"
+                  placeholder="e.g. PMDC-12345" />
+              </div>
+
+              <div class="col-md-12">
+                <label class="form-label">Bio / Description
+                  <span class="optional-tag">Optional</span>
+                </label>
+                <textarea class="form-control" rows="3" formControlName="bio"
+                  placeholder="Brief description about doctor's expertise and experience..."></textarea>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="form-card-title">⚡ Actions</div>
+          </div>
+          <div class="card-body p-4">
+
+            <button type="submit" class="btn-primary-custom btn w-100 mb-3"
+              [disabled]="isLoading">
+              <span *ngIf="!isLoading">
+                {{ isEditMode ? '✏️ Update Doctor' : '💾 Save Doctor' }}
+              </span>
+              <span *ngIf="isLoading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Saving...
+              </span>
+            </button>
+            <a routerLink="/doctors" class="btn-cancel w-100 text-center d-block">
+              Cancel
+            </a>
+
+            <div class="form-tips mt-4">
+              <div class="tips-title">📋 Quick Tips</div>
+              <ul class="tips-list">
+                <li>PMDC number legally required hai</li>
+                <li>Available days appointments mein use honge</li>
+                <li>Fee appointments pe show hogi</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>

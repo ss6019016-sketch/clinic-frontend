@@ -1,0 +1,86 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">Prescriptions</div>
+    <div class="page-subtitle">Manage all patient prescriptions</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-white">
+      <div class="table-toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input"
+            placeholder="Search by patient, doctor or diagnosis..."
+            [(ngModel)]="searchText" />
+        </div>
+        <a routerLink="/prescriptions/add" class="btn-primary-custom btn">
+          + New Prescription
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="text-center p-5">
+      <div class="spinner-border text-warning"></div>
+      <p class="mt-2 text-muted">Loading prescriptions...</p>
+    </div>
+
+    <div class="card-body p-0" *ngIf="!isLoading">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Diagnosis</th>
+            <th>Medicines</th>
+            <th>Follow-up</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let rx of filtered; let i = index">
+            <td class="row-num">{{ i + 1 }}</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="table-avatar">{{ rx.patientName?.charAt(0) }}</div>
+                <span class="patient-name">{{ rx.patientName }}</span>
+              </div>
+            </td>
+            <td class="td-muted">{{ rx.doctorName }}</td>
+            <td>
+              <span class="diag-tag">{{ rx.diagnosis }}</span>
+            </td>
+            <td>
+              <span class="med-count">
+                💊 {{ rx.medicines?.length || 0 }} medicine(s)
+              </span>
+            </td>
+            <td class="td-muted">
+              {{ rx.followUpDate ? (rx.followUpDate | date:'MMM d, y') : 'N/A' }}
+            </td>
+            <td class="td-muted">{{ rx.createdAt | date:'MMM d, y' }}</td>
+            <td>
+              <div class="action-group">
+                <a [routerLink]="['/prescriptions/edit', rx.id]"
+                  class="act-btn act-edit">Edit</a>
+                <button class="act-btn act-delete"
+                  (click)="delete(rx.id)">Delete</button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filtered.length === 0">
+            <td colspan="8" class="empty-row">
+              <span style="font-size:1.8rem;">💊</span>
+              <p>No prescriptions found</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer-bar" *ngIf="!isLoading">
+      Showing {{ filtered.length }} of {{ prescriptions.length }} prescriptions
+    </div>
+  </div>
+</div>

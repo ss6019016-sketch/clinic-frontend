@@ -1,0 +1,97 @@
+.top-navbar {
+  height: 64px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  border-bottom: 1px solid #f0f0f0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
+
+.breadcrumb-home {
+  font-size: 0.85rem;
+  color: #9e9e9e;
+}
+
+.breadcrumb-sep {
+  margin: 0 6px;
+  color: #ccc;
+}
+
+.breadcrumb-current {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.navbar-date {
+  font-size: 0.82rem;
+  color: #6c757d;
+  background: #f8f9fa;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+.navbar-divider {
+  width: 1px;
+  height: 28px;
+  background: #eee;
+}
+
+.navbar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F5A623, #e09500);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  line-height: 1.2;
+}
+
+.user-role {
+  font-size: 0.72rem;
+  color: #9e9e9e;
+}
+
+.logout-btn {
+  background: none;
+  border: 1px solid #ffddbb;
+  color: #e09500;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-btn:hover {
+  background: #fff8ee;
+  border-color: #F5A623;
+}

@@ -1,0 +1,78 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">Doctors</div>
+    <div class="page-subtitle">Manage all registered doctors</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-white">
+      <div class="table-toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input"
+            placeholder="Search by name or specialization..."
+            [(ngModel)]="searchText" />
+        </div>
+        <a routerLink="/doctors/add" class="btn-primary-custom btn">+ Add Doctor</a>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="text-center p-5">
+      <div class="spinner-border text-warning"></div>
+      <p class="mt-2 text-muted">Loading doctors...</p>
+    </div>
+
+    <div class="card-body p-0" *ngIf="!isLoading">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Doctor</th>
+            <th>Specialization</th>
+            <th>Phone</th>
+            <th>Experience</th>
+            <th>Fee</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let doctor of filteredDoctors; let i = index">
+            <td class="row-num">{{ i + 1 }}</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="table-avatar doctor-av">{{ doctor.fullName?.charAt(4) || 'D' }}</div>
+                <span class="patient-name">{{ doctor.fullName }}</span>
+              </div>
+            </td>
+            <td>
+              <span class="pill pill-green">{{ doctor.specialization }}</span>
+            </td>
+            <td class="td-muted">{{ doctor.phone }}</td>
+            <td>
+              <span style="font-weight:700;">{{ doctor.experience }}</span>
+              <span class="td-muted"> yrs</span>
+            </td>
+            <td><span class="fee-val">Rs. {{ doctor.fee }}</span></td>
+            <td>
+              <div class="action-group">
+                <a [routerLink]="['/doctors/details', doctor.id]" class="act-btn act-view">View</a>
+                <a [routerLink]="['/doctors/edit', doctor.id]" class="act-btn act-edit">Edit</a>
+                <button class="act-btn act-delete" (click)="deleteDoctor(doctor.id)">Delete</button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filteredDoctors.length === 0">
+            <td colspan="7" class="empty-row">
+              <span style="font-size:1.8rem;">😕</span>
+              <p>No doctors found</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer-bar" *ngIf="!isLoading">
+      Showing {{ filteredDoctors.length }} of {{ doctors.length }} doctors
+    </div>
+  </div>
+</div>

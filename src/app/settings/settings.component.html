@@ -1,0 +1,176 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">Settings</div>
+    <div class="page-subtitle">Manage clinic and account settings</div>
+  </div>
+
+  <div class="settings-layout">
+
+    <!-- Tabs -->
+    <div class="settings-tabs">
+      <button class="tab-btn" [class.tab-active]="activeTab==='clinic'"   (click)="activeTab='clinic'">
+        🏥 Clinic Profile
+      </button>
+      <button class="tab-btn" [class.tab-active]="activeTab==='profile'"  (click)="activeTab='profile'">
+        👤 My Profile
+      </button>
+      <button class="tab-btn" [class.tab-active]="activeTab==='password'" (click)="activeTab='password'">
+        🔐 Change Password
+      </button>
+    </div>
+
+    <!-- Clinic Settings -->
+    <div class="settings-content" *ngIf="activeTab==='clinic'">
+      <div class="card">
+        <div class="card-header bg-white">
+          <div class="form-card-title">🏥 Clinic Information</div>
+        </div>
+        <div class="card-body p-4">
+          <form [formGroup]="clinicForm" (ngSubmit)="saveClinic()">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">Clinic Name <span class="req">*</span></label>
+                  <input type="text" class="form-control" formControlName="clinicName" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">Phone <span class="req">*</span></label>
+                  <input type="text" class="form-control" formControlName="phone" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">Email <span class="req">*</span></label>
+                  <input type="email" class="form-control" formControlName="email" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">Website</label>
+                  <input type="text" class="form-control" formControlName="website" placeholder="www.example.com" />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="form-label">Address <span class="req">*</span></label>
+                  <input type="text" class="form-control" formControlName="address" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">Working Hours</label>
+                  <input type="text" class="form-control" formControlName="workingHours" placeholder="Mon-Sat: 9AM-8PM" />
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label class="form-label">Description <span class="optional-tag">Optional</span></label>
+                  <textarea class="form-control" rows="3" formControlName="description" placeholder="About your clinic..."></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions mt-4">
+              <button type="submit" class="btn-primary-custom btn">💾 Save Clinic Settings</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- My Profile -->
+    <div class="settings-content" *ngIf="activeTab==='profile'">
+      <div class="card">
+        <div class="card-header bg-white">
+          <div class="form-card-title">👤 My Profile</div>
+        </div>
+        <div class="card-body p-4">
+
+          <div class="profile-avatar-section">
+            <div class="profile-big-avatar">S</div>
+            <div>
+              <div class="profile-name-big">Sami Shaheen</div>
+              <div class="profile-role-badge">Administrator</div>
+            </div>
+          </div>
+
+          <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">Full Name <span class="req">*</span></label>
+                  <input type="text" class="form-control" formControlName="name" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">Email <span class="req">*</span></label>
+                  <input type="email" class="form-control" formControlName="email" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">Phone <span class="req">*</span></label>
+                  <input type="text" class="form-control" formControlName="phone" />
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label">Role</label>
+                  <input type="text" class="form-control" formControlName="role" style="background:#f0f2f5; color:#9e9e9e;" />
+                </div>
+              </div>
+            </div>
+            <div class="form-actions mt-4">
+              <button type="submit" class="btn-primary-custom btn">💾 Update Profile</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Change Password -->
+    <div class="settings-content" *ngIf="activeTab==='password'">
+      <div class="card">
+        <div class="card-header bg-white">
+          <div class="form-card-title">🔐 Change Password</div>
+        </div>
+        <div class="card-body p-4">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+                <div class="form-group mb-3">
+                  <label class="form-label">Current Password <span class="req">*</span></label>
+                  <input type="password" class="form-control" formControlName="currentPassword"
+                    placeholder="Your current password"
+                    [class.is-invalid]="pf['currentPassword'].invalid && pf['currentPassword'].touched" />
+                  <div class="invalid-feedback">Current password is required</div>
+                </div>
+                <div class="form-group mb-3">
+                  <label class="form-label">New Password <span class="req">*</span></label>
+                  <input type="password" class="form-control" formControlName="newPassword"
+                    placeholder="Min 6 characters"
+                    [class.is-invalid]="pf['newPassword'].invalid && pf['newPassword'].touched" />
+                  <div class="invalid-feedback">Min 6 character password required</div>
+                </div>
+                <div class="form-group mb-4">
+                  <label class="form-label">Confirm New Password <span class="req">*</span></label>
+                  <input type="password" class="form-control" formControlName="confirmPassword"
+                    placeholder="Repeat new password"
+                    [class.is-invalid]="pf['confirmPassword'].touched && passwordForm.hasError('mismatch')" />
+                  <div class="invalid-feedback"
+                    *ngIf="pf['confirmPassword'].touched && passwordForm.hasError('mismatch')">
+                    Passwords do not match
+                  </div>
+                </div>
+                <button type="submit" class="btn-primary-custom btn w-100">🔐 Change Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

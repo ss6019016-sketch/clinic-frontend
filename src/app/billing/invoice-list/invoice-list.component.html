@@ -1,0 +1,106 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">Billing & Invoices</div>
+    <div class="page-subtitle">Manage all patient invoices and payments</div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="billing-summary">
+    <div class="summary-card summary-green">
+      <div class="summary-icon">💰</div>
+      <div class="summary-info">
+        <div class="summary-val">Rs. {{ totalRevenue | number }}</div>
+        <div class="summary-lbl">Total Revenue</div>
+      </div>
+    </div>
+    <div class="summary-card summary-red">
+      <div class="summary-icon">⏳</div>
+      <div class="summary-info">
+        <div class="summary-val">Rs. {{ totalUnpaid | number }}</div>
+        <div class="summary-lbl">Total Unpaid</div>
+      </div>
+    </div>
+    <div class="summary-card summary-blue">
+      <div class="summary-icon">🧾</div>
+      <div class="summary-info">
+        <div class="summary-val">{{ invoices.length }}</div>
+        <div class="summary-lbl">Total Invoices</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-white">
+      <div class="table-toolbar">
+        <div class="d-flex gap-2 align-items-center flex-wrap">
+          <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input"
+              placeholder="Search patient or invoice..."
+              [(ngModel)]="searchText" />
+          </div>
+          <select class="filter-select" [(ngModel)]="statusFilter">
+            <option value="All">All Status</option>
+            <option value="Paid">Paid</option>
+            <option value="Unpaid">Unpaid</option>
+            <option value="Partial">Partial</option>
+          </select>
+        </div>
+        <a routerLink="/billing/add" class="btn-primary-custom btn">+ Create Invoice</a>
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Invoice No.</th>
+            <th>Patient</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Payment</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let inv of filtered; let i = index">
+            <td class="row-num">{{ i + 1 }}</td>
+            <td><span class="inv-num">{{ inv.invoiceNumber }}</span></td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="table-avatar">{{ inv.patientName.charAt(0) }}</div>
+                <span class="patient-name">{{ inv.patientName }}</span>
+              </div>
+            </td>
+            <td class="td-muted">{{ inv.date | date:'MMM d, y' }}</td>
+            <td><span class="amount-val">Rs. {{ inv.totalAmount | number }}</span></td>
+            <td class="td-muted">{{ inv.paymentMethod || '—' }}</td>
+            <td>
+              <span class="status-pill" [ngClass]="getStatusClass(inv.status)">
+                {{ inv.status }}
+              </span>
+            </td>
+            <td>
+              <div class="action-group">
+                <a [routerLink]="['/billing/edit', inv.id]" class="act-btn act-edit">Edit</a>
+                <button class="act-btn act-delete" (click)="delete(inv.id)">Delete</button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filtered.length === 0">
+            <td colspan="8" class="empty-row">
+              <span style="font-size:1.8rem;">🧾</span>
+              <p>No invoices found</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer-bar">
+      Showing {{ filtered.length }} of {{ invoices.length }} invoices
+    </div>
+  </div>
+</div>

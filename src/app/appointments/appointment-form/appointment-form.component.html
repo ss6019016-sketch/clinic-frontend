@@ -1,0 +1,130 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">{{ isEditMode ? 'Edit Appointment' : 'Book Appointment' }}</div>
+    <div class="page-subtitle">{{ isEditMode ? 'Update appointment details' : 'Schedule a new patient appointment' }}</div>
+  </div>
+
+  <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+    <div class="row g-4">
+
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="form-card-title">📅 Appointment Details</div>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label class="form-label">Select Patient <span class="req">*</span></label>
+                <select class="form-select" formControlName="patientId"
+                  [class.is-invalid]="f['patientId'].invalid && f['patientId'].touched">
+                  <option value="">-- Select Patient --</option>
+                  <option *ngFor="let p of patients" [value]="p.id">
+                    {{ p.fullName }}
+                  </option>
+                </select>
+                <div class="invalid-feedback">Please select a patient</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Select Doctor <span class="req">*</span></label>
+                <select class="form-select" formControlName="doctorId"
+                  [class.is-invalid]="f['doctorId'].invalid && f['doctorId'].touched">
+                  <option value="">-- Select Doctor --</option>
+                  <option *ngFor="let d of doctors" [value]="d.id">
+                    {{ d.fullName }} — {{ d.specialization }}
+                  </option>
+                </select>
+                <div class="invalid-feedback">Please select a doctor</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Appointment Date <span class="req">*</span></label>
+                <input type="date" class="form-control" formControlName="appointmentDate"
+                  [class.is-invalid]="f['appointmentDate'].invalid && f['appointmentDate'].touched" />
+                <div class="invalid-feedback">Date is required</div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Time <span class="req">*</span></label>
+                <input type="time" class="form-control" formControlName="appointmentTime"
+                  [class.is-invalid]="f['appointmentTime'].invalid && f['appointmentTime'].touched" />
+                <div class="invalid-feedback">Time is required</div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Status</label>
+                <select class="form-select" formControlName="status">
+                  <option value="Pending">Pending</option>
+                  <option value="Confirmed">Confirmed</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Appointment Type</label>
+                <select class="form-select" formControlName="type">
+                  <option value="New">New Patient</option>
+                  <option value="Follow-up">Follow-up</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Reason for Visit</label>
+                <input type="text" class="form-control" formControlName="reason"
+                  placeholder="e.g. Fever, Checkup, Follow-up" />
+              </div>
+
+              <div class="col-md-12">
+                <label class="form-label">Notes
+                  <span class="optional-tag">Optional</span>
+                </label>
+                <textarea class="form-control" rows="3" formControlName="notes"
+                  placeholder="Any additional notes or instructions..."></textarea>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="form-card-title">⚡ Actions</div>
+          </div>
+          <div class="card-body p-4">
+
+            <button type="submit" class="btn-primary-custom btn w-100 mb-3"
+              [disabled]="isLoading">
+              <span *ngIf="!isLoading">
+                {{ isEditMode ? '✏️ Update Appointment' : '📅 Book Appointment' }}
+              </span>
+              <span *ngIf="isLoading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Saving...
+              </span>
+            </button>
+            <a routerLink="/appointments" class="btn-cancel w-100 text-center d-block">
+              Cancel
+            </a>
+
+            <div class="form-tips mt-4">
+              <div class="tips-title">📋 Quick Tips</div>
+              <ul class="tips-list">
+                <li>Patient aur Doctor list API se aata hai</li>
+                <li>Follow-up select karo returning patients ke liye</li>
+                <li>Status baad mein bhi change kar sakte ho</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>

@@ -1,0 +1,147 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">{{ isEditMode ? 'Edit Patient' : 'Add New Patient' }}</div>
+    <div class="page-subtitle">{{ isEditMode ? 'Update patient information' : 'Register a new patient in the system' }}</div>
+  </div>
+
+  <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+    <div class="row g-4">
+
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="form-card-title">🧑‍⚕️ Patient Information</div>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label class="form-label">Full Name <span class="req">*</span></label>
+                <input type="text" class="form-control" formControlName="fullName"
+                  placeholder="e.g. Ali Khan"
+                  [class.is-invalid]="f['fullName'].invalid && f['fullName'].touched" />
+                <div class="invalid-feedback">Full name is required</div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Age <span class="req">*</span></label>
+                <input type="number" class="form-control" formControlName="age"
+                  placeholder="e.g. 25"
+                  [class.is-invalid]="f['age'].invalid && f['age'].touched" />
+                <div class="invalid-feedback">Valid age required</div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Gender <span class="req">*</span></label>
+                <select class="form-select" formControlName="gender"
+                  [class.is-invalid]="f['gender'].invalid && f['gender'].touched">
+                  <option value="">Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div class="invalid-feedback">Gender is required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Phone Number <span class="req">*</span></label>
+                <input type="text" class="form-control" formControlName="phone"
+                  placeholder="03001234567"
+                  [class.is-invalid]="f['phone'].invalid && f['phone'].touched" />
+                <div class="invalid-feedback">Valid 11-digit phone required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" formControlName="email"
+                  placeholder="patient@email.com" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Address <span class="req">*</span></label>
+                <input type="text" class="form-control" formControlName="address"
+                  placeholder="e.g. Block 5, Gulshan, Karachi"
+                  [class.is-invalid]="f['address'].invalid && f['address'].touched" />
+                <div class="invalid-feedback">Address is required</div>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Blood Group</label>
+                <select class="form-select" formControlName="bloodGroup">
+                  <option value="">Select</option>
+                  <option value="A+">A+</option>
+                  <option value="A-">A-</option>
+                  <option value="B+">B+</option>
+                  <option value="B-">B-</option>
+                  <option value="AB+">AB+</option>
+                  <option value="AB-">AB-</option>
+                  <option value="O+">O+</option>
+                  <option value="O-">O-</option>
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <label class="form-label">Emergency Contact</label>
+                <input type="text" class="form-control" formControlName="emergencyContact"
+                  placeholder="03001234567" />
+              </div>
+
+              <div class="col-md-12">
+                <label class="form-label">Disease / Symptoms
+                  <span class="optional-tag">Optional</span>
+                </label>
+                <textarea class="form-control" rows="2" formControlName="disease"
+                  placeholder="e.g. Fever, Cough, Diabetes..."></textarea>
+              </div>
+
+              <div class="col-md-12">
+                <label class="form-label">Medical History
+                  <span class="optional-tag">Optional</span>
+                </label>
+                <textarea class="form-control" rows="2" formControlName="medicalHistory"
+                  placeholder="Previous surgeries, allergies, chronic conditions..."></textarea>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="form-card-title">⚡ Actions</div>
+          </div>
+          <div class="card-body p-4">
+
+            <button type="submit" class="btn-primary-custom btn w-100 mb-3"
+              [disabled]="isLoading">
+              <span *ngIf="!isLoading">
+                {{ isEditMode ? '✏️ Update Patient' : '💾 Save Patient' }}
+              </span>
+              <span *ngIf="isLoading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Saving...
+              </span>
+            </button>
+            <a routerLink="/patients" class="btn-cancel w-100 text-center d-block">
+              Cancel
+            </a>
+
+            <div class="form-tips mt-4">
+              <div class="tips-title">📋 Quick Tips</div>
+              <ul class="tips-list">
+                <li>Phone number 11 digits hona chahiye</li>
+                <li>Blood group future mein kaam aayega</li>
+                <li>Medical history doctors ke liye helpful hai</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>

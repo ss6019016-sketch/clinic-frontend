@@ -1,0 +1,43 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">Appointments Calendar</div>
+    <div class="page-subtitle">Date-wise view of all appointments</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+      <div class="form-card-title">📆 Schedule Overview</div>
+      <a routerLink="/appointments" class="btn-cancel-sm">← Back to List</a>
+    </div>
+
+    <div class="card-body p-4">
+      <div *ngIf="groupedDates.length === 0" class="empty-cal">
+        <span>📅</span>
+        <p>No appointments scheduled</p>
+      </div>
+
+      <div *ngFor="let date of groupedDates" class="date-block">
+
+        <div class="date-header">
+          <div class="date-dot"></div>
+          <div class="date-label">{{ date | date:'EEEE, MMMM d, y' }}</div>
+          <div class="date-count">{{ getAppointmentsByDate(date).length }} appointment(s)</div>
+        </div>
+
+        <div class="appt-cards">
+          <div class="appt-card" *ngFor="let appt of getAppointmentsByDate(date)">
+            <div class="appt-time">{{ appt.appointmentTime }}</div>
+            <div class="appt-info">
+              <div class="appt-patient">{{ appt.patientName }}</div>
+              <div class="appt-doctor">with {{ appt.doctorName }}</div>
+            </div>
+            <span class="status-pill" [ngClass]="'status-' + appt.status.toLowerCase()">
+              {{ appt.status }}
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

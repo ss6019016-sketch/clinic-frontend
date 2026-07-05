@@ -1,0 +1,54 @@
+.loading-box { text-align:center; padding:60px; color:#9e9e9e; }
+.loading-box p { margin-top:12px; font-size:0.9rem; }
+
+.profile-avatar {
+  width:80px; height:80px; border-radius:50%;
+  background:linear-gradient(135deg,#F5A623,#e09500);
+  color:#000; font-size:1.8rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center;
+  margin:0 auto 16px;
+}
+.doctor-av { background:linear-gradient(135deg,#51cf66,#2f9e44); color:#fff; }
+.profile-name { font-size:1.1rem; font-weight:700; color:#1a1a2e; margin-bottom:8px; }
+
+.pill { font-size:0.75rem; padding:4px 12px; border-radius:20px; font-weight:600; }
+.pill-green { background:#e8fdf0; color:#2f9e44; }
+
+.profile-stats {
+  display:flex; justify-content:center; align-items:center;
+  gap:20px; padding:14px; background:#f8f9fa; border-radius:12px; margin-top:12px;
+}
+.stat-item { text-align:center; }
+.stat-val { font-size:1.1rem; font-weight:700; color:#1a1a2e; }
+.stat-lbl { font-size:0.72rem; color:#9e9e9e; font-weight:500; }
+.stat-divider { width:1px; height:36px; background:#e0e0e0; }
+
+.avail-badge {
+  background:#fff8e6; color:#e09500; font-size:0.82rem;
+  font-weight:600; padding:8px 16px; border-radius:10px; display:inline-block;
+}
+
+.form-card-title { font-weight:700; font-size:0.95rem; color:#1a1a2e; }
+
+.info-block {
+  padding:14px 16px; background:#fafafa;
+  border-radius:10px; border:1.5px solid #f0f0f0;
+}
+.info-label {
+  font-size:0.75rem; color:#9e9e9e; font-weight:600;
+  text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;
+}
+.info-value { font-size:0.95rem; font-weight:600; color:#1a1a2e; }
+.fee-val { color:#2f9e44; font-size:1.05rem; }
+
+.act-btn {
+  padding:7px 14px; border-radius:8px; font-size:0.8rem;
+  font-weight:600; cursor:pointer; border:none;
+  text-decoration:none; transition:all 0.18s; display:inline-block;
+}
+.act-view   { background:#f0f2f5; color:#555; }
+.act-view:hover { background:#e0e0e0; }
+.act-edit   { background:#fff8e6; color:#e09500; }
+.act-edit:hover { background:#F5A623; color:#000; }
+.act-delete { background:#fdeaea; color:#e03131; }
+.act-delete:hover { background:#e03131; color:#fff; }

@@ -1,0 +1,86 @@
+.report-stats {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:16px; margin-bottom:24px;
+}
+.report-stat-card {
+  background:#fff; border-radius:14px; padding:20px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.05); text-align:center;
+}
+.rsc-icon {
+  width:48px; height:48px; border-radius:12px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem; margin:0 auto 12px;
+}
+.rsc-val { font-size:1.3rem; font-weight:700; line-height:1; margin-bottom:4px; }
+.rsc-lbl { font-size:0.78rem; color:#9e9e9e; font-weight:500; }
+
+/* Period buttons */
+.period-btn {
+  padding:8px 16px; border-radius:8px;
+  border:1.5px solid #e8e8e8; background:#fff;
+  color:#6c757d; font-size:0.82rem; font-weight:600;
+  cursor:pointer; transition:all 0.2s; font-family:'Inter',sans-serif;
+}
+.period-btn.active, .period-btn:hover {
+  background:#F5A623; border-color:#F5A623; color:#000;
+}
+
+/* Chart */
+.chart-container { overflow-x:auto; }
+.chart-bars {
+  display:flex; gap:16px; align-items:flex-end;
+  height:220px; padding:0 8px;
+}
+.chart-bar-wrap {
+  display:flex; flex-direction:column;
+  align-items:center; gap:6px; flex:1;
+}
+.chart-bar-val { font-size:0.72rem; font-weight:600; color:#6c757d; }
+.chart-bar {
+  width:100%; background:linear-gradient(180deg,#F5A623,#e09500);
+  border-radius:6px 6px 0 0; transition:height 0.4s ease;
+  min-width:28px;
+}
+.chart-bar-label { font-size:0.75rem; font-weight:600; color:#9e9e9e; }
+
+/* Appointment bars */
+.appt-bar-row {
+  display:flex; align-items:center; gap:10px;
+  margin-bottom:12px;
+}
+.appt-bar-day { font-size:0.78rem; font-weight:600; color:#555; width:30px; }
+.appt-bar-track {
+  flex:1; height:8px; background:#f0f0f0;
+  border-radius:4px; overflow:hidden;
+}
+.appt-bar-fill {
+  height:100%; background:linear-gradient(90deg,#4dabf7,#1c7ed6);
+  border-radius:4px; transition:width 0.4s;
+}
+.appt-bar-num { font-size:0.78rem; font-weight:700; color:#1a1a2e; width:20px; text-align:right; }
+
+/* Form card title */
+.form-card-title { font-weight:700; font-size:0.95rem; color:#1a1a2e; }
+
+/* Table */
+.row-num { color:#c0c0c0; font-size:0.82rem; }
+.td-muted { color:#6c757d; font-size:0.875rem; }
+.patient-name { font-weight:600; color:#1a1a2e; font-size:0.9rem; }
+.table-avatar {
+  width:34px; height:34px; border-radius:50%;
+  background:linear-gradient(135deg,#F5A623,#e09500);
+  color:#000; font-weight:700; font-size:0.82rem;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+.doc-av { background:linear-gradient(135deg,#51cf66,#2f9e44); color:#fff; }
+.spec-tag { background:#e8fdf0; color:#2f9e44; font-size:0.78rem; padding:4px 10px; border-radius:6px; font-weight:500; }
+.amount-val { font-weight:700; color:#2f9e44; font-size:0.9rem; }
+
+.perf-bar-track {
+  width:140px; height:8px; background:#f0f0f0;
+  border-radius:4px; overflow:hidden;
+}
+.perf-bar-fill {
+  height:100%; background:linear-gradient(90deg,#F5A623,#e09500);
+  border-radius:4px; transition:width 0.4s;
+}

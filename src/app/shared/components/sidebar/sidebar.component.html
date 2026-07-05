@@ -1,0 +1,38 @@
+<div class="sidebar">
+
+  <!-- Logo -->
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">🏥</div>
+      <div class="sidebar-logo-text">
+        Clinic Admin
+        <span>Management System</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+    <div class="nav-section-title">Main Menu</div>
+    <ul class="nav flex-column">
+      <li class="nav-item" *ngFor="let item of menuItems">
+        <a class="nav-link" [routerLink]="item.route" routerLinkActive="active-link">
+          <div class="nav-icon">{{ item.icon }}</div>
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- User Footer -->
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="sidebar-user-avatar">S</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name">Sami Shaheen</div>
+        <div class="sidebar-user-role">Administrator</div>
+      </div>
+    </div>
+  </div>
+
+</div>

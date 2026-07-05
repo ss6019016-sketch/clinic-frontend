@@ -1,0 +1,23 @@
+<div class="dialog-overlay" *ngIf="dialog.isVisible" (click)="dialog.cancel()">
+  <div class="dialog-box" (click)="$event.stopPropagation()">
+
+    <div class="dialog-icon" [class.icon-danger]="dialog.type==='danger'"
+      [class.icon-warning]="dialog.type==='warning'">
+      {{ dialog.type === 'danger' ? '🗑️' : '⚠️' }}
+    </div>
+
+    <h5 class="dialog-title">{{ dialog.title }}</h5>
+    <p class="dialog-msg">{{ dialog.message }}</p>
+
+    <div class="dialog-actions">
+      <button class="dialog-cancel" (click)="dialog.cancel()">Cancel</button>
+      <button class="dialog-confirm"
+        [class.confirm-danger]="dialog.type==='danger'"
+        [class.confirm-warning]="dialog.type==='warning'"
+        (click)="dialog.confirm()">
+        {{ dialog.type === 'danger' ? 'Yes, Delete' : 'Yes, Proceed' }}
+      </button>
+    </div>
+
+  </div>
+</div>

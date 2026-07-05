@@ -1,0 +1,74 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">Appointments</div>
+    <div class="page-subtitle">Manage all scheduled appointments</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-white">
+      <div class="table-toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input" placeholder="Search by patient or doctor..." [(ngModel)]="searchText" />
+        </div>
+        <div class="d-flex gap-2 align-items-center">
+          <a routerLink="/appointments/calendar" class="cal-btn">📆 Calendar</a>
+          <a routerLink="/appointments/add" class="btn-primary-custom btn">+ Book Appointment</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th style="width:50px;">#</th>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let appt of filteredAppointments; let i = index">
+            <td class="row-num">{{ i + 1 }}</td>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="table-avatar">{{ appt.patientName!.charAt(0) }}</div>
+                <span class="patient-name">{{ appt.patientName }}</span>
+              </div>
+            </td>
+            <td class="td-muted">{{ appt.doctorName }}</td>
+            <td>
+              <span class="date-chip">{{ appt.appointmentDate | date:'MMM d, y' }}</span>
+            </td>
+            <td style="font-weight:700; color:#1a1a2e;">{{ appt.appointmentTime }}</td>
+            <td>
+              <span class="status-pill" [ngClass]="getStatusClass(appt.status)">
+                {{ appt.status }}
+              </span>
+            </td>
+            <td>
+              <div class="action-group">
+                <a [routerLink]="['/appointments/edit', appt.id]" class="act-btn act-edit">Edit</a>
+                <button class="act-btn act-delete" (click)="deleteAppointment(appt.id)">Delete</button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filteredAppointments.length === 0">
+            <td colspan="7" class="empty-row">
+              <span style="font-size:1.8rem;">📅</span>
+              <p>No appointments scheduled</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer-bar">
+      Showing {{ filteredAppointments.length }} of {{ appointments.length }} appointments
+    </div>
+  </div>
+</div>

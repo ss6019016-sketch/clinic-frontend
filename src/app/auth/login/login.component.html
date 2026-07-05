@@ -1,0 +1,75 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <div class="auth-logo-icon">🏥</div>
+      <div class="auth-logo-text">
+        Clinic Management
+        <span>Admin Portal</span>
+      </div>
+    </div>
+
+    <h4 class="auth-title">Welcome back!</h4>
+    <p class="auth-subtitle">Sign in to your account to continue</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <div class="field-group">
+        <label class="field-label">Email Address</label>
+        <input
+          type="email"
+          class="field-input"
+          formControlName="email"
+          placeholder="admin@clinic.com"
+          [class.field-error]="f['email'].invalid && f['email'].touched"
+        />
+        <div class="error-msg" *ngIf="f['email'].invalid && f['email'].touched">
+          Valid email is required
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Password</label>
+        <div class="password-wrap">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            class="field-input"
+            formControlName="password"
+            placeholder="••••••••"
+            [class.field-error]="f['password'].invalid && f['password'].touched"
+          />
+          <button type="button" class="eye-btn" (click)="togglePassword()">
+            {{ showPassword ? '🙈' : '👁️' }}
+          </button>
+        </div>
+        <div class="error-msg" *ngIf="f['password'].invalid && f['password'].touched">
+          Password must be at least 6 characters
+        </div>
+      </div>
+
+      <div class="auth-options">
+        <label class="remember-label">
+          <input type="checkbox" formControlName="rememberMe" />
+          <span>Remember me</span>
+        </label>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <div class="error-banner" *ngIf="errorMessage">
+        ⚠️ {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="auth-btn" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Sign In →</span>
+        <span *ngIf="isLoading" class="btn-loader">
+          <span class="spinner"></span> Signing in...
+        </span>
+      </button>
+
+      <p class="auth-hint">
+        Demo: <strong>admin@clinic.com</strong> / <strong>admin123</strong>
+      </p>
+
+    </form>
+  </div>
+</div>

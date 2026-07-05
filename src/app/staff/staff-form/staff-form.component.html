@@ -1,0 +1,138 @@
+<div>
+  <div class="mb-4">
+    <div class="page-title">{{ isEditMode ? 'Edit Staff' : 'Add Staff Member' }}</div>
+    <div class="page-subtitle">{{ isEditMode ? 'Update staff details' : 'Add a new staff member to the system' }}</div>
+  </div>
+
+  <form [formGroup]="staffForm" (ngSubmit)="onSubmit()">
+    <div class="row g-4">
+
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="form-card-title">👤 Staff Information</div>
+          </div>
+          <div class="card-body p-4">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label class="form-label">Full Name <span class="req">*</span></label>
+                <input type="text" class="form-control" formControlName="name"
+                  placeholder="e.g. Dr. Ahmed Raza"
+                  [class.is-invalid]="f['name'].invalid && f['name'].touched" />
+                <div class="invalid-feedback">Name is required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Email <span class="req">*</span></label>
+                <input type="email" class="form-control" formControlName="email"
+                  placeholder="staff@clinic.com"
+                  [class.is-invalid]="f['email'].invalid && f['email'].touched" />
+                <div class="invalid-feedback">Valid email is required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Phone <span class="req">*</span></label>
+                <input type="text" class="form-control" formControlName="phone"
+                  placeholder="03001234567"
+                  [class.is-invalid]="f['phone'].invalid && f['phone'].touched" />
+                <div class="invalid-feedback">Valid 11-digit phone required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Role <span class="req">*</span></label>
+                <select class="form-select" formControlName="role"
+                  [class.is-invalid]="f['role'].invalid && f['role'].touched">
+                  <option value="">Select Role</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Doctor">Doctor</option>
+                  <option value="Receptionist">Receptionist</option>
+                </select>
+                <div class="invalid-feedback">Role is required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">
+                  Password
+                  <span class="req" *ngIf="!isEditMode">*</span>
+                  <span class="optional-tag" *ngIf="isEditMode">
+                    Leave blank to keep same
+                  </span>
+                </label>
+                <div class="password-wrap">
+                  <input [type]="showPassword ? 'text' : 'password'"
+                    class="form-control" formControlName="password"
+                    placeholder="Min 6 characters"
+                    [class.is-invalid]="f['password'].invalid && f['password'].touched" />
+                  <button type="button" class="eye-btn"
+                    (click)="showPassword = !showPassword">
+                    {{ showPassword ? '🙈' : '👁️' }}
+                  </button>
+                </div>
+                <div class="invalid-feedback">Min 6 character password required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Account Status</label>
+                <select class="form-select" formControlName="status">
+                  <option value="Active">Active</option>
+                  <option value="Disabled">Disabled</option>
+                </select>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header bg-white">
+            <div class="form-card-title">⚡ Actions</div>
+          </div>
+          <div class="card-body p-4">
+
+            <button type="submit" class="btn-primary-custom btn w-100 mb-3"
+              [disabled]="isLoading">
+              <span *ngIf="!isLoading">
+                {{ isEditMode ? '✏️ Update Staff' : '💾 Add Staff' }}
+              </span>
+              <span *ngIf="isLoading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Saving...
+              </span>
+            </button>
+            <a routerLink="/staff" class="btn-cancel w-100 text-center d-block">
+              Cancel
+            </a>
+
+          </div>
+        </div>
+
+        <!-- Role Info -->
+        <div class="card mt-4">
+          <div class="card-header bg-white">
+            <div class="form-card-title">ℹ️ Role Permissions</div>
+          </div>
+          <div class="card-body p-4">
+            <div class="role-info-item">
+              <span class="role-pill role-admin">Admin</span>
+              <p class="role-desc">Full access — all modules, staff, settings</p>
+            </div>
+            <div class="role-info-item">
+              <span class="role-pill role-doctor">Doctor</span>
+              <p class="role-desc">Appointments, prescriptions, patients</p>
+            </div>
+            <div class="role-info-item" style="margin-bottom:0; padding-bottom:0; border-bottom:none;">
+              <span class="role-pill role-reception">Receptionist</span>
+              <p class="role-desc">Booking, patients, billing</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </form>
+</div>
