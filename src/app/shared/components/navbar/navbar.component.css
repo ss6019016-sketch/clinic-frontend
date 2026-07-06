@@ -17,20 +17,24 @@
   align-items: center;
   gap: 16px;
 }
-
 .hamburger-btn {
   display: none;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 6px;
+  padding: 8px;
   flex-direction: column;
   gap: 5px;
   border-radius: 8px;
   transition: background 0.2s;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  z-index: 101;
+  position: relative;
 }
 
-.hamburger-btn:hover {
+.hamburger-btn:hover,
+.hamburger-btn:active {
   background: #f0f2f5;
 }
 
@@ -40,6 +44,13 @@
   height: 2px;
   background: #1a1a2e;
   border-radius: 2px;
+  pointer-events: none;
+}
+
+@media (max-width: 992px) {
+  .hamburger-btn {
+    display: flex !important;
+  }
 }
 
 .breadcrumb-home {

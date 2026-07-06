@@ -15,13 +15,13 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private sidebarService: SidebarService
+    public sidebarService: SidebarService
   ) {}
 
   ngOnInit(): void {
     const user    = this.auth.getUser();
-    this.userName = user?.name || 'Admin';
-    this.userRole = user?.role || 'Admin';
+    this.userName = user?.name  || 'Admin';
+    this.userRole = user?.role  || 'Admin';
   }
 
   toggleSidebar(): void {
