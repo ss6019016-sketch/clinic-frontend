@@ -1,69 +1,89 @@
-<tbody>
-  <tr *ngFor="let patient of filteredPatients; let i = index">
-    <td data-label="#" class="row-num">
-      {{ i + 1 }}
-    </td>
+<div>
+  <div class="mb-4">
+    <div class="page-title">Patients</div>
+    <div class="page-subtitle">Manage all registered patients</div>
+  </div>
 
-    <td data-label="Patient">
-      <div class="d-flex align-items-center gap-2">
-        <div class="table-avatar">
-          {{ patient.fullName?.charAt(0) }}
+  <div class="card">
+    <div class="card-header bg-white">
+      <div class="table-toolbar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" class="search-input"
+            placeholder="Search patient by name..."
+            [(ngModel)]="searchText" />
         </div>
-        <span class="patient-name">
-          {{ patient.fullName }}
-        </span>
-      </div>
-    </td>
-
-    <td data-label="Age" class="td-muted">
-      {{ patient.age }} yrs
-    </td>
-
-    <td data-label="Gender">
-      <span
-        class="pill"
-        [ngClass]="patient.gender === 'Male' ? 'pill-blue' : 'pill-pink'">
-        {{ patient.gender }}
-      </span>
-    </td>
-
-    <td data-label="Phone" class="td-muted">
-      {{ patient.phone }}
-    </td>
-
-    <td data-label="Disease">
-      <span class="pill pill-gray">
-        {{ patient.disease || 'N/A' }}
-      </span>
-    </td>
-
-    <td data-label="Actions">
-      <div class="action-group">
-        <a
-          [routerLink]="['/patients/details', patient.id]"
-          class="act-btn act-view">
-          View
+        <a routerLink="/patients/add" class="btn-primary-custom btn">
+          + Add Patient
         </a>
-
-        <a
-          [routerLink]="['/patients/edit', patient.id]"
-          class="act-btn act-edit">
-          Edit
-        </a>
-
-        <button
-          class="act-btn act-delete"
-          (click)="deletePatient(patient.id)">
-          Delete
-        </button>
       </div>
-    </td>
-  </tr>
+    </div>
 
-  <tr *ngIf="filteredPatients.length === 0">
-    <td colspan="7" class="empty-row">
-      <span style="font-size:1.8rem;">😕</span>
-      <p>No patients found</p>
-    </td>
-  </tr> 
-</tbody>
+    <div *ngIf="isLoading" class="text-center p-5">
+      <div class="spinner-border text-warning"></div>
+      <p class="mt-2 text-muted">Loading patients...</p>
+    </div>
+
+    <div class="card-body p-0" *ngIf="!isLoading" style="overflow-x:auto;">
+      <table class="table mb-0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Patient</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Disease</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let patient of filteredPatients; let i = index">
+            <td class="row-num">{{ i + 1 }}</td>
+            <td>
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div class="table-avatar">
+                  {{ patient.fullName?.charAt(0) }}
+                </div>
+                <span class="patient-name">{{ patient.fullName }}</span>
+              </div>
+            </td>
+            <td class="td-muted">{{ patient.age }} yrs</td>
+            <td>
+              <span class="pill"
+                [ngClass]="patient.gender === 'Male' ? 'pill-blue' : 'pill-pink'">
+                {{ patient.gender }}
+              </span>
+            </td>
+            <td class="td-muted">{{ patient.phone }}</td>
+            <td>
+              <span class="pill pill-gray">
+                {{ patient.disease || 'N/A' }}
+              </span>
+            </td>
+            <td>
+              <div class="action-group">
+                <a [routerLink]="['/patients/details', patient.id]"
+                  class="act-btn act-view">View</a>
+                <a [routerLink]="['/patients/edit', patient.id]"
+                  class="act-btn act-edit">Edit</a>
+                <button class="act-btn act-delete"
+                  (click)="deletePatient(patient.id)">Delete</button>
+              </div>
+            </td>
+          </tr>
+          <tr *ngIf="filteredPatients.length === 0">
+            <td colspan="7" class="empty-row">
+              <span style="font-size:1.8rem;">😕</span>
+              <p>No patients found</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer-bar" *ngIf="!isLoading">
+      Showing {{ filteredPatients.length }} of {{ patients.length }} patients
+    </div>
+  </div>
+</div>
