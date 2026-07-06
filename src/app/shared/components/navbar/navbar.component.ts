@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { SidebarComponent } from '../sidebar/sidebar.component';
+import { SidebarService } from 'src/app/core/services/sidebar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +15,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private sidebar: SidebarComponent
+    private sidebarService: SidebarService
   ) {}
 
   ngOnInit(): void {
@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
   }
 
   toggleSidebar(): void {
-    this.sidebar.toggle();
+    this.sidebarService.toggle();
   }
 
   logout(): void {

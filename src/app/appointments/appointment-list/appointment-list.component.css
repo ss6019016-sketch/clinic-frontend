@@ -126,4 +126,33 @@
   border-top: 1px solid #f5f5f5;
   background: #fafafa;
   border-radius: 0 0 16px 16px;
+}@media (max-width: 576px) {
+  .table-toolbar {
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .table-toolbar .d-flex {
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .search-input {
+    width: 100% !important;
+  }
+
+  .filter-select {
+    width: 100% !important;
+  }
+
+  .cal-btn {
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .btn-primary-custom {
+    width: 100% !important;
+    display: block !important;
+    text-align: center !important;
+  }
 }

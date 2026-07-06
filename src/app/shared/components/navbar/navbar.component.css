@@ -12,6 +12,36 @@
   box-shadow: 0 1px 8px rgba(0,0,0,0.04);
 }
 
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.hamburger-btn:hover {
+  background: #f0f2f5;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #1a1a2e;
+  border-radius: 2px;
+}
+
 .breadcrumb-home {
   font-size: 0.85rem;
   color: #9e9e9e;
@@ -94,4 +124,30 @@
 .logout-btn:hover {
   background: #fff8ee;
   border-color: #F5A623;
+}
+
+/* ── Tablet ── */
+@media (max-width: 992px) {
+  .hamburger-btn {
+    display: flex !important;
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 576px) {
+  .top-navbar {
+    padding: 0 14px;
+    height: 56px;
+  }
+
+  .navbar-date { display: none; }
+  .navbar-divider { display: none; }
+  .user-info { display: none; }
+  .breadcrumb-home,
+  .breadcrumb-sep { display: none; }
+
+  .logout-btn {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
 }

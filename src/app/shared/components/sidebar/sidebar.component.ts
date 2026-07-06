@@ -1,13 +1,16 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SidebarService } from 'src/app/core/services/sidebar.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
 
   isOpen = false;
+  private sub!: Subscription;
 
   menuItems = [
     { label: 'Dashboard',     icon: '📊', route: '/dashboard'     },
@@ -21,12 +24,19 @@ export class SidebarComponent implements OnInit {
     { label: 'Settings',      icon: '⚙️', route: '/settings'      },
   ];
 
-  ngOnInit(): void {}
+  constructor(private sidebarService: SidebarService) {}
 
-  toggle(): void { this.isOpen = !this.isOpen; }
-  close():  void { this.isOpen = false; }
+  ngOnInit(): void {
+    this.sub = this.sidebarService.state$.subscribe(
+      state => this.isOpen = state
+    );
+  }
 
-  // ESC key se close
-  @HostListener('document:keydown.escape')
-  onEsc() { this.isOpen = false; }
+  close(): void {
+    this.sidebarService.close();
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
 }
