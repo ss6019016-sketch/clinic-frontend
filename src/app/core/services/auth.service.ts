@@ -47,6 +47,9 @@ export class AuthService {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
+  register(dto: any): Observable<any> {
+  return this.api.post<any>('auth/register', dto);
+}
 
   isLoggedIn(): boolean {
     return !!this.getToken();

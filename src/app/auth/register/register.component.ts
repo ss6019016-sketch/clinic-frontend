@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,10 +11,12 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
   registerForm!: FormGroup;
+  errorMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -25,7 +28,6 @@ export class RegisterComponent implements OnInit {
     }, { validators: this.passwordMatchValidator });
   }
 
-  // Custom validator: password aur confirmPassword match hone chahiye
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password')?.value;
     const confirmPassword = control.get('confirmPassword')?.value;
@@ -38,10 +40,20 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    console.log('Register Data:', this.registerForm.value);
-    // Baad mein yahan AuthService se API call karenge
+    const payload = {
+      fullName: this.registerForm.value.fullName,
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password
+    };
 
-    this.router.navigate(['/auth/login']);
+    this.authService.register(payload).subscribe({
+      next: () => {
+        this.router.navigate(['/auth/login']);
+      },
+      error: (err) => {
+        this.errorMessage = err?.error?.message || 'Registration failed';
+      }
+    });
   }
 
   get f() {
