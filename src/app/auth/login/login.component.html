@@ -54,10 +54,14 @@
         </label>
         <a href="#" class="forgot-link">Forgot password?</a>
       </div>
+      
 
       <div class="error-banner" *ngIf="errorMessage">
         ⚠️ {{ errorMessage }}
       </div>
+      <p class="text-center mt-3 mb-0">
+  Don't have an account? <a routerLink="/auth/register">Register here</a>
+</p>
 
       <button type="submit" class="auth-btn" [disabled]="isLoading">
         <span *ngIf="!isLoading">Sign In →</span>
