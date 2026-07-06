@@ -146,4 +146,32 @@
 .sidebar-user-role {
   font-size: 0.72rem;
   color: rgba(255,255,255,0.4);
+}.sidebar-close-btn {
+  display: none;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.sidebar-close-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+@media (max-width: 992px) {
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .sidebar-close-btn {
+    display: flex !important;
+  }
 }

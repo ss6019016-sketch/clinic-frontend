@@ -1,6 +1,12 @@
-<div class="sidebar">
+<!-- Overlay -->
+<div class="sidebar-overlay"
+  [class.active]="isOpen"
+  (click)="close()">
+</div>
 
-  <!-- Logo -->
+<!-- Sidebar -->
+<div class="sidebar" [class.open]="isOpen">
+
   <div class="sidebar-header">
     <div class="sidebar-logo">
       <div class="sidebar-logo-icon">🏥</div>
@@ -9,14 +15,18 @@
         <span>Management System</span>
       </div>
     </div>
+    <!-- Mobile close btn -->
+    <button class="sidebar-close-btn" (click)="close()">✕</button>
   </div>
 
-  <!-- Navigation -->
   <nav class="sidebar-nav">
     <div class="nav-section-title">Main Menu</div>
     <ul class="nav flex-column">
       <li class="nav-item" *ngFor="let item of menuItems">
-        <a class="nav-link" [routerLink]="item.route" routerLinkActive="active-link">
+        <a class="nav-link"
+          [routerLink]="item.route"
+          routerLinkActive="active-link"
+          (click)="close()">
           <div class="nav-icon">{{ item.icon }}</div>
           <span>{{ item.label }}</span>
         </a>
@@ -24,7 +34,6 @@
     </ul>
   </nav>
 
-  <!-- User Footer -->
   <div class="sidebar-footer">
     <div class="sidebar-user">
       <div class="sidebar-user-avatar">S</div>

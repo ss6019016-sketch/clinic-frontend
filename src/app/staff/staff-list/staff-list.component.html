@@ -1,89 +1,44 @@
-<div>
-  <div class="mb-4">
-    <div class="page-title">Staff Management</div>
-    <div class="page-subtitle">Manage all clinic staff members</div>
-  </div>
+<td data-label="#" class="row-num">{{ i + 1 }}</td>
 
-  <div class="card">
-    <div class="card-header bg-white">
-      <div class="table-toolbar">
-        <div class="search-box">
-          <span class="search-icon">🔍</span>
-          <input type="text" class="search-input"
-            placeholder="Search by name, email or role..."
-            [(ngModel)]="searchText" />
-        </div>
-        <a routerLink="/staff/add" class="btn-primary-custom btn">+ Add Staff</a>
-      </div>
-    </div>
-
-    <div *ngIf="isLoading" class="text-center p-5">
-      <div class="spinner-border text-warning"></div>
-      <p class="mt-2 text-muted">Loading staff...</p>
-    </div>
-
-    <div class="card-body p-0" *ngIf="!isLoading">
-      <table class="table mb-0">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Staff Member</th>
-            <th>Role</th>
-            <th>Phone</th>
-            <th>Join Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let member of filtered; let i = index">
-            <td class="row-num">{{ i + 1 }}</td>
-            <td>
-              <div class="d-flex align-items-center gap-2">
-                <div class="table-avatar">{{ member.fullName?.charAt(0) || 'S' }}</div>
-                <div>
-                  <div class="patient-name">{{ member.fullName }}</div>
-                  <div class="staff-email">{{ member.email }}</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <span class="role-pill" [ngClass]="getRoleClass(member.role)">
-                {{ member.role }}
-              </span>
-            </td>
-            <td class="td-muted">{{ member.phone }}</td>
-            <td class="td-muted">{{ member.createdAt | date:'MMM d, y' }}</td>
-            <td>
-              <div class="toggle-wrap" (click)="toggleStatus(member)">
-                <div class="toggle-track" [class.toggle-on]="member.status === 'Active'">
-                  <div class="toggle-thumb"></div>
-                </div>
-                <span class="toggle-label"
-                  [style.color]="member.status === 'Active' ? '#2f9e44' : '#e03131'">
-                  {{ member.status }}
-                </span>
-              </div>
-            </td>
-            <td>
-              <div class="action-group">
-                <a [routerLink]="['/staff/edit', member.id]" class="act-btn act-edit">Edit</a>
-                <button class="act-btn act-delete" (click)="delete(member.id)">Delete</button>
-              </div>
-            </td>
-          </tr>
-          <tr *ngIf="filtered.length === 0">
-            <td colspan="7" class="empty-row">
-              <span style="font-size:1.8rem;">👥</span>
-              <p>No staff found</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card-footer-bar" *ngIf="!isLoading">
-      Showing {{ filtered.length }} of {{ staff.length }} staff members
+<td data-label="Staff Member">
+  <div class="d-flex align-items-center gap-2">
+    <div class="table-avatar">{{ member.fullName?.charAt(0) || 'S' }}</div>
+    <div>
+      <div class="patient-name">{{ member.fullName }}</div>
+      <div class="staff-email">{{ member.email }}</div>
     </div>
   </div>
-</div>
+</td>
+
+<td data-label="Role">
+  <span class="role-pill" [ngClass]="getRoleClass(member.role)">
+    {{ member.role }}
+  </span>
+</td>
+
+<td data-label="Phone" class="td-muted">
+  {{ member.phone }}
+</td>
+
+<td data-label="Join Date" class="td-muted">
+  {{ member.createdAt | date:'MMM d, y' }}
+</td>
+
+<td data-label="Status">
+  <div class="toggle-wrap" (click)="toggleStatus(member)">
+    <div class="toggle-track" [class.toggle-on]="member.status === 'Active'">
+      <div class="toggle-thumb"></div>
+    </div>
+    <span class="toggle-label"
+      [style.color]="member.status === 'Active' ? '#2f9e44' : '#e03131'">
+      {{ member.status }}
+    </span>
+  </div>
+</td>
+
+<td data-label="Actions">
+  <div class="action-group">
+    <a [routerLink]="['/staff/edit', member.id]" class="act-btn act-edit">Edit</a>
+    <button class="act-btn act-delete" (click)="delete(member.id)">Delete</button>
+  </div>
+</td>
