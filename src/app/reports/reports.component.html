@@ -1,15 +1,20 @@
 <div>
-  <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+  <!-- Header -->
+  <div class="reports-header">
     <div>
       <div class="page-title">Reports & Analytics</div>
       <div class="page-subtitle">Overview of clinic performance</div>
     </div>
     <div class="period-group">
-      <button class="period-btn" [class.active]="selectedPeriod==='weekly'"
+      <button class="period-btn"
+        [class.active]="selectedPeriod==='weekly'"
         (click)="selectedPeriod='weekly'">Weekly</button>
-      <button class="period-btn" [class.active]="selectedPeriod==='monthly'"
+      <button class="period-btn"
+        [class.active]="selectedPeriod==='monthly'"
         (click)="selectedPeriod='monthly'">Monthly</button>
-      <button class="period-btn" [class.active]="selectedPeriod==='yearly'"
+      <button class="period-btn"
+        [class.active]="selectedPeriod==='yearly'"
         (click)="selectedPeriod='yearly'">Yearly</button>
     </div>
   </div>
@@ -24,151 +29,185 @@
 
     <!-- Stats Cards -->
     <div class="report-stats">
+
       <div class="report-stat-card">
-        <div class="rsc-icon" style="background:#e8fdf0;">💰</div>
+        <div class="rsc-top">
+          <div class="rsc-icon" style="background:#e8fdf0;">💰</div>
+          <span class="rsc-badge" style="background:#e8fdf0; color:#2f9e44;">Revenue</span>
+        </div>
         <div class="rsc-val" style="color:#2f9e44;">
           Rs. {{ stats.totalRevenue | number }}
         </div>
         <div class="rsc-lbl">Total Revenue</div>
-      </div>
-      <div class="report-stat-card">
-        <div class="rsc-icon" style="background:#e8f4fd;">📅</div>
-        <div class="rsc-val" style="color:#1c7ed6;">
-          {{ stats.totalAppointments }}
+        <div class="rsc-bar">
+          <div class="rsc-bar-fill" style="width:70%; background:#51cf66;"></div>
         </div>
+      </div>
+
+      <div class="report-stat-card">
+        <div class="rsc-top">
+          <div class="rsc-icon" style="background:#e8f4fd;">📅</div>
+          <span class="rsc-badge" style="background:#e8f4fd; color:#1c7ed6;">Appointments</span>
+        </div>
+        <div class="rsc-val" style="color:#1c7ed6;">{{ stats.totalAppointments }}</div>
         <div class="rsc-lbl">Total Appointments</div>
-      </div>
-      <div class="report-stat-card">
-        <div class="rsc-icon" style="background:#fff8e6;">🧑‍⚕️</div>
-        <div class="rsc-val" style="color:#e09500;">
-          {{ stats.totalPatients }}
+        <div class="rsc-bar">
+          <div class="rsc-bar-fill" style="width:55%; background:#4dabf7;"></div>
         </div>
+      </div>
+
+      <div class="report-stat-card">
+        <div class="rsc-top">
+          <div class="rsc-icon" style="background:#fff8e6;">🧑‍⚕️</div>
+          <span class="rsc-badge" style="background:#fff8e6; color:#e09500;">Patients</span>
+        </div>
+        <div class="rsc-val" style="color:#e09500;">{{ stats.totalPatients }}</div>
         <div class="rsc-lbl">Patients Seen</div>
+        <div class="rsc-bar">
+          <div class="rsc-bar-fill" style="width:45%; background:#F5A623;"></div>
+        </div>
       </div>
+
       <div class="report-stat-card">
-        <div class="rsc-icon" style="background:#fdeaea;">📊</div>
-        <div class="rsc-val" style="color:#e03131;">
-          {{ stats.avgPerDay }}
+        <div class="rsc-top">
+          <div class="rsc-icon" style="background:#fdeaea;">📊</div>
+          <span class="rsc-badge" style="background:#fdeaea; color:#e03131;">Daily Avg</span>
         </div>
+        <div class="rsc-val" style="color:#e03131;">{{ stats.avgPerDay }}</div>
         <div class="rsc-lbl">Avg Per Day</div>
+        <div class="rsc-bar">
+          <div class="rsc-bar-fill" style="width:30%; background:#ff6b6b;"></div>
+        </div>
       </div>
+
     </div>
 
-    <div class="row g-4">
+    <!-- Charts Row -->
+    <div class="charts-row">
 
-      <!-- Revenue Chart -->
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header bg-white">
-            <div class="form-card-title">📊 Revenue Overview</div>
-          </div>
-          <div class="card-body p-4">
-            <div *ngIf="weeklyData.length === 0" class="text-center py-4 text-muted">
-              <span style="font-size:2rem;">📊</span>
-              <p class="mt-2">No revenue data available yet</p>
-            </div>
-            <div *ngIf="weeklyData.length > 0" class="chart-wrap">
-              <div class="chart-bars">
-                <div *ngFor="let d of weeklyData" class="chart-bar-wrap">
-                  <div class="chart-bar-val">
-                    {{ getBarLabel(d.total) }}
-                  </div>
-                  <div class="chart-bar"
-                    [style.height]="getBarHeight(d.total)">
-                  </div>
-                  <div class="chart-bar-label">
-                    {{ getDateLabel(d.date) }}
-                  </div>
+      <!-- Revenue Bar Chart -->
+      <div class="card chart-card-big">
+        <div class="card-header bg-white d-flex justify-content-between align-items-center">
+          <div class="form-card-title">📊 Revenue Overview (This Week)</div>
+          <span class="chart-total-badge">
+            Rs. {{ stats.totalRevenue | number }} total
+          </span>
+        </div>
+        <div class="card-body p-4">
+          <div class="chart-container">
+            <div class="chart-bars">
+              <div *ngFor="let d of weeklyData" class="chart-bar-wrap">
+                <div class="chart-bar-val">
+                  {{ d.revenue > 0 ? (d.revenue >= 1000 ? (d.revenue/1000 | number:'1.0-0') + 'k' : d.revenue) : '' }}
                 </div>
+                <div class="chart-bar" [style.height]="getBarHeight(d.revenue)">
+                  <div class="chart-bar-shine"></div>
+                </div>
+                <div class="chart-bar-label">{{ d.day }}</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Appointment Stats -->
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-header bg-white">
-            <div class="form-card-title">📅 Appointments</div>
-          </div>
-          <div class="card-body p-4">
-            <div *ngIf="weeklyData.length === 0" class="text-center py-4 text-muted">
-              <p>No data yet</p>
-            </div>
-            <div *ngFor="let d of weeklyData" class="appt-bar-row">
-              <span class="appt-bar-day">
-                {{ getDateLabel(d.date) }}
-              </span>
-              <div class="appt-bar-track">
-                <div class="appt-bar-fill"
-                  [style.width.%]="d.count > 0 ? (d.count / 20) * 100 : 2">
-                </div>
-              </div>
-              <span class="appt-bar-num">{{ d.count }}</span>
-            </div>
-          </div>
+      <!-- Appointment Bars -->
+      <div class="card chart-card-small">
+        <div class="card-header bg-white">
+          <div class="form-card-title">📅 Appointments (Week)</div>
         </div>
-      </div>
-
-      <!-- Top Doctors -->
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header bg-white">
-            <div class="form-card-title">👨‍⚕️ Top Performing Doctors</div>
-          </div>
-          <div class="card-body p-0" style="overflow-x:auto;">
-
-            <div *ngIf="topDoctors.length === 0" class="text-center py-4 text-muted">
-              <span style="font-size:1.8rem;">👨‍⚕️</span>
-              <p class="mt-2">No doctor data available yet</p>
+        <div class="card-body p-4">
+          <div *ngFor="let d of weeklyData" class="appt-bar-row">
+            <span class="appt-bar-day">{{ d.day }}</span>
+            <div class="appt-bar-track">
+              <div class="appt-bar-fill"
+                [style.width.%]="d.appointments > 0 ? (d.appointments / 20) * 100 : 2">
+              </div>
             </div>
-
-            <table class="table mb-0" *ngIf="topDoctors.length > 0">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Doctor</th>
-                  <th>Specialization</th>
-                  <th>Patients</th>
-                  <th>Revenue</th>
-                  <th>Performance</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let doc of topDoctors; let i = index">
-                  <td class="row-num">{{ i + 1 }}</td>
-                  <td>
-                    <div style="display:flex; align-items:center; gap:10px;">
-                      <div class="table-avatar doc-av">
-                        {{ doc.doctorName?.charAt(4) || 'D' }}
-                      </div>
-                      <span style="font-weight:600;">{{ doc.doctorName }}</span>
-                    </div>
-                  </td>
-                  <td>
-                    <span class="spec-tag">{{ doc.specialization }}</span>
-                  </td>
-                  <td class="td-muted">{{ doc.totalPatients }} patients</td>
-                  <td>
-                    <span class="amount-val">
-                      Rs. {{ doc.totalRevenue | number }}
-                    </span>
-                  </td>
-                  <td style="min-width:120px;">
-                    <div class="perf-bar-track">
-                      <div class="perf-bar-fill"
-                        [style.width.%]="doc.totalRevenue > 0 ? 70 : 5">
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <span class="appt-bar-num">{{ d.appointments }}</span>
           </div>
         </div>
       </div>
 
     </div>
+
+    <!-- Top Doctors -->
+    <div class="card mt-4">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <div class="form-card-title">👨‍⚕️ Top Performing Doctors</div>
+        <span style="font-size:0.78rem; color:#9e9e9e;">Based on appointments & revenue</span>
+      </div>
+      <div class="card-body p-0" style="overflow-x:auto;">
+
+        <!-- Empty state -->
+        <div *ngIf="topDoctors.length === 0" class="empty-state-box">
+          <span>👨‍⚕️</span>
+          <p>No doctor data available yet</p>
+          <small>Add doctors and appointments to see performance</small>
+        </div>
+
+        <!-- Table -->
+        <table class="table mb-0" *ngIf="topDoctors.length > 0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Doctor</th>
+              <th>Specialization</th>
+              <th>Patients</th>
+              <th>Revenue</th>
+              <th>Performance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let doc of topDoctors; let i = index">
+              <td class="row-num">{{ i + 1 }}</td>
+              <td>
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <div class="table-avatar doc-av">
+                    {{ doc.doctorName?.charAt(4) || 'D' }}
+                  </div>
+                  <div>
+                    <div style="font-weight:600; color:#1a1a2e;">
+                      {{ doc.doctorName }}
+                    </div>
+                    <div style="font-size:0.75rem; color:#9e9e9e;">
+                      {{ doc.totalPatients }} patients
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="spec-tag">{{ doc.specialization }}</span>
+              </td>
+              <td>
+                <span style="font-weight:700; color:#1a1a2e;">
+                  {{ doc.totalPatients }}
+                </span>
+              </td>
+              <td>
+                <span class="amount-val">Rs. {{ doc.totalRevenue | number }}</span>
+              </td>
+              <td style="min-width:140px;">
+                <div class="perf-wrap">
+                  <div class="perf-bar-track">
+                    <div class="perf-bar-fill"
+                      [style.width.%]="topDoctors[0]?.totalRevenue > 0
+                        ? (doc.totalRevenue / topDoctors[0].totalRevenue) * 100
+                        : 10">
+                    </div>
+                  </div>
+                  <span class="perf-pct">
+                    {{ topDoctors[0]?.totalRevenue > 0
+                      ? ((doc.totalRevenue / topDoctors[0].totalRevenue) * 100 | number:'1.0-0')
+                      : 0 }}%
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
   </div>
 </div>
