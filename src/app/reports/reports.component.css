@@ -439,6 +439,7 @@ tr:hover .table-avatar { transform: scale(1.08); }
 
   .doctors-table tbody td:last-child { border-bottom: none; }
 
+  
   .doctors-table tbody td::before {
     content: attr(data-label);
     font-weight: 600;
