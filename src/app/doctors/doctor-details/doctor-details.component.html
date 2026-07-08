@@ -1,19 +1,42 @@
 <div>
-  <div class="mb-4">
+  <div class="mb-4 fade-up">
     <div class="page-title">Doctor Profile</div>
     <div class="page-subtitle">Full details of the selected doctor</div>
   </div>
 
-  <div *ngIf="isLoading" class="loading-box">
-    <div class="spinner-border text-warning" role="status"></div>
-    <p>Loading doctor data...</p>
+  <!-- Skeleton -->
+  <div class="row g-4" *ngIf="isLoading">
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="card-body text-center p-4">
+          <div class="skel skel-avatar-lg"></div>
+          <div class="skel skel-name-lg"></div>
+          <div class="skel skel-pill-row"></div>
+          <div class="skel skel-stats-box"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-white">
+          <div class="skel skel-header-title"></div>
+        </div>
+        <div class="card-body p-4">
+          <div class="row g-3">
+            <div class="col-md-6" *ngFor="let s of [1,2,3,4]">
+              <div class="skel skel-info-block"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="!isLoading && doctor" class="row g-4">
 
     <!-- Left: Profile -->
     <div class="col-md-4">
-      <div class="card h-100">
+      <div class="card h-100 fade-up">
         <div class="card-body text-center p-4">
           <div class="profile-avatar doctor-av">{{ doctor.fullName?.charAt(4) }}</div>
           <h5 class="profile-name">{{ doctor.fullName }}</h5>
@@ -32,7 +55,7 @@
           </div>
 
           <div class="avail-badge mt-3" *ngIf="doctor.availableDays">
-            🗓️ {{ doctor.availableDays }}
+            <i class="bi bi-calendar-week"></i> {{ doctor.availableDays }}
           </div>
         </div>
       </div>
@@ -40,17 +63,19 @@
 
     <!-- Right: Info -->
     <div class="col-md-8">
-      <div class="card">
+      <div class="card fade-up" style="animation-delay:60ms">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-          <div class="form-card-title">👨‍⚕️ Doctor Information</div>
+          <div class="form-card-title"><i class="bi bi-person-vcard"></i> Doctor Information</div>
           <div class="d-flex gap-2">
             <a [routerLink]="['/doctors/edit', doctor.id]" class="act-btn act-edit">
-              ✏️ Edit
+              <i class="bi bi-pencil-square"></i> Edit
             </a>
             <button class="act-btn act-delete" (click)="deleteDoctor()">
-              🗑️ Delete
+              <i class="bi bi-trash"></i> Delete
             </button>
-            <a routerLink="/doctors" class="act-btn act-view">← Back</a>
+            <a routerLink="/doctors" class="act-btn act-view">
+              <i class="bi bi-arrow-left"></i> Back
+            </a>
           </div>
         </div>
 

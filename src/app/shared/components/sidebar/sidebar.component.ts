@@ -13,15 +13,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private sub!: Subscription;
 
   menuItems = [
-    { label: 'Dashboard',     icon: '📊', route: '/dashboard'     },
-    { label: 'Patients',      icon: '🧑‍⚕️', route: '/patients'      },
-    { label: 'Doctors',       icon: '👨‍⚕️', route: '/doctors'       },
-    { label: 'Appointments',  icon: '📅', route: '/appointments'  },
-    { label: 'Prescriptions', icon: '💊', route: '/prescriptions' },
-    { label: 'Billing',       icon: '🧾', route: '/billing'       },
-    { label: 'Reports',       icon: '📈', route: '/reports'       },
-    { label: 'Staff',         icon: '👥', route: '/staff'         },
-    { label: 'Settings',      icon: '⚙️', route: '/settings'      },
+    { label: 'Dashboard',     icon: 'bi-speedometer2',   route: '/dashboard'     },
+    { label: 'Patients',      icon: 'bi-people',         route: '/patients'      },
+    { label: 'Doctors',       icon: 'bi-heart-pulse',    route: '/doctors'       },
+    { label: 'Appointments',  icon: 'bi-calendar3',      route: '/appointments'  },
+    { label: 'Prescriptions', icon: 'bi-capsule',        route: '/prescriptions' },
+    { label: 'Billing',       icon: 'bi-receipt',        route: '/billing'       },
+    { label: 'Reports',       icon: 'bi-graph-up-arrow', route: '/reports'       },
+    { label: 'Staff',         icon: 'bi-person-badge',   route: '/staff'         },
+    { label: 'Settings',      icon: 'bi-gear',           route: '/settings'      },
   ];
 
   constructor(private sidebarService: SidebarService) {}

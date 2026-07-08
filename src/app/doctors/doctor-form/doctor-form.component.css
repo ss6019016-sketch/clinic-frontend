@@ -1,19 +1,24 @@
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up { animation: none !important; }
+}
+
 .form-card-title {
   font-weight: 700;
   font-size: 0.95rem;
   color: #1a1a2e;
-}
-
-.form-group {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
 }
 
-.req {
-  color: #e03131;
-  margin-left: 2px;
-}
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.req { color: #e03131; margin-left: 2px; }
 
 .optional-tag {
   font-size: 0.72rem;
@@ -52,13 +57,10 @@
 .form-control::placeholder { color: #bbb; font-size: 0.875rem; }
 .invalid-feedback { font-size: 0.78rem; color: #e03131; margin-top: 2px; }
 
-.form-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-top: 16px;
-  border-top: 1px solid #f5f5f5;
-  margin-top: 8px;
+.btn-primary-custom.btn i,
+.btn-cancel i,
+.tips-title i {
+  margin-right: 6px;
 }
 
 .btn-cancel {
@@ -72,9 +74,4 @@
   text-decoration: none;
   transition: all 0.2s;
 }
-
-.btn-cancel:hover {
-  border-color: #ccc;
-  color: #444;
-  background: #f5f5f5;
-}
+.btn-cancel:hover { border-color: #ccc; color: #444; background: #f5f5f5; }

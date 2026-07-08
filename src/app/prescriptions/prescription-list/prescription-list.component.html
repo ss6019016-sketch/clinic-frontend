@@ -1,5 +1,5 @@
 <div>
-  <div class="mb-4">
+  <div class="mb-4 fade-up">
     <div class="page-title">Prescriptions</div>
     <div class="page-subtitle">Manage all patient prescriptions</div>
   </div>
@@ -8,20 +8,26 @@
     <div class="card-header bg-white">
       <div class="table-toolbar">
         <div class="search-box">
-          <span class="search-icon">🔍</span>
+          <i class="bi bi-search search-icon"></i>
           <input type="text" class="search-input"
             placeholder="Search by patient, doctor or diagnosis..."
             [(ngModel)]="searchText" />
         </div>
         <a routerLink="/prescriptions/add" class="btn-primary-custom btn">
-          + New Prescription
+          <i class="bi bi-plus-lg"></i> New Prescription
         </a>
       </div>
     </div>
 
-    <div *ngIf="isLoading" class="text-center p-5">
-      <div class="spinner-border text-warning"></div>
-      <p class="mt-2 text-muted">Loading prescriptions...</p>
+    <!-- Skeleton -->
+    <div class="rx-skel-wrap" *ngIf="isLoading">
+      <div class="rx-skel-row" *ngFor="let s of skeletonRows">
+        <div class="skel skel-avatar"></div>
+        <div class="skel skel-line-1"></div>
+        <div class="skel skel-pill"></div>
+        <div class="skel skel-line-2"></div>
+        <div class="skel skel-pill-sm"></div>
+      </div>
     </div>
 
     <div class="card-body p-0" *ngIf="!isLoading">
@@ -39,39 +45,39 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let rx of filtered; let i = index">
-            <td class="row-num">{{ i + 1 }}</td>
-            <td>
+          <tr *ngFor="let rx of filtered; let i = index" class="fade-in-row" [style.animation-delay]="(i * 40) + 'ms'">
+            <td class="row-num" data-label="#">{{ i + 1 }}</td>
+            <td data-label="Patient">
               <div class="d-flex align-items-center gap-2">
                 <div class="table-avatar">{{ rx.patientName?.charAt(0) }}</div>
                 <span class="patient-name">{{ rx.patientName }}</span>
               </div>
             </td>
-            <td class="td-muted">{{ rx.doctorName }}</td>
-            <td>
+            <td class="td-muted" data-label="Doctor">{{ rx.doctorName }}</td>
+            <td data-label="Diagnosis">
               <span class="diag-tag">{{ rx.diagnosis }}</span>
             </td>
-            <td>
+            <td data-label="Medicines">
               <span class="med-count">
-                💊 {{ rx.medicines?.length || 0 }} medicine(s)
+                <i class="bi bi-capsule"></i> {{ rx.medicines?.length || 0 }} medicine(s)
               </span>
             </td>
-            <td class="td-muted">
+            <td class="td-muted" data-label="Follow-up">
               {{ rx.followUpDate ? (rx.followUpDate | date:'MMM d, y') : 'N/A' }}
             </td>
-            <td class="td-muted">{{ rx.createdAt | date:'MMM d, y' }}</td>
-            <td>
+            <td class="td-muted" data-label="Date">{{ rx.createdAt | date:'MMM d, y' }}</td>
+            <td data-label="Actions">
               <div class="action-group">
                 <a [routerLink]="['/prescriptions/edit', rx.id]"
-                  class="act-btn act-edit">Edit</a>
+                  class="act-btn act-edit"><i class="bi bi-pencil-square"></i> Edit</a>
                 <button class="act-btn act-delete"
-                  (click)="delete(rx.id)">Delete</button>
+                  (click)="delete(rx.id)"><i class="bi bi-trash"></i> Delete</button>
               </div>
             </td>
           </tr>
           <tr *ngIf="filtered.length === 0">
-            <td colspan="8" class="empty-row">
-              <span style="font-size:1.8rem;">💊</span>
+            <td colspan="8" class="empty-row fade-up">
+              <i class="bi bi-capsule"></i>
               <p>No prescriptions found</p>
             </td>
           </tr>

@@ -14,6 +14,8 @@ export class PrescriptionListComponent implements OnInit {
   searchText           = '';
   isLoading            = true;
 
+  skeletonRows = [1, 2, 3, 4, 5];
+
   constructor(
     private rxService: PrescriptionService,
     private toast: ToastService,

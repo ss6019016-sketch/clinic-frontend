@@ -18,6 +18,9 @@ export class PrescriptionFormComponent implements OnInit {
   rxId: number | null = null;
   isLoading  = false;
 
+  patientsLoading = true;
+  doctorsLoading  = true;
+
   patients: any[]  = [];
   doctors: any[]   = [];
   frequencies      = ['Once daily', 'Twice daily', 'Three times daily', 'After meals', 'Before meals', 'At bedtime'];
@@ -53,8 +56,14 @@ export class PrescriptionFormComponent implements OnInit {
   }
 
   loadDropdowns(): void {
-    this.patientService.getAll().subscribe({ next: (d) => this.patients = d });
-    this.doctorService.getAll().subscribe({ next: (d) => this.doctors = d });
+    this.patientService.getAll().subscribe({
+      next: (d) => { this.patients = d; this.patientsLoading = false; },
+      error: () => { this.patientsLoading = false; }
+    });
+    this.doctorService.getAll().subscribe({
+      next: (d) => { this.doctors = d; this.doctorsLoading = false; },
+      error: () => { this.doctorsLoading = false; }
+    });
   }
 
   loadPrescription(id: number): void {
@@ -67,7 +76,6 @@ export class PrescriptionFormComponent implements OnInit {
           notes:        data.notes,
           followUpDate: data.followUpDate?.split('T')[0]
         });
-        // Medicines load
         this.medicines.clear();
         (data.medicines || []).forEach((m: any) => {
           this.medicines.push(this.fb.group({

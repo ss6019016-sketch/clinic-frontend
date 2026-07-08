@@ -1,5 +1,5 @@
 <div>
-  <div class="mb-4">
+  <div class="mb-4 fade-up">
     <div class="page-title">Doctors</div>
     <div class="page-subtitle">Manage all registered doctors</div>
   </div>
@@ -8,18 +8,27 @@
     <div class="card-header bg-white">
       <div class="table-toolbar">
         <div class="search-box">
-          <span class="search-icon">🔍</span>
+          <i class="bi bi-search search-icon"></i>
           <input type="text" class="search-input"
             placeholder="Search by name or specialization..."
             [(ngModel)]="searchText" />
         </div>
-        <a routerLink="/doctors/add" class="btn-primary-custom btn">+ Add Doctor</a>
+        <a routerLink="/doctors/add" class="btn-primary-custom btn">
+          <i class="bi bi-plus-lg"></i> Add Doctor
+        </a>
       </div>
     </div>
 
-    <div *ngIf="isLoading" class="text-center p-5">
-      <div class="spinner-border text-warning"></div>
-      <p class="mt-2 text-muted">Loading doctors...</p>
+    <!-- Skeleton -->
+    <div class="doctor-skel-wrap" *ngIf="isLoading">
+      <div class="doctor-skel-row" *ngFor="let s of skeletonRows">
+        <div class="skel skel-num-sm"></div>
+        <div class="skel skel-avatar"></div>
+        <div class="skel skel-line-1"></div>
+        <div class="skel skel-pill"></div>
+        <div class="skel skel-line-2"></div>
+        <div class="skel skel-pill"></div>
+      </div>
     </div>
 
     <div class="card-body p-0" *ngIf="!isLoading">
@@ -36,34 +45,40 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let doctor of filteredDoctors; let i = index">
-            <td class="row-num">{{ i + 1 }}</td>
-            <td>
+          <tr *ngFor="let doctor of filteredDoctors; let i = index" class="fade-in-row" [style.animation-delay]="(i * 40) + 'ms'">
+            <td class="row-num" data-label="#">{{ i + 1 }}</td>
+            <td data-label="Doctor">
               <div class="d-flex align-items-center gap-2">
                 <div class="table-avatar doctor-av">{{ doctor.fullName?.charAt(4) || 'D' }}</div>
                 <span class="patient-name">{{ doctor.fullName }}</span>
               </div>
             </td>
-            <td>
+            <td data-label="Specialization">
               <span class="pill pill-green">{{ doctor.specialization }}</span>
             </td>
-            <td class="td-muted">{{ doctor.phone }}</td>
-            <td>
+            <td class="td-muted" data-label="Phone">{{ doctor.phone }}</td>
+            <td data-label="Experience">
               <span style="font-weight:700;">{{ doctor.experience }}</span>
               <span class="td-muted"> yrs</span>
             </td>
-            <td><span class="fee-val">Rs. {{ doctor.fee }}</span></td>
-            <td>
+            <td data-label="Fee"><span class="fee-val">Rs. {{ doctor.fee }}</span></td>
+            <td data-label="Actions">
               <div class="action-group">
-                <a [routerLink]="['/doctors/details', doctor.id]" class="act-btn act-view">View</a>
-                <a [routerLink]="['/doctors/edit', doctor.id]" class="act-btn act-edit">Edit</a>
-                <button class="act-btn act-delete" (click)="deleteDoctor(doctor.id)">Delete</button>
+                <a [routerLink]="['/doctors/details', doctor.id]" class="act-btn act-view">
+                  <i class="bi bi-eye"></i> View
+                </a>
+                <a [routerLink]="['/doctors/edit', doctor.id]" class="act-btn act-edit">
+                  <i class="bi bi-pencil-square"></i> Edit
+                </a>
+                <button class="act-btn act-delete" (click)="deleteDoctor(doctor.id)">
+                  <i class="bi bi-trash"></i> Delete
+                </button>
               </div>
             </td>
           </tr>
           <tr *ngIf="filteredDoctors.length === 0">
-            <td colspan="7" class="empty-row">
-              <span style="font-size:1.8rem;">😕</span>
+            <td colspan="7" class="empty-row fade-up">
+              <i class="bi bi-emoji-frown"></i>
               <p>No doctors found</p>
             </td>
           </tr>

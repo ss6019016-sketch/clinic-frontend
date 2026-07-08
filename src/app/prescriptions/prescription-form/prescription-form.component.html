@@ -1,5 +1,5 @@
 <div>
-  <div class="mb-4">
+  <div class="mb-4 fade-up">
     <div class="page-title">{{ isEditMode ? 'Edit Prescription' : 'New Prescription' }}</div>
     <div class="page-subtitle">{{ isEditMode ? 'Update prescription details' : 'Create a prescription for patient' }}</div>
   </div>
@@ -10,16 +10,17 @@
       <div class="col-md-8">
 
         <!-- Basic Info -->
-        <div class="card mb-4">
+        <div class="card mb-4 fade-up" style="animation-delay:40ms">
           <div class="card-header bg-white">
-            <div class="form-card-title">📋 Basic Information</div>
+            <div class="form-card-title"><i class="bi bi-clipboard-check"></i> Basic Information</div>
           </div>
           <div class="card-body p-4">
             <div class="row g-3">
 
               <div class="col-md-6">
                 <label class="form-label">Patient <span class="req">*</span></label>
-                <select class="form-select" formControlName="patientId"
+                <div class="skel skel-select" *ngIf="patientsLoading"></div>
+                <select class="form-select" formControlName="patientId" *ngIf="!patientsLoading"
                   [class.is-invalid]="f['patientId'].invalid && f['patientId'].touched">
                   <option value="">-- Select Patient --</option>
                   <option *ngFor="let p of patients" [value]="p.id">
@@ -31,7 +32,8 @@
 
               <div class="col-md-6">
                 <label class="form-label">Doctor <span class="req">*</span></label>
-                <select class="form-select" formControlName="doctorId"
+                <div class="skel skel-select" *ngIf="doctorsLoading"></div>
+                <select class="form-select" formControlName="doctorId" *ngIf="!doctorsLoading"
                   [class.is-invalid]="f['doctorId'].invalid && f['doctorId'].touched">
                   <option value="">-- Select Doctor --</option>
                   <option *ngFor="let d of doctors" [value]="d.id">
@@ -69,24 +71,24 @@
         </div>
 
         <!-- Medicines -->
-        <div class="card">
+        <div class="card fade-up" style="animation-delay:80ms">
           <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <div class="form-card-title">💊 Medicines</div>
+            <div class="form-card-title"><i class="bi bi-capsule"></i> Medicines</div>
             <button type="button" class="add-med-btn" (click)="addMedicine()">
-              + Add Medicine
+              <i class="bi bi-plus-lg"></i> Add Medicine
             </button>
           </div>
           <div class="card-body p-4">
 
             <div formArrayName="medicines">
               <div *ngFor="let med of medicines.controls; let i = index"
-                [formGroupName]="i" class="med-row">
+                [formGroupName]="i" class="med-row item-enter">
 
                 <div class="med-row-header">
-                  <span class="med-num">💊 Medicine {{ i + 1 }}</span>
+                  <span class="med-num"><i class="bi bi-capsule"></i> Medicine {{ i + 1 }}</span>
                   <button type="button" class="remove-med-btn"
                     (click)="removeMedicine(i)"
-                    *ngIf="medicines.length > 1">✕ Remove</button>
+                    *ngIf="medicines.length > 1"><i class="bi bi-x-lg"></i> Remove</button>
                 </div>
 
                 <div class="row g-3">
@@ -141,16 +143,17 @@
 
       <!-- Right Panel -->
       <div class="col-md-4">
-        <div class="card">
+        <div class="card fade-up" style="animation-delay:120ms">
           <div class="card-header bg-white">
-            <div class="form-card-title">⚡ Actions</div>
+            <div class="form-card-title"><i class="bi bi-lightning-charge-fill"></i> Actions</div>
           </div>
           <div class="card-body p-4">
 
             <button type="submit" class="btn-primary-custom btn w-100 mb-3"
               [disabled]="isLoading">
               <span *ngIf="!isLoading">
-                {{ isEditMode ? '✏️ Update' : '💾 Save Prescription' }}
+                <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-save'"></i>
+                {{ isEditMode ? 'Update' : 'Save Prescription' }}
               </span>
               <span *ngIf="isLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>
@@ -161,9 +164,9 @@
               Cancel
             </a>
 
-            <div class="form-tips mt-4">
-              <div class="tips-title">📋 Quick Tips</div>
-              <ul class="tips-list">
+            <div class="rx-tip mt-4">
+              <div class="rx-tip-title"><i class="bi bi-clipboard-check"></i> Quick Tips</div>
+              <ul class="rx-tip-list">
                 <li>"+ Add Medicine" se multiple medicines add karo</li>
                 <li>Follow-up date chronic patients ke liye set karo</li>
                 <li>Instructions mein patient guide karo</li>
