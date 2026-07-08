@@ -1,5 +1,5 @@
 <div>
-  <div class="mb-4">
+  <div class="mb-4 fade-up">
     <div class="page-title">Staff Management</div>
     <div class="page-subtitle">Manage all clinic staff members</div>
   </div>
@@ -8,18 +8,29 @@
     <div class="card-header bg-white">
       <div class="table-toolbar">
         <div class="search-box">
-          <span class="search-icon">🔍</span>
+          <i class="bi bi-search search-icon"></i>
           <input type="text" class="search-input"
             placeholder="Search by name, email or role..."
             [(ngModel)]="searchText" />
         </div>
-        <a routerLink="/staff/add" class="btn-primary-custom btn">+ Add Staff</a>
+        <a routerLink="/staff/add" class="btn-primary-custom btn">
+          <i class="bi bi-plus-lg"></i> Add Staff
+        </a>
       </div>
     </div>
 
-    <div *ngIf="isLoading" class="text-center p-5">
-      <div class="spinner-border text-warning"></div>
-      <p class="mt-2 text-muted">Loading staff...</p>
+    <!-- Skeleton -->
+    <div class="staff-skel-wrap" *ngIf="isLoading">
+      <div class="staff-skel-row" *ngFor="let s of skeletonRows">
+        <div class="skel skel-num-sm"></div>
+        <div class="skel skel-avatar"></div>
+        <div class="skel-lines">
+          <div class="skel skel-line-1"></div>
+          <div class="skel skel-line-2"></div>
+        </div>
+        <div class="skel skel-pill"></div>
+        <div class="skel skel-toggle"></div>
+      </div>
     </div>
 
     <div class="card-body p-0" *ngIf="!isLoading">
@@ -36,9 +47,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let member of filtered; let i = index">
-            <td class="row-num">{{ i + 1 }}</td>
-            <td>
+          <tr *ngFor="let member of filtered; let i = index" class="fade-in-row" [style.animation-delay]="(i * 40) + 'ms'">
+            <td class="row-num" data-label="#">{{ i + 1 }}</td>
+            <td data-label="Staff Member">
               <div class="d-flex align-items-center gap-2">
                 <div class="table-avatar">{{ member.fullName?.charAt(0) || 'S' }}</div>
                 <div>
@@ -47,14 +58,14 @@
                 </div>
               </div>
             </td>
-            <td>
+            <td data-label="Role">
               <span class="role-pill" [ngClass]="getRoleClass(member.role)">
                 {{ member.role }}
               </span>
             </td>
-            <td class="td-muted">{{ member.phone }}</td>
-            <td class="td-muted">{{ member.createdAt | date:'MMM d, y' }}</td>
-            <td>
+            <td class="td-muted" data-label="Phone">{{ member.phone }}</td>
+            <td class="td-muted" data-label="Join Date">{{ member.createdAt | date:'MMM d, y' }}</td>
+            <td data-label="Status">
               <div class="toggle-wrap" (click)="toggleStatus(member)">
                 <div class="toggle-track" [class.toggle-on]="member.status === 'Active'">
                   <div class="toggle-thumb"></div>
@@ -65,16 +76,20 @@
                 </span>
               </div>
             </td>
-            <td>
+            <td data-label="Actions">
               <div class="action-group">
-                <a [routerLink]="['/staff/edit', member.id]" class="act-btn act-edit">Edit</a>
-                <button class="act-btn act-delete" (click)="delete(member.id)">Delete</button>
+                <a [routerLink]="['/staff/edit', member.id]" class="act-btn act-edit">
+                  <i class="bi bi-pencil-square"></i> Edit
+                </a>
+                <button class="act-btn act-delete" (click)="delete(member.id)">
+                  <i class="bi bi-trash"></i> Delete
+                </button>
               </div>
             </td>
           </tr>
           <tr *ngIf="filtered.length === 0">
-            <td colspan="7" class="empty-row">
-              <span style="font-size:1.8rem;">👥</span>
+            <td colspan="7" class="empty-row fade-up">
+              <i class="bi bi-people"></i>
               <p>No staff found</p>
             </td>
           </tr>

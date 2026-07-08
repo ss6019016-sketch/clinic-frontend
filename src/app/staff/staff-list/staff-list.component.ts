@@ -13,6 +13,8 @@ export class StaffListComponent implements OnInit {
   searchText   = '';
   isLoading    = true;
 
+  skeletonRows = [1, 2, 3, 4, 5];
+
   constructor(
     private staffService: StaffService,
     private toast: ToastService,
