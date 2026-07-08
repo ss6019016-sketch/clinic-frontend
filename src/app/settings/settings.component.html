@@ -79,56 +79,98 @@
       </div>
     </div>
 
-    <!-- My Profile -->
-    <div class="settings-content" *ngIf="activeTab==='profile'">
-      <div class="card">
-        <div class="card-header bg-white">
-          <div class="form-card-title">👤 My Profile</div>
-        </div>
-        <div class="card-body p-4">
+    <!-- My Profile --> 
+    <!-- My Profile tab ke andar ye add karo -->
+<div class="settings-content" *ngIf="activeTab==='profile'">
+  <div class="card">
+    <div class="card-header bg-white">
+      <div class="form-card-title">👤 My Profile</div>
+    </div>
+    <div class="card-body p-4">
 
-          <div class="profile-avatar-section">
-            <div class="profile-big-avatar">S</div>
-            <div>
-              <div class="profile-name-big">Sami Shaheen</div>
-              <div class="profile-role-badge">Administrator</div>
-            </div>
+      <!-- Photo Upload Section -->
+      <div class="photo-upload-section">
+
+        <!-- Current Photo ya Initials -->
+        <div class="photo-preview-wrap">
+          <img
+            *ngIf="currentPhoto"
+            [src]="currentPhoto"
+            class="photo-preview-img"
+            alt="Profile"
+            (error)="currentPhoto = null"
+          />
+          <div *ngIf="!currentPhoto" class="photo-preview-initials">
+            {{ profileForm.get('name')?.value?.charAt(0) || 'S' }}
+          </div>
+        </div>
+
+        <!-- Upload Controls -->
+        <div class="photo-upload-controls">
+          <div class="photo-upload-title">Profile Photo</div>
+          <div class="photo-upload-sub">
+            JPG, PNG ya WebP — Max 2MB
           </div>
 
-          <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
-            <div class="row g-3">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">Full Name <span class="req">*</span></label>
-                  <input type="text" class="form-control" formControlName="name" />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">Email <span class="req">*</span></label>
-                  <input type="email" class="form-control" formControlName="email" />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">Phone <span class="req">*</span></label>
-                  <input type="text" class="form-control" formControlName="phone" />
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label class="form-label">Role</label>
-                  <input type="text" class="form-control" formControlName="role" style="background:#f0f2f5; color:#9e9e9e;" />
-                </div>
-              </div>
-            </div>
-            <div class="form-actions mt-4">
-              <button type="submit" class="btn-primary-custom btn">💾 Update Profile</button>
-            </div>
-          </form>
+          <div class="d-flex gap-2 mt-3">
+            <label class="upload-btn" [class.loading]="uploadingPhoto">
+              <input
+                type="file"
+                accept="image/*"
+                (change)="onPhotoSelected($event)"
+                style="display:none"
+                [disabled]="uploadingPhoto"
+              />
+              <span *ngIf="!uploadingPhoto">📷 Upload Photo</span>
+              <span *ngIf="uploadingPhoto">
+                <span class="spinner-border spinner-border-sm me-1"></span>
+                Uploading...
+              </span>
+            </label>
+
+            <button
+              *ngIf="currentPhoto"
+              class="remove-photo-btn"
+              type="button"
+              (click)="removePhoto()">
+              🗑️ Remove
+            </button>
+          </div>
+
         </div>
       </div>
+
+      <!-- Profile Form -->
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+        <div class="row g-3 mt-2">
+          <div class="col-md-6">
+            <label class="form-label">Full Name <span class="req">*</span></label>
+            <input type="text" class="form-control" formControlName="name" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Email <span class="req">*</span></label>
+            <input type="email" class="form-control" formControlName="email" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Phone</label>
+            <input type="text" class="form-control" formControlName="phone" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Role</label>
+            <input type="text" class="form-control" formControlName="role"
+              style="background:#f0f2f5; color:#9e9e9e;" />
+          </div>
+        </div>
+        <div class="form-actions mt-4">
+          <button type="submit" class="btn-primary-custom btn">
+            💾 Update Profile
+          </button>
+        </div>
+      </form>
+
     </div>
+  </div>
+</div>
 
     <!-- Change Password -->
     <div class="settings-content" *ngIf="activeTab==='password'">

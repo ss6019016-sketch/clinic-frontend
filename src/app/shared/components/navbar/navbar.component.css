@@ -131,6 +131,17 @@
   cursor: pointer;
   transition: all 0.2s;
 }
+.nav-avatar-wrap {
+  flex-shrink: 0;
+}
+
+.nav-user-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #F5A623;
+}
 
 .logout-btn:hover {
   background: #fff8ee;

@@ -56,4 +56,104 @@
   background:#fdeaea; color:#e03131;
   font-size:0.75rem; font-weight:600;
   padding:4px 12px; border-radius:20px; display:inline-block;
+}/* Photo Upload */
+.photo-upload-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px;
+  background: #fafafa;
+  border-radius: 14px;
+  border: 1.5px solid #f0f0f0;
+  margin-bottom: 24px;
+}
+
+.photo-preview-wrap {
+  flex-shrink: 0;
+}
+
+.photo-preview-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #F5A623;
+  box-shadow: 0 4px 12px rgba(245,166,35,0.25);
+}
+
+.photo-preview-initials {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F5A623, #e09500);
+  color: #000;
+  font-size: 2rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #e09500;
+}
+
+.photo-upload-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.photo-upload-sub {
+  font-size: 0.78rem;
+  color: #9e9e9e;
+}
+
+.upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #F5A623, #e09500);
+  color: #000;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+  font-family: 'Inter', sans-serif;
+}
+
+.upload-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245,166,35,0.35);
+}
+
+.upload-btn.loading {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
+
+.remove-photo-btn {
+  padding: 9px 16px;
+  border-radius: 10px;
+  border: 1.5px solid #fdeaea;
+  background: #fdeaea;
+  color: #e03131;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.remove-photo-btn:hover {
+  background: #e03131;
+  color: #fff;
+}
+
+@media (max-width: 576px) {
+  .photo-upload-section {
+    flex-direction: column;
+    text-align: center;
+  }
 }

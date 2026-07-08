@@ -7,15 +7,13 @@
 
   <div class="sidebar-header">
     <div class="sidebar-logo">
-      <div class="sidebar-logo-icon"><i class="bi bi-hospital"></i></div>
+      <div class="sidebar-logo-icon">🏥</div>
       <div class="sidebar-logo-text">
         Clinic Admin
         <span>Management System</span>
       </div>
     </div>
-    <button class="sidebar-close-btn" (click)="close()">
-      <i class="bi bi-x-lg"></i>
-    </button>
+    <button class="sidebar-close-btn" (click)="close()">✕</button>
   </div>
 
   <nav class="sidebar-nav">
@@ -26,21 +24,39 @@
           [routerLink]="item.route"
           routerLinkActive="active-link"
           (click)="close()">
-          <div class="nav-icon"><i class="bi" [ngClass]="item.icon"></i></div>
+          <div class="nav-icon">{{ item.icon }}</div>
           <span>{{ item.label }}</span>
         </a>
       </li>
     </ul>
   </nav>
 
+  <!-- Footer — Real Image ya Initials -->
   <div class="sidebar-footer">
-    <div class="sidebar-user">
-      <div class="sidebar-user-avatar">S</div>
-      <div class="sidebar-user-info">
-        <div class="sidebar-user-name">Sami Shaheen</div>
-        <div class="sidebar-user-role">Administrator</div>
+    <a routerLink="/settings" class="sidebar-user" (click)="close()">
+
+      <!-- Photo hai to show karo -->
+      <img
+        *ngIf="profilePhoto"
+        [src]="profilePhoto"
+        class="sidebar-user-img"
+        alt="Profile"
+        (error)="profilePhoto = null"
+      />
+
+      <!-- Photo nahi to initials -->
+      <div *ngIf="!profilePhoto" class="sidebar-user-avatar">
+        {{ userName.charAt(0) }}
       </div>
-    </div>
+
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name">{{ userName }}</div>
+        <div class="sidebar-user-role">{{ userRole }}</div>
+      </div>
+
+      <div class="sidebar-settings-icon">⚙️</div>
+
+    </a>
   </div>
 
 </div>

@@ -198,3 +198,28 @@
     display: block;
   }
 }
+
+.sidebar-user {
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sidebar-user:hover {
+  background: rgba(255,255,255,0.1) !important;
+}
+
+.sidebar-user-img {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #F5A623;
+  flex-shrink: 0;
+}
+
+.sidebar-settings-icon {
+  font-size: 0.9rem;
+  margin-left: auto;
+  opacity: 0.5;
+}
