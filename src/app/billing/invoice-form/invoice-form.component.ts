@@ -16,6 +16,7 @@ export class InvoiceFormComponent implements OnInit {
   isEditMode    = false;
   invoiceId: number | null = null;
   isLoading     = false;
+  patientsLoading = true;
 
   patients: any[]  = [];
   paymentMethods   = ['Cash', 'Card', 'Online Transfer', 'Cheque'];
@@ -42,7 +43,10 @@ export class InvoiceFormComponent implements OnInit {
       items: this.fb.array([this.newItem()])
     });
 
-    this.patientService.getAll().subscribe({ next: (d) => this.patients = d });
+    this.patientService.getAll().subscribe({
+      next: (d) => { this.patients = d; this.patientsLoading = false; },
+      error: () => { this.patientsLoading = false; }
+    });
 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {

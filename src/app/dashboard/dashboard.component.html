@@ -1,7 +1,7 @@
 <div class="dashboard-wrapper">
 
   <!-- Header -->
-  <div class="dash-header">
+  <div class="dash-header fade-up">
     <div>
       <div class="page-title">Dashboard Overview</div>
       <div class="page-subtitle">Welcome back, Sami! Here's what's happening today.</div>
@@ -9,54 +9,67 @@
     <div class="dash-date">📅 {{ today | date:'EEE, MMM d, y' }}</div>
   </div>
 
-  <!-- Stats Grid -->
-  <div class="stats-grid">
+  <!-- Skeleton stats -->
+  <div class="stats-grid" *ngIf="isLoading">
+    <div class="stat-card skeleton-card" *ngFor="let s of skeletonCards">
+      <div class="stat-card-top">
+        <div class="skel skel-icon"></div>
+        <div class="skel skel-badge"></div>
+      </div>
+      <div class="skel skel-number"></div>
+      <div class="skel skel-name"></div>
+      <div class="skel skel-track"></div>
+    </div>
+  </div>
 
-    <div class="stat-card">
+  <!-- Real stats -->
+  <div class="stats-grid" *ngIf="!isLoading">
+
+    <div class="stat-card fade-up" style="animation-delay:0ms">
       <div class="stat-card-top">
         <div class="stat-icon" style="background:#e8f4fd;">🧑‍⚕️</div>
         <span class="stat-badge badge-blue">+12%</span>
       </div>
-      <div class="stat-number">{{ stats.totalPatients }}</div>
+      <div class="stat-number">{{ displayStats.totalPatients }}</div>
       <div class="stat-name">Total Patients</div>
       <div class="stat-bar">
-        <div class="stat-bar-fill" style="width:75%; background:#4dabf7;"></div>
+        <div class="stat-bar-fill grow-bar" style="width:75%; background:#4dabf7;"></div>
       </div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card fade-up" style="animation-delay:80ms">
       <div class="stat-card-top">
         <div class="stat-icon" style="background:#e8fdf0;">👨‍⚕️</div>
         <span class="stat-badge badge-green">+3%</span>
       </div>
-      <div class="stat-number">{{ stats.totalDoctors }}</div>
+      <div class="stat-number">{{ displayStats.totalDoctors }}</div>
       <div class="stat-name">Total Doctors</div>
       <div class="stat-bar">
-        <div class="stat-bar-fill" style="width:55%; background:#51cf66;"></div>
+        <div class="stat-bar-fill grow-bar" style="width:55%; background:#51cf66;"></div>
       </div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card fade-up" style="animation-delay:160ms">
       <div class="stat-card-top">
         <div class="stat-icon" style="background:#fff8e6;">📅</div>
         <span class="stat-badge badge-yellow">Today</span>
       </div>
-      <div class="stat-number">{{ stats.todayAppointments }}</div>
+      <div class="stat-number">{{ displayStats.todayAppointments }}</div>
       <div class="stat-name">Today's Appointments</div>
       <div class="stat-bar">
-        <div class="stat-bar-fill" style="width:40%; background:#F5A623;"></div>
+        <div class="stat-bar-fill grow-bar" style="width:40%; background:#F5A623;"></div>
       </div>
     </div>
 
-    <div class="stat-card">
+    <div class="stat-card fade-up" style="animation-delay:240ms">
       <div class="stat-card-top">
         <div class="stat-icon" style="background:#fdeaea;">💳</div>
         <span class="stat-badge badge-red">Urgent</span>
       </div>
-      <div class="stat-number">{{ stats.pendingBills }}</div>
+      <div class="stat-number">{{ displayStats.pendingBills }}</div>
       <div class="stat-name">Pending Bills</div>
       <div class="stat-bar">
-        <div class="stat-bar-fill" style="width:25%; background:#ff6b6b;"></div>
+        <div class="stat-bar-fill grow-bar" style="width:25%; background:#ff6b6b;"></div>
       </div>
     </div>
 
@@ -72,8 +85,19 @@
       <a routerLink="/appointments" class="view-all-btn">View All →</a>
     </div>
 
-    <div class="appt-table-wrap">
-      <table class="appt-table">
+    <!-- Skeleton rows -->
+    <div class="appt-skel-wrap" *ngIf="isLoading">
+      <div class="appt-skel-row" *ngFor="let s of skeletonRows">
+        <div class="skel skel-avatar"></div>
+        <div class="skel skel-line-1"></div>
+        <div class="skel skel-line-2"></div>
+        <div class="skel skel-pill"></div>
+      </div>
+    </div>
+
+    <!-- Real table -->
+    <div class="appt-table-wrap" *ngIf="!isLoading">
+      <table class="appt-table" *ngIf="recentAppointments.length > 0">
         <thead>
           <tr>
             <th>Patient</th>
@@ -83,7 +107,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let appt of recentAppointments">
+          <tr *ngFor="let appt of recentAppointments; let i = index" class="fade-in-row" [style.animation-delay]="(i * 50) + 'ms'">
             <td>
               <div class="appt-patient-cell">
                 <div class="appt-avatar">{{ appt.patientName.charAt(0) }}</div>
@@ -101,6 +125,11 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="empty-row fade-up" *ngIf="recentAppointments.length === 0">
+        <span style="font-size:1.8rem;">📅</span>
+        <p>No recent appointments</p>
+      </div>
     </div>
   </div>
 

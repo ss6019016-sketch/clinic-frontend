@@ -1,5 +1,5 @@
 <div>
-  <div class="mb-4">
+  <div class="mb-4 fade-up">
     <div class="page-title">{{ isEditMode ? 'Edit Invoice' : 'Create Invoice' }}</div>
     <div class="page-subtitle">{{ isEditMode ? 'Update invoice details' : 'Generate a new invoice for patient' }}</div>
   </div>
@@ -10,7 +10,7 @@
       <div class="col-md-8">
 
         <!-- Invoice Info -->
-        <div class="card mb-4">
+        <div class="card mb-4 fade-up" style="animation-delay:40ms">
           <div class="card-header bg-white">
             <div class="form-card-title">🧾 Invoice Information</div>
           </div>
@@ -19,7 +19,8 @@
 
               <div class="col-md-6">
                 <label class="form-label">Patient <span class="req">*</span></label>
-                <select class="form-select" formControlName="patientId"
+                <div class="skel skel-select" *ngIf="patientsLoading"></div>
+                <select class="form-select" formControlName="patientId" *ngIf="!patientsLoading"
                   [class.is-invalid]="f['patientId'].invalid && f['patientId'].touched">
                   <option value="">-- Select Patient --</option>
                   <option *ngFor="let p of patients" [value]="p.id">
@@ -55,7 +56,7 @@
         </div>
 
         <!-- Invoice Items -->
-        <div class="card">
+        <div class="card fade-up" style="animation-delay:80ms">
           <div class="card-header bg-white d-flex justify-content-between align-items-center">
             <div class="form-card-title">📋 Invoice Items</div>
             <button type="button" class="add-item-btn" (click)="addItem()">
@@ -74,7 +75,7 @@
 
             <div formArrayName="items">
               <div *ngFor="let item of items.controls; let i = index"
-                [formGroupName]="i" class="item-row">
+                [formGroupName]="i" class="item-row item-enter">
 
                 <div class="item-col-name">
                   <input type="text" class="form-control" formControlName="itemName"
@@ -130,7 +131,7 @@
 
       <!-- Right Panel -->
       <div class="col-md-4">
-        <div class="card">
+        <div class="card fade-up" style="animation-delay:120ms">
           <div class="card-header bg-white">
             <div class="form-card-title">⚡ Actions</div>
           </div>

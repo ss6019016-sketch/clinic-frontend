@@ -6,24 +6,24 @@
 
   <!-- Summary Cards -->
   <div class="billing-summary">
-    <div class="summary-card summary-green">
+    <div class="summary-card summary-green fade-up" style="animation-delay:0ms">
       <div class="summary-icon">💰</div>
       <div class="summary-info">
-        <div class="summary-val">Rs. {{ totalRevenue | number }}</div>
+        <div class="summary-val">Rs. {{ displayRevenue | number }}</div>
         <div class="summary-lbl">Total Revenue</div>
       </div>
     </div>
-    <div class="summary-card summary-red">
+    <div class="summary-card summary-red fade-up" style="animation-delay:70ms">
       <div class="summary-icon">⏳</div>
       <div class="summary-info">
-        <div class="summary-val">Rs. {{ totalUnpaid | number }}</div>
+        <div class="summary-val">Rs. {{ displayUnpaid | number }}</div>
         <div class="summary-lbl">Total Unpaid</div>
       </div>
     </div>
-    <div class="summary-card summary-blue">
+    <div class="summary-card summary-blue fade-up" style="animation-delay:140ms">
       <div class="summary-icon">🧾</div>
       <div class="summary-info">
-        <div class="summary-val">{{ invoices.length }}</div>
+        <div class="summary-val">{{ displayCount }}</div>
         <div class="summary-lbl">Total Invoices</div>
       </div>
     </div>
@@ -37,9 +37,9 @@
             <span class="search-icon">🔍</span>
             <input type="text" class="search-input"
               placeholder="Search patient or invoice..."
-              [(ngModel)]="searchText" />
+              [(ngModel)]="searchText" (keyup.enter)="load()" />
           </div>
-          <select class="filter-select" [(ngModel)]="statusFilter">
+          <select class="filter-select" [(ngModel)]="statusFilter" (change)="load()">
             <option value="All">All Status</option>
             <option value="Paid">Paid</option>
             <option value="Unpaid">Unpaid</option>
@@ -51,7 +51,23 @@
     </div>
 
     <div class="card-body p-0">
-      <table class="table mb-0">
+
+      <!-- Skeleton rows -->
+      <div class="invoice-skel-wrap" *ngIf="isLoading">
+        <div class="invoice-skel-row" *ngFor="let s of skeletonRows">
+          <div class="skel skel-num-sm"></div>
+          <div class="skel skel-inv-num"></div>
+          <div class="skel skel-avatar"></div>
+          <div class="skel-lines">
+            <div class="skel skel-line-1"></div>
+          </div>
+          <div class="skel skel-pill"></div>
+          <div class="skel skel-pill-sm"></div>
+        </div>
+      </div>
+
+      <!-- Real table -->
+      <table class="table mb-0" *ngIf="!isLoading">
         <thead>
           <tr>
             <th>#</th>
@@ -65,24 +81,24 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let inv of filtered; let i = index">
-            <td class="row-num">{{ i + 1 }}</td>
-            <td><span class="inv-num">{{ inv.invoiceNumber }}</span></td>
-            <td>
+          <tr *ngFor="let inv of filtered; let i = index" class="fade-in-row" [style.animation-delay]="(i * 45) + 'ms'">
+            <td class="row-num" data-label="#">{{ i + 1 }}</td>
+            <td data-label="Invoice"><span class="inv-num">{{ inv.invoiceNumber }}</span></td>
+            <td data-label="Patient">
               <div class="d-flex align-items-center gap-2">
                 <div class="table-avatar">{{ inv.patientName.charAt(0) }}</div>
                 <span class="patient-name">{{ inv.patientName }}</span>
               </div>
             </td>
-            <td class="td-muted">{{ inv.date | date:'MMM d, y' }}</td>
-            <td><span class="amount-val">Rs. {{ inv.totalAmount | number }}</span></td>
-            <td class="td-muted">{{ inv.paymentMethod || '—' }}</td>
-            <td>
+            <td class="td-muted" data-label="Date">{{ inv.date | date:'MMM d, y' }}</td>
+            <td data-label="Amount"><span class="amount-val">Rs. {{ inv.totalAmount | number }}</span></td>
+            <td class="td-muted" data-label="Payment">{{ inv.paymentMethod || '—' }}</td>
+            <td data-label="Status">
               <span class="status-pill" [ngClass]="getStatusClass(inv.status)">
                 {{ inv.status }}
               </span>
             </td>
-            <td>
+            <td data-label="Actions">
               <div class="action-group">
                 <a [routerLink]="['/billing/edit', inv.id]" class="act-btn act-edit">Edit</a>
                 <button class="act-btn act-delete" (click)="delete(inv.id)">Delete</button>
@@ -90,7 +106,7 @@
             </td>
           </tr>
           <tr *ngIf="filtered.length === 0">
-            <td colspan="8" class="empty-row">
+            <td colspan="8" class="empty-row fade-up">
               <span style="font-size:1.8rem;">🧾</span>
               <p>No invoices found</p>
             </td>
@@ -99,7 +115,7 @@
       </table>
     </div>
 
-    <div class="card-footer-bar">
+    <div class="card-footer-bar" *ngIf="!isLoading">
       Showing {{ filtered.length }} of {{ invoices.length }} invoices
     </div>
   </div>

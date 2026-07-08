@@ -1,0 +1,19 @@
+/* ═══════════════════════════════
+   ENTRANCE ANIMATION
+   (form field styling — .form-control, .btn-cancel, .form-tips etc —
+   is already provided globally in style.css, so this file only adds
+   the motion layer to keep this page consistent with the rest of the app)
+═══════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up { animation: none !important; }
+}
+
+.form-control, .form-select {
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
