@@ -10,10 +10,12 @@ import { ToastService } from 'src/app/core/services/toast.service';
   styleUrls: ['./doctor-form.component.css']
 })
 export class DoctorFormComponent implements OnInit {
+
   doctorForm!: FormGroup;
   isEditMode   = false;
   doctorId: number | null = null;
   isLoading    = false;
+  photoPreview: string | null = null;
 
   constructor(
     private fb: FormBuilder,
@@ -34,7 +36,8 @@ export class DoctorFormComponent implements OnInit {
       fee:            ['', [Validators.required, Validators.min(0)]],
       qualification:  [''],
       licenseNumber:  [''],
-      bio:            ['']
+      bio:            [''],
+      profilePhoto:   ['']
     });
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -47,9 +50,39 @@ export class DoctorFormComponent implements OnInit {
 
   loadDoctor(id: number): void {
     this.doctorService.getById(id).subscribe({
-      next: (data) => this.doctorForm.patchValue(data),
+      next: (data) => {
+        this.doctorForm.patchValue(data);
+        if (data.profilePhoto) {
+          this.photoPreview = data.profilePhoto;
+        }
+      },
       error: () => this.toast.error('Failed to load doctor data')
     });
+  }
+
+  // Photo select karo
+  onPhotoSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (!file) return;
+
+    // Size check
+    if (file.size > 2 * 1024 * 1024) {
+      this.toast.error('Max 2MB image allowed!');
+      return;
+    }
+
+    // Base64 mein convert karo
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.photoPreview = e.target.result;
+      this.doctorForm.patchValue({ profilePhoto: e.target.result });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removePhoto(): void {
+    this.photoPreview = null;
+    this.doctorForm.patchValue({ profilePhoto: '' });
   }
 
   onSubmit(): void {

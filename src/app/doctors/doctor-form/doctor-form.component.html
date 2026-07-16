@@ -1,5 +1,5 @@
 <div>
-  <div class="mb-4 fade-up">
+  <div class="mb-4">
     <div class="page-title">{{ isEditMode ? 'Edit Doctor' : 'Add New Doctor' }}</div>
     <div class="page-subtitle">{{ isEditMode ? 'Update doctor information' : 'Register a new doctor in the system' }}</div>
   </div>
@@ -8,11 +8,40 @@
     <div class="row g-4">
 
       <div class="col-md-8">
-        <div class="card fade-up" style="animation-delay:40ms">
+        <div class="card">
           <div class="card-header bg-white">
-            <div class="form-card-title"><i class="bi bi-person-vcard"></i> Doctor Information</div>
+            <div class="form-card-title">👨‍⚕️ Doctor Information</div>
           </div>
           <div class="card-body p-4">
+
+            <!-- Photo Upload Section -->
+            <div class="photo-upload-row mb-4">
+              <div class="doc-photo-wrap">
+                <img *ngIf="photoPreview" [src]="photoPreview"
+                  class="doc-photo-img" alt="Doctor Photo" />
+                <div *ngIf="!photoPreview" class="doc-photo-placeholder">
+                  <span>👨‍⚕️</span>
+                </div>
+              </div>
+              <div class="doc-photo-controls">
+                <div class="doc-photo-title">Doctor Photo</div>
+                <div class="doc-photo-sub">JPG, PNG ya WebP — Max 2MB</div>
+                <div class="d-flex gap-2 mt-2">
+                  <label class="upload-photo-btn">
+                    <input type="file" accept="image/*"
+                      (change)="onPhotoSelected($event)"
+                      style="display:none" />
+                    📷 {{ photoPreview ? 'Change Photo' : 'Upload Photo' }}
+                  </label>
+                  <button type="button" class="remove-photo-btn"
+                    *ngIf="photoPreview"
+                    (click)="removePhoto()">
+                    🗑️ Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+
             <div class="row g-3">
 
               <div class="col-md-6">
@@ -99,7 +128,7 @@
                   <span class="optional-tag">Optional</span>
                 </label>
                 <textarea class="form-control" rows="3" formControlName="bio"
-                  placeholder="Brief description about doctor's expertise and experience..."></textarea>
+                  placeholder="Brief description about doctor's expertise..."></textarea>
               </div>
 
             </div>
@@ -109,17 +138,15 @@
 
       <!-- Right Panel -->
       <div class="col-md-4">
-        <div class="card fade-up" style="animation-delay:80ms">
+        <div class="card">
           <div class="card-header bg-white">
-            <div class="form-card-title"><i class="bi bi-lightning-charge-fill"></i> Actions</div>
+            <div class="form-card-title">⚡ Actions</div>
           </div>
           <div class="card-body p-4">
-
             <button type="submit" class="btn-primary-custom btn w-100 mb-3"
               [disabled]="isLoading">
               <span *ngIf="!isLoading">
-                <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-save'"></i>
-                {{ isEditMode ? 'Update Doctor' : 'Save Doctor' }}
+                {{ isEditMode ? '✏️ Update Doctor' : '💾 Save Doctor' }}
               </span>
               <span *ngIf="isLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>
@@ -129,20 +156,18 @@
             <a routerLink="/doctors" class="btn-cancel w-100 text-center d-block">
               Cancel
             </a>
-
             <div class="form-tips mt-4">
-              <div class="tips-title"><i class="bi bi-clipboard-check"></i> Quick Tips</div>
+              <div class="tips-title">📋 Quick Tips</div>
               <ul class="tips-list">
+                <li>Photo upload optional hai</li>
                 <li>PMDC number legally required hai</li>
                 <li>Available days appointments mein use honge</li>
-                <li>Fee appointments pe show hogi</li>
               </ul>
             </div>
-
           </div>
         </div>
       </div>
 
     </div>
   </form>
-</div>
+</div>  

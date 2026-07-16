@@ -169,4 +169,11 @@ tr:hover .table-avatar { transform: scale(1.08); }
   }
 
   .doctor-skel-row { padding: 12px 0; flex-wrap: wrap; }
+}.doc-list-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #2f9e44;
+  flex-shrink: 0;
 }

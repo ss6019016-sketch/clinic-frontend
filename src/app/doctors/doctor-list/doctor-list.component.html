@@ -47,12 +47,21 @@
         <tbody>
           <tr *ngFor="let doctor of filteredDoctors; let i = index" class="fade-in-row" [style.animation-delay]="(i * 40) + 'ms'">
             <td class="row-num" data-label="#">{{ i + 1 }}</td>
-            <td data-label="Doctor">
-              <div class="d-flex align-items-center gap-2">
-                <div class="table-avatar doctor-av">{{ doctor.fullName?.charAt(4) || 'D' }}</div>
-                <span class="patient-name">{{ doctor.fullName }}</span>
-              </div>
-            </td>
+          <td>
+  <div style="display:flex; align-items:center; gap:10px;">
+    <!-- Agar photo hai to image show karo -->
+    <img *ngIf="doctor.profilePhoto"
+      [src]="doctor.profilePhoto"
+      class="doc-list-img"
+      alt="{{ doctor.fullName }}"
+      (error)="doctor.profilePhoto = null" />
+    <!-- Photo nahi to green avatar -->
+    <div *ngIf="!doctor.profilePhoto" class="table-avatar doctor-av">
+      {{ doctor.fullName?.charAt(4) || 'D' }}
+    </div>
+    <span class="patient-name">{{ doctor.fullName }}</span>
+  </div>
+</td>
             <td data-label="Specialization">
               <span class="pill pill-green">{{ doctor.specialization }}</span>
             </td>
