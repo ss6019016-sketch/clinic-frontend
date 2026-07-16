@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -10,7 +10,6 @@ export class UploadService {
 
   private apiUrl = environment.apiUrl;
 
-  // Ye reactive hai — jab bhi photo change ho, sab jagah update ho
   private profilePhoto$ = new BehaviorSubject<string | null>(
     localStorage.getItem('profilePhoto')
   );
@@ -22,29 +21,30 @@ export class UploadService {
     private auth: AuthService
   ) {}
 
-uploadProfilePhoto(file: File): Observable<any> {
-  const formData = new FormData();
-  formData.append('file', file);
+  uploadProfilePhoto(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
 
-  return this.http.post<any>(
-    `${this.apiUrl}/upload/profile-photo`, formData
-  ).pipe(
-    tap(res => {
-      if (res.photoUrl) {
-        // ✅ YE CHANGE KARO
-        const fullUrl = `https://clinic-backend-production-a4f0.up.railway.app${res.photoUrl}`;
-        localStorage.setItem('profilePhoto', fullUrl);
-        this.profilePhoto$.next(fullUrl);
+    return this.http.post<any>(
+      `${this.apiUrl}/upload/profile-photo`, formData
+    ).pipe(
+      tap(res => {
+        if (res.photoUrl) {
+          // Ab photoUrl seedha Base64 data URL hai
+          // Koi backend URL add karne ki zaroorat nahi!
+          localStorage.setItem('profilePhoto', res.photoUrl);
+          this.profilePhoto$.next(res.photoUrl);
 
-        const user = this.auth.getUser();
-        if (user) {
-          user.profilePhoto = fullUrl;
-          localStorage.setItem('user', JSON.stringify(user));
+          const user = this.auth.getUser();
+          if (user) {
+            user.profilePhoto = res.photoUrl;
+            localStorage.setItem('user', JSON.stringify(user));
+          }
         }
-      }
-    })
-  );
-}
+      })
+    );
+  }
+
   getPhotoUrl(): string | null {
     return localStorage.getItem('profilePhoto');
   }
