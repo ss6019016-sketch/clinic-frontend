@@ -22,30 +22,29 @@ export class UploadService {
     private auth: AuthService
   ) {}
 
-  uploadProfilePhoto(file: File): Observable<any> {
-    const formData = new FormData();
-    formData.append('file', file);
+uploadProfilePhoto(file: File): Observable<any> {
+  const formData = new FormData();
+  formData.append('file', file);
 
-    return this.http.post<any>(
-      `${this.apiUrl}/upload/profile-photo`, formData
-    ).pipe(
-      tap(res => {
-        if (res.photoUrl) {
-          const fullUrl = `https://YOUR_BACKEND_URL${res.photoUrl}`;
-          localStorage.setItem('profilePhoto', fullUrl);
-          this.profilePhoto$.next(fullUrl);
+  return this.http.post<any>(
+    `${this.apiUrl}/upload/profile-photo`, formData
+  ).pipe(
+    tap(res => {
+      if (res.photoUrl) {
+        // ✅ YE CHANGE KARO
+        const fullUrl = `https://clinic-backend-production-a4f0.up.railway.app${res.photoUrl}`;
+        localStorage.setItem('profilePhoto', fullUrl);
+        this.profilePhoto$.next(fullUrl);
 
-          // User object bhi update karo
-          const user = this.auth.getUser();
-          if (user) {
-            user.profilePhoto = fullUrl;
-            localStorage.setItem('user', JSON.stringify(user));
-          }
+        const user = this.auth.getUser();
+        if (user) {
+          user.profilePhoto = fullUrl;
+          localStorage.setItem('user', JSON.stringify(user));
         }
-      })
-    );
-  }
-
+      }
+    })
+  );
+}
   getPhotoUrl(): string | null {
     return localStorage.getItem('profilePhoto');
   }
