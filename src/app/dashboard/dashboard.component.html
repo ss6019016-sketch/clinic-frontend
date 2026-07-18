@@ -106,24 +106,26 @@
             <th>Status</th>
           </tr>
         </thead>
-        <tbody>
-          <tr *ngFor="let appt of recentAppointments; let i = index" class="fade-in-row" [style.animation-delay]="(i * 50) + 'ms'">
-            <td>
-              <div class="appt-patient-cell">
-                <div class="appt-avatar">{{ appt.patientName.charAt(0) }}</div>
-                <span class="appt-name">{{ appt.patientName }}</span>
-              </div>
-            </td>
-            <td class="appt-muted">{{ appt.doctorName }}</td>
-            <td class="appt-muted">{{ appt.time }}</td>
-            <td>
-              <span class="status-pill"
-                [ngClass]="appt.status === 'Confirmed' ? 'status-confirmed' : 'status-pending'">
-                {{ appt.status }}
-              </span>
-            </td>
-          </tr>
-        </tbody>
+       <tbody>
+  <tr *ngFor="let appt of recentAppointments">
+    <td>
+      <div class="appt-patient-cell">
+        <div class="appt-avatar">
+          {{ appt.patientName?.charAt(0) || '?' }}
+        </div>
+        <span class="appt-name">{{ appt.patientName }}</span>
+      </div>
+    </td>
+    <td class="appt-muted">{{ appt.doctorName }}</td>
+    <td class="appt-muted">{{ appt.appointmentTime || appt.time }}</td>
+    <td>
+      <span class="status-pill"
+        [ngClass]="appt.status === 'Confirmed' ? 'status-confirmed' : 'status-pending'">
+        {{ appt.status }}
+      </span>
+    </td>
+  </tr>
+</tbody>
       </table>
 
       <div class="empty-row fade-up" *ngIf="recentAppointments.length === 0">
