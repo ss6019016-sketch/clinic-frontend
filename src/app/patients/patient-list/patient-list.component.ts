@@ -41,19 +41,22 @@ export class PatientListComponent implements OnInit {
   }
 
   async deletePatient(id: number): Promise<void> {
-    const result = await this.confirm.open(
-      'Delete Patient',
-      'Are you sure you want to delete this patient?',
-      'danger'
-    );
-    if (!result) return;
+  const result = await this.confirm.open(
+    'Delete Patient',
+    'Are you sure you want to delete this patient?',
+    'danger'
+  );
+  if (!result) return;
 
-    this.patientService.delete(id).subscribe({
-      next: () => {
-        this.patients = this.patients.filter(p => p.id !== id);
-        this.toast.success('Patient deleted!');
-      },
-      error: () => this.toast.error('Failed to delete patient')
-    });
-  }
+  this.patientService.delete(id).subscribe({
+    next: () => {
+      this.patients = this.patients.filter(p => p.id !== id);
+      this.toast.success('Patient deleted successfully!');
+    },
+    error: (err) => {
+      console.error('Delete error:', err);
+      this.toast.error('Failed to delete patient');
+    }
+  });
+}
 }

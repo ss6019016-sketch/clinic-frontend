@@ -76,31 +76,37 @@ export class SettingsComponent implements OnInit {
   }
 
   // Photo select karo
-  onPhotoSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (!file) return;
+onPhotoSelected(event: any): void {
+  const file: File = event.target.files[0];
+  if (!file) return;
 
-    // Preview immediately dikhao
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.currentPhoto = e.target.result;
-    };
-    reader.readAsDataURL(file);
-
-    // Upload karo
-    this.uploadingPhoto = true;
-    this.uploadService.uploadProfilePhoto(file).subscribe({
-      next: (res) => {
-        this.uploadingPhoto = false;
-        this.toast.success('Profile photo updated!');
-      },
-      error: (err) => {
-        this.uploadingPhoto = false;
-        this.currentPhoto   = this.uploadService.getPhotoUrl();
-        this.toast.error(err?.error?.message || 'Upload failed!');
-      }
-    });
+  if (file.size > 2 * 1024 * 1024) {
+    this.toast.error('Max 2MB image allowed!');
+    return;
   }
+
+  // Pehle preview dikhao
+  const reader = new FileReader();
+  reader.onload = (e: any) => {
+    this.currentPhoto = e.target.result;
+  };
+  reader.readAsDataURL(file);
+
+  // Upload karo
+  this.uploadingPhoto = true;
+  this.uploadService.uploadProfilePhoto(file).subscribe({
+    next: (res) => {
+      this.uploadingPhoto = false;
+      this.toast.success('Profile photo updated! ✅');
+      console.log('Upload success:', res);
+    },
+    error: (err) => {
+      this.uploadingPhoto = false;
+      console.error('Upload error:', err);
+      this.toast.error('Upload failed: ' + (err?.error?.message || err.message));
+    }
+  });
+}
 
   removePhoto(): void {
     this.uploadService.clearPhoto();
