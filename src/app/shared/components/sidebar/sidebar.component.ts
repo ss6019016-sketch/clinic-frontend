@@ -28,6 +28,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     { label: 'Billing',       icon: '🧾', route: '/billing'       },
     { label: 'Reports',       icon: '📈', route: '/reports'       },
     { label: 'Staff',         icon: '👥', route: '/staff'         },
+    { label: 'Audit Log', icon: '📜', route: '/audit-log', adminOnly: true },
     { label: 'Settings',      icon: '⚙️', route: '/settings'      },
   ];
 
@@ -41,6 +42,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
     const user    = this.auth.getUser();
     this.userName = user?.name || 'Admin';
     this.userRole = user?.role || 'Admin';
+    if (this.userRole !== 'Admin') {
+  this.menuItems = this.menuItems.filter(item => !item.adminOnly);
+}
 
     this.sub1 = this.sidebarService.state$.subscribe(
       state => this.isOpen = state
