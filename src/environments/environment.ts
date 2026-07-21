@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://localhost:7258/api'
+  apiUrl: 'http://clinic-api-sami.runasp.net/api'
 };
