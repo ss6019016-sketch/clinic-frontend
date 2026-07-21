@@ -53,6 +53,12 @@
             <td>
               <div class="action-group">
                 <a [routerLink]="['/appointments/edit', appt.id]" class="act-btn act-edit">Edit</a>
+                <button
+                  class="act-btn act-reminder"
+                  [disabled]="appt.reminderSent || sendingReminderId === appt.id"
+                  (click)="sendReminder(appt.id)">
+                  {{ appt.reminderSent ? 'Reminder Sent ✓' : (sendingReminderId === appt.id ? 'Sending...' : 'Send Reminder') }}
+                </button>
                 <button class="act-btn act-delete" (click)="deleteAppointment(appt.id)">Delete</button>
               </div>
             </td>

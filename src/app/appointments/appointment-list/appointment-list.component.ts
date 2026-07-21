@@ -13,6 +13,7 @@ export class AppointmentListComponent implements OnInit {
   searchText          = '';
   statusFilter        = 'All';
   isLoading           = true;
+  sendingReminderId: number | null = null;
 
   constructor(
     private apptService: AppointmentService,
@@ -54,6 +55,22 @@ export class AppointmentListComponent implements OnInit {
         this.toast.success('Appointment deleted!');
       },
       error: () => this.toast.error('Failed to delete appointment')
+    });
+  }
+
+  sendReminder(id: number): void {
+    this.sendingReminderId = id;
+    this.apptService.sendReminder(id).subscribe({
+      next: (res) => {
+        this.toast.success(res.message || 'Reminder sent!');
+        const appt = this.appointments.find(a => a.id === id);
+        if (appt) appt.reminderSent = true;
+        this.sendingReminderId = null;
+      },
+      error: (err) => {
+        this.toast.error(err?.error?.message || 'Failed to send reminder');
+        this.sendingReminderId = null;
+      }
     });
   }
 }

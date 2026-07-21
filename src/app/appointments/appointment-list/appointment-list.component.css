@@ -113,6 +113,9 @@
 
 .act-edit { background: #fff8e6; color: #e09500; }
 .act-edit:hover { background: #F5A623; color: #000; }
+.act-reminder { background: #e6f4ea; color: #1e7e34; }
+.act-reminder:hover:not(:disabled) { background: #25d366; color: #fff; }
+.act-reminder:disabled { opacity: 0.6; cursor: not-allowed; }
 .act-delete { background: #fdeaea; color: #e03131; }
 .act-delete:hover { background: #e03131; color: #fff; }
 
