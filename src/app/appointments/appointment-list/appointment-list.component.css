@@ -1,3 +1,6 @@
+
+
+
 .table-toolbar {
   display: flex;
   align-items: center;
@@ -86,7 +89,7 @@
 .status-pill {
   font-size: 0.75rem;
   padding: 5px 13px;
-  border-radius: 20px;
+  border-radius: 6px;
   font-weight: 600;
   display: inline-block;
 }
@@ -159,3 +162,4 @@
     text-align: center !important;
   }
 }
+

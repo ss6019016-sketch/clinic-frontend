@@ -1,6 +1,4 @@
-/* ═══════════════════════════════
-   ANIMATIONS + SKELETON
-═══════════════════════════════ */
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -24,8 +22,8 @@
 
 .skel-avatar-lg  { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 16px; }
 .skel-name-lg    { width: 60%; height: 20px; margin: 0 auto 14px; }
-.skel-pill-row   { width: 70%; height: 22px; border-radius: 20px; margin: 0 auto 16px; }
-.skel-stats-box  { width: 100%; height: 60px; border-radius: 12px; }
+.skel-pill-row   { width: 70%; height: 22px; border-radius: 6px; margin: 0 auto 16px; }
+.skel-stats-box  { width: 100%; height: 60px; border-radius: 8px; }
 .skel-header-title { width: 180px; height: 18px; }
 .skel-info-block { width: 100%; height: 58px; border-radius: 10px; }
 
@@ -41,14 +39,14 @@
 }
 .profile-name { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; margin-bottom: 10px; }
 
-.pill { font-size: 0.75rem; padding: 4px 12px; border-radius: 20px; font-weight: 600; display: inline-block; }
+.pill { font-size: 0.75rem; padding: 4px 12px; border-radius: 6px; font-weight: 600; display: inline-block; }
 .pill-blue { background: #e8f4fd; color: #1c7ed6; }
 .pill-pink { background: #fce8f3; color: #c2185b; }
 .pill-gray { background: #f0f2f5; color: #555; }
 
 .profile-stats {
   display: flex; justify-content: center; align-items: center;
-  gap: 20px; padding: 14px; background: #f8f9fa; border-radius: 12px; margin-top: 12px;
+  gap: 20px; padding: 14px; background: #f8f9fa; border-radius: 8px; margin-top: 12px;
 }
 .stat-item { text-align: center; }
 .stat-val { font-size: 1.1rem; font-weight: 700; color: #1a1a2e; }
@@ -57,7 +55,7 @@
 
 .status-badge {
   display: inline-block; font-size: 0.78rem; font-weight: 600;
-  padding: 6px 16px; border-radius: 20px;
+  padding: 6px 16px; border-radius: 6px;
 }
 
 .form-card-title { font-weight: 700; font-size: 0.95rem; color: #1a1a2e; }

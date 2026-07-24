@@ -1,3 +1,4 @@
+
 .nf-wrapper {
   min-height: 100vh; display:flex;
   align-items:center; justify-content:center;
@@ -5,7 +6,7 @@
 }
 .nf-card {
   text-align:center; padding:48px 40px;
-  background:#fff; border-radius:20px;
+  background:#fff; border-radius: 6px;
   box-shadow:0 4px 20px rgba(0,0,0,0.08);
   max-width:420px; width:100%;
 }

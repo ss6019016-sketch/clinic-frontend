@@ -1,3 +1,6 @@
+
+
+
 .dialog-overlay {
   position: fixed;
   top: 0; left: 0;
@@ -17,7 +20,7 @@
 
 .dialog-box {
   background: #fff;
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 32px 28px;
   width: 100%;
   max-width: 380px;

@@ -1,3 +1,5 @@
+
+
 .dashboard-wrapper {
   display: flex;
   flex-direction: column;
@@ -30,7 +32,7 @@
 
 .stat-card {
   background: #fff;
-  border-radius: 16px;
+  border-radius: 10px;
   padding: 22px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.05);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -51,7 +53,7 @@
 .stat-icon {
   width: 46px;
   height: 46px;
-  border-radius: 12px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,7 +63,7 @@
 .stat-badge {
   font-size: 0.72rem;
   padding: 4px 9px;
-  border-radius: 20px;
+  border-radius: 6px;
   font-weight: 600;
 }
 
@@ -101,7 +103,7 @@
 /* Recent Appointments Card */
 .dash-card {
   background: #fff;
-  border-radius: 16px;
+  border-radius: 10px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.05);
   overflow: hidden;
 }
@@ -197,10 +199,11 @@
 .status-pill {
   font-size: 0.75rem;
   padding: 5px 12px;
-  border-radius: 20px;
+  border-radius: 6px;
   font-weight: 600;
   display: inline-block;
 }
 
 .status-confirmed { background: #e8fdf0; color: #2f9e44; }
 .status-pending   { background: #fff8e6; color: #e09500; }
+
