@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StaffService } from 'src/app/core/services/staff.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { ConfirmDialogService } from 'src/app/core/services/confirm-dialog.service';
+import { PermissionService } from 'src/app/core/services/permission.service';
 
 @Component({
   selector: 'app-staff-list',
@@ -24,7 +25,8 @@ export class StaffListComponent implements OnInit {
   constructor(
     private staffService: StaffService,
     private toast: ToastService,
-    private confirm: ConfirmDialogService
+    private confirm: ConfirmDialogService,
+    public permissionService: PermissionService
   ) {}
 
   ngOnInit(): void { this.loadStaff(); }

@@ -13,7 +13,7 @@
             placeholder="Search by name, email or role..."
             [(ngModel)]="searchText" (ngModelChange)="onSearchChange()" />
         </div>
-        <a routerLink="/staff/add" class="btn-primary-custom btn">
+        <a *ngIf="permissionService.canCreate('Staff')" routerLink="/staff/add" class="btn-primary-custom btn">
           <i class="bi bi-plus-lg"></i> Add Staff
         </a>
       </div>
@@ -77,10 +77,10 @@
             </td>
             <td data-label="Actions">
               <div class="action-group">
-                <a [routerLink]="['/staff/edit', member.id]" class="act-btn act-edit">
+                <a *ngIf="permissionService.canEdit('Staff')" [routerLink]="['/staff/edit', member.id]" class="act-btn act-edit">
                   <i class="bi bi-pencil-square"></i> Edit
                 </a>
-                <button class="act-btn act-delete" (click)="delete(member.id)">
+                <button *ngIf="permissionService.canDelete('Staff')" class="act-btn act-delete" (click)="delete(member.id)">
                   <i class="bi bi-trash"></i> Delete
                 </button>
               </div>

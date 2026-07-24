@@ -45,7 +45,7 @@
             <option value="Partial">Partial</option>
           </select>
         </div>
-        <a routerLink="/billing/add" class="btn-primary-custom btn">+ Create Invoice</a>
+        <a *ngIf="permissionService.canCreate('Billing')" routerLink="/billing/add" class="btn-primary-custom btn">+ Create Invoice</a>
       </div>
     </div>
 
@@ -96,8 +96,8 @@
             </td>
             <td data-label="Actions">
               <div class="action-group">
-                <a [routerLink]="['/billing/edit', inv.id]" class="act-btn act-edit">Edit</a>
-                <button class="act-btn act-delete" (click)="delete(inv.id)">Delete</button>
+                <a *ngIf="permissionService.canEdit('Billing')" [routerLink]="['/billing/edit', inv.id]" class="act-btn act-edit">Edit</a>
+                <button *ngIf="permissionService.canDelete('Billing')" class="act-btn act-delete" (click)="delete(inv.id)">Delete</button>
               </div>
             </td>
           </tr>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BillingService } from 'src/app/core/services/billing.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { ConfirmDialogService } from 'src/app/core/services/confirm-dialog.service';
+import { PermissionService } from 'src/app/core/services/permission.service';
 
 @Component({
   selector: 'app-invoice-list',
@@ -31,7 +32,8 @@ export class InvoiceListComponent implements OnInit {
   constructor(
     private billingService: BillingService,
     private toast: ToastService,
-    private confirm: ConfirmDialogService
+    private confirm: ConfirmDialogService,
+    public permissionService: PermissionService
   ) {}
 
   ngOnInit(): void { this.load(); }

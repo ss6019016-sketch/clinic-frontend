@@ -13,7 +13,7 @@
         </div>
         <div class="d-flex gap-2 align-items-center">
           <a routerLink="/appointments/calendar" class="cal-btn"><i class="bi bi-calendar3"></i> Calendar</a>
-          <a routerLink="/appointments/add" class="btn-primary-custom btn">+ Book Appointment</a>
+          <a *ngIf="permissionService.canCreate('Appointments')" routerLink="/appointments/add" class="btn-primary-custom btn">+ Book Appointment</a>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
             </td>
             <td>
               <div class="action-group">
-                <a [routerLink]="['/appointments/edit', appt.id]" class="act-btn act-edit">Edit</a>
+                <a *ngIf="permissionService.canEdit('Appointments')" [routerLink]="['/appointments/edit', appt.id]" class="act-btn act-edit">Edit</a>
                 <button
                   class="act-btn act-reminder"
                   [disabled]="appt.reminderSent || sendingReminderId === appt.id"
@@ -60,7 +60,7 @@
                   <i class="bi bi-check-circle" *ngIf="appt.reminderSent"></i>
                   {{ appt.reminderSent ? 'Reminder Sent' : (sendingReminderId === appt.id ? 'Sending...' : 'Send Reminder') }}
                 </button>
-                <button class="act-btn act-delete" (click)="deleteAppointment(appt.id)">Delete</button>
+                <button *ngIf="permissionService.canDelete('Appointments')" class="act-btn act-delete" (click)="deleteAppointment(appt.id)">Delete</button>
               </div>
             </td>
           </tr>

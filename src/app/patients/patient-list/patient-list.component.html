@@ -14,7 +14,7 @@
             placeholder="Search patient by name..."
             [(ngModel)]="searchText" (ngModelChange)="onSearchChange()" />
         </div>
-        <a routerLink="/patients/add" class="btn-primary-custom btn">
+        <a *ngIf="permissionService.canCreate('Patients')" routerLink="/patients/add" class="btn-primary-custom btn">
           + Add Patient
         </a>
       </div>
@@ -73,9 +73,9 @@
               <div class="action-group">
                 <a [routerLink]="['/patients/details', patient.id]"
                   class="act-btn act-view">View</a>
-                <a [routerLink]="['/patients/edit', patient.id]"
+                <a *ngIf="permissionService.canEdit('Patients')" [routerLink]="['/patients/edit', patient.id]"
                   class="act-btn act-edit">Edit</a>
-                <button class="act-btn act-delete"
+                <button *ngIf="permissionService.canDelete('Patients')" class="act-btn act-delete"
                   (click)="deletePatient(patient.id)">Delete</button>
               </div>
             </td>

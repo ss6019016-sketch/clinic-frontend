@@ -13,7 +13,7 @@
             placeholder="Search by patient, doctor or diagnosis..."
             [(ngModel)]="searchText" (ngModelChange)="onSearchChange()" />
         </div>
-        <a routerLink="/prescriptions/add" class="btn-primary-custom btn">
+        <a *ngIf="permissionService.canCreate('Prescriptions')" routerLink="/prescriptions/add" class="btn-primary-custom btn">
           <i class="bi bi-plus-lg"></i> New Prescription
         </a>
       </div>
@@ -67,9 +67,9 @@
             <td class="td-muted" data-label="Date">{{ rx.createdAt | date:'MMM d, y' }}</td>
             <td data-label="Actions">
               <div class="action-group">
-                <a [routerLink]="['/prescriptions/edit', rx.id]"
+                <a *ngIf="permissionService.canEdit('Prescriptions')" [routerLink]="['/prescriptions/edit', rx.id]"
                   class="act-btn act-edit"><i class="bi bi-pencil-square"></i> Edit</a>
-                <button class="act-btn act-delete"
+                <button *ngIf="permissionService.canDelete('Prescriptions')" class="act-btn act-delete"
                   (click)="delete(rx.id)"><i class="bi bi-trash"></i> Delete</button>
               </div>
             </td>

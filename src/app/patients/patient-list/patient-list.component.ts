@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { PatientService } from 'src/app/core/services/patient.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { ConfirmDialogService } from 'src/app/core/services/confirm-dialog.service';
+import { PermissionService } from 'src/app/core/services/permission.service';
  
 @Component({
   selector: 'app-patient-list',
@@ -28,7 +29,8 @@ export class PatientListComponent implements OnInit {
   constructor(
     private patientService: PatientService,
     private toast: ToastService,
-    private confirm: ConfirmDialogService
+    private confirm: ConfirmDialogService,
+    public permissionService: PermissionService
   ) {}
  
   ngOnInit(): void { this.load(); }

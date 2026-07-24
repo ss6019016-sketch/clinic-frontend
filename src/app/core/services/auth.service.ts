@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from './api.service';
+import { PermissionService } from './permission.service';
 import { Observable, tap } from 'rxjs';
 
 export interface LoginDto {
@@ -18,7 +19,7 @@ export interface AuthResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(private api: ApiService, private router: Router, private permissionService: PermissionService) {}
 
   login(dto: LoginDto): Observable<AuthResponse> {
     return this.api.post<AuthResponse>('auth/login', dto).pipe(
@@ -29,6 +30,7 @@ export class AuthService {
           email: res.email,
           role:  res.role
         }));
+        this.permissionService.loadPermissions().subscribe();
       })
     );
   }
@@ -36,6 +38,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    this.permissionService.clearPermissions();
     this.router.navigate(['/auth/login']);
   }
 

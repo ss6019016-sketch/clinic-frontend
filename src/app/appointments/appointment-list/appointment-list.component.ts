@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppointmentService } from 'src/app/core/services/appointment.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { ConfirmDialogService } from 'src/app/core/services/confirm-dialog.service';
+import { PermissionService } from 'src/app/core/services/permission.service';
 
 @Component({
   selector: 'app-appointment-list',
@@ -25,7 +26,8 @@ export class AppointmentListComponent implements OnInit {
   constructor(
     private apptService: AppointmentService,
     private toast: ToastService,
-    private confirm: ConfirmDialogService
+    private confirm: ConfirmDialogService,
+    public permissionService: PermissionService
   ) {}
 
   ngOnInit(): void { this.loadAppointments(); }

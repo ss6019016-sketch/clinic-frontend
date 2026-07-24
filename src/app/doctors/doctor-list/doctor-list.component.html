@@ -13,7 +13,7 @@
             placeholder="Search by name or specialization..."
             [(ngModel)]="searchText" (ngModelChange)="onSearchChange()" />
         </div>
-        <a routerLink="/doctors/add" class="btn-primary-custom btn">
+        <a *ngIf="permissionService.canCreate('Doctors')" routerLink="/doctors/add" class="btn-primary-custom btn">
           <i class="bi bi-plus-lg"></i> Add Doctor
         </a>
       </div>
@@ -73,10 +73,10 @@
                 <a [routerLink]="['/doctors/details', doctor.id]" class="act-btn act-view">
                   <i class="bi bi-eye"></i> View
                 </a>
-                <a [routerLink]="['/doctors/edit', doctor.id]" class="act-btn act-edit">
+                <a *ngIf="permissionService.canEdit('Doctors')" [routerLink]="['/doctors/edit', doctor.id]" class="act-btn act-edit">
                   <i class="bi bi-pencil-square"></i> Edit
                 </a>
-                <button class="act-btn act-delete" (click)="deleteDoctor(doctor.id)">
+                <button *ngIf="permissionService.canDelete('Doctors')" class="act-btn act-delete" (click)="deleteDoctor(doctor.id)">
                   <i class="bi bi-trash"></i> Delete
                 </button>
               </div>
