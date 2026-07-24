@@ -21,6 +21,7 @@
         { path: 'staff',         loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule) },
         { path: 'settings',      loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule) },
         { path: 'audit-log', loadChildren: () => import('./audit-log/audit-log.module').then(m => m.AuditLogModule) },
+        { path: 'permissions', loadChildren: () => import('./permissions/permissions.module').then(m => m.PermissionsModule) },
       ]
     },
     { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },

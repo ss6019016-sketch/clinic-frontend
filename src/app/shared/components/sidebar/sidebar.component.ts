@@ -28,6 +28,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     { label: 'Billing',       icon: 'bi-receipt',          route: '/billing'       },
     { label: 'Reports',       icon: 'bi-graph-up-arrow',   route: '/reports'       },
     { label: 'Staff',         icon: 'bi-person-vcard-fill', route: '/staff'         },
+    { label: 'Roles & Permissions', icon: 'bi-shield-lock-fill', route: '/permissions', adminOnly: true },
     { label: 'Audit Log', icon: 'bi-clock-history', route: '/audit-log', adminOnly: true },
     { label: 'Settings',      icon: 'bi-gear-fill',        route: '/settings'      },
   ];
