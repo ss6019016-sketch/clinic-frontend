@@ -11,14 +11,20 @@ import { ConfirmDialogService } from 'src/app/core/services/confirm-dialog.servi
 export class InvoiceListComponent implements OnInit {
 
   invoices: any[] = [];
-  searchText      = '';
-  statusFilter    = 'All';
-  isLoading       = true;
+  searchText = '';
+  statusFilter = 'All';
+  isLoading = true;
 
-  // Animated display values for the summary cards
+  currentPage = 1;
+  pageSize = 10;
+  totalCount = 0;
+  totalPages = 0;
+
+  private searchTimeout: any;
+
   displayRevenue = 0;
-  displayUnpaid  = 0;
-  displayCount   = 0;
+  displayUnpaid = 0;
+  displayCount = 0;
 
   skeletonRows = [1, 2, 3, 4, 5];
 
@@ -32,9 +38,11 @@ export class InvoiceListComponent implements OnInit {
 
   load(): void {
     this.isLoading = true;
-    this.billingService.getAll(this.statusFilter, this.searchText).subscribe({
-      next: (data) => {
-        this.invoices = data;
+    this.billingService.getAll(this.statusFilter, this.searchText, this.currentPage, this.pageSize).subscribe({
+      next: (res) => {
+        this.invoices = res.items ?? res;
+        this.totalCount = res.totalCount ?? this.invoices.length;
+        this.totalPages = (res.totalPages ?? Math.ceil(this.totalCount / this.pageSize)) || 1;
         this.isLoading = false;
         this.animateSummary();
       },
@@ -42,7 +50,31 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
-  get filtered(): any[] { return this.invoices; }
+  onSearchChange(): void {
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      this.currentPage = 1;
+      this.load();
+    }, 400);
+  }
+
+  onStatusChange(): void {
+    this.currentPage = 1;
+    this.load();
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages || page === this.currentPage) return;
+    this.currentPage = page;
+    this.load();
+  }
+
+  nextPage(): void { this.goToPage(this.currentPage + 1); }
+  prevPage(): void { this.goToPage(this.currentPage - 1); }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
 
   get totalRevenue(): number {
     return this.invoices
@@ -79,21 +111,19 @@ export class InvoiceListComponent implements OnInit {
     });
   }
 
-  // Counts the 3 summary cards up from their current displayed value
-  // to the freshly computed one — same easing used across the app.
   private animateSummary(): void {
     const duration = 700;
     const start = performance.now();
     const from = { revenue: this.displayRevenue, unpaid: this.displayUnpaid, count: this.displayCount };
-    const to   = { revenue: this.totalRevenue,   unpaid: this.totalUnpaid,   count: this.invoices.length };
+    const to = { revenue: this.totalRevenue, unpaid: this.totalUnpaid, count: this.invoices.length };
 
     const tick = (now: number) => {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
 
       this.displayRevenue = Math.round(from.revenue + (to.revenue - from.revenue) * eased);
-      this.displayUnpaid  = Math.round(from.unpaid  + (to.unpaid  - from.unpaid)  * eased);
-      this.displayCount   = Math.round(from.count   + (to.count   - from.count)   * eased);
+      this.displayUnpaid = Math.round(from.unpaid + (to.unpaid - from.unpaid) * eased);
+      this.displayCount = Math.round(from.count + (to.count - from.count) * eased);
 
       if (progress < 1) requestAnimationFrame(tick);
     };

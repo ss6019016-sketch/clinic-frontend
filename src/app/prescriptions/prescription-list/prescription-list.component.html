@@ -11,7 +11,7 @@
           <i class="bi bi-search search-icon"></i>
           <input type="text" class="search-input"
             placeholder="Search by patient, doctor or diagnosis..."
-            [(ngModel)]="searchText" />
+            [(ngModel)]="searchText" (ngModelChange)="onSearchChange()" />
         </div>
         <a routerLink="/prescriptions/add" class="btn-primary-custom btn">
           <i class="bi bi-plus-lg"></i> New Prescription
@@ -19,7 +19,6 @@
       </div>
     </div>
 
-    <!-- Skeleton -->
     <div class="rx-skel-wrap" *ngIf="isLoading">
       <div class="rx-skel-row" *ngFor="let s of skeletonRows">
         <div class="skel skel-avatar"></div>
@@ -45,8 +44,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let rx of filtered; let i = index" class="fade-in-row" [style.animation-delay]="(i * 40) + 'ms'">
-            <td class="row-num" data-label="#">{{ i + 1 }}</td>
+          <tr *ngFor="let rx of prescriptions; let i = index" class="fade-in-row" [style.animation-delay]="(i * 40) + 'ms'">
+            <td class="row-num" data-label="#">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
             <td data-label="Patient">
               <div class="d-flex align-items-center gap-2">
                 <div class="table-avatar">{{ rx.patientName?.charAt(0) }}</div>
@@ -75,7 +74,7 @@
               </div>
             </td>
           </tr>
-          <tr *ngIf="filtered.length === 0">
+          <tr *ngIf="prescriptions.length === 0">
             <td colspan="8" class="empty-row fade-up">
               <i class="bi bi-capsule"></i>
               <p>No prescriptions found</p>
@@ -85,8 +84,20 @@
       </table>
     </div>
 
-    <div class="card-footer-bar" *ngIf="!isLoading">
-      Showing {{ filtered.length }} of {{ prescriptions.length }} prescriptions
+    <div class="card-footer-bar d-flex justify-content-between align-items-center flex-wrap gap-2" *ngIf="!isLoading">
+      <span>Showing {{ prescriptions.length === 0 ? 0 : (currentPage - 1) * pageSize + 1 }}–{{ (currentPage - 1) * pageSize + prescriptions.length }} of {{ totalCount }} prescriptions</span>
+
+      <div class="d-flex align-items-center gap-1" *ngIf="totalPages > 1">
+        <button type="button" class="act-btn act-view" [disabled]="currentPage === 1" (click)="prevPage()">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button type="button" *ngFor="let p of pageNumbers" class="act-btn"
+          [ngClass]="p === currentPage ? 'act-edit' : 'act-view'"
+          (click)="goToPage(p)">{{ p }}</button>
+        <button type="button" class="act-btn act-view" [disabled]="currentPage === totalPages" (click)="nextPage()">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>

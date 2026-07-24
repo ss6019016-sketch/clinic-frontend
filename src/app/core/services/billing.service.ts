@@ -6,8 +6,8 @@ import { ApiService } from './api.service';
 export class BillingService {
   constructor(private api: ApiService) {}
 
-  getAll(status?: string, search?: string): Observable<any[]> {
-    return this.api.get<any[]>('billing', { status, search });
+  getAll(status?: string, search?: string, page: number = 1, pageSize: number = 10): Observable<any> {
+    return this.api.get<any>('billing', { status, search, page, pageSize });
   }
 
   getById(id: number): Observable<any> {

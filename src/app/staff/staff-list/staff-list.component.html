@@ -11,7 +11,7 @@
           <i class="bi bi-search search-icon"></i>
           <input type="text" class="search-input"
             placeholder="Search by name, email or role..."
-            [(ngModel)]="searchText" />
+            [(ngModel)]="searchText" (ngModelChange)="onSearchChange()" />
         </div>
         <a routerLink="/staff/add" class="btn-primary-custom btn">
           <i class="bi bi-plus-lg"></i> Add Staff
@@ -19,7 +19,6 @@
       </div>
     </div>
 
-    <!-- Skeleton -->
     <div class="staff-skel-wrap" *ngIf="isLoading">
       <div class="staff-skel-row" *ngFor="let s of skeletonRows">
         <div class="skel skel-num-sm"></div>
@@ -47,8 +46,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let member of filtered; let i = index" class="fade-in-row" [style.animation-delay]="(i * 40) + 'ms'">
-            <td class="row-num" data-label="#">{{ i + 1 }}</td>
+          <tr *ngFor="let member of staff; let i = index" class="fade-in-row" [style.animation-delay]="(i * 40) + 'ms'">
+            <td class="row-num" data-label="#">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
             <td data-label="Staff Member">
               <div class="d-flex align-items-center gap-2">
                 <div class="table-avatar">{{ member.fullName?.charAt(0) || 'S' }}</div>
@@ -87,7 +86,7 @@
               </div>
             </td>
           </tr>
-          <tr *ngIf="filtered.length === 0">
+          <tr *ngIf="staff.length === 0">
             <td colspan="7" class="empty-row fade-up">
               <i class="bi bi-people"></i>
               <p>No staff found</p>
@@ -97,8 +96,20 @@
       </table>
     </div>
 
-    <div class="card-footer-bar" *ngIf="!isLoading">
-      Showing {{ filtered.length }} of {{ staff.length }} staff members
+    <div class="card-footer-bar d-flex justify-content-between align-items-center flex-wrap gap-2" *ngIf="!isLoading">
+      <span>Showing {{ staff.length === 0 ? 0 : (currentPage - 1) * pageSize + 1 }}–{{ (currentPage - 1) * pageSize + staff.length }} of {{ totalCount }} staff members</span>
+
+      <div class="d-flex align-items-center gap-1" *ngIf="totalPages > 1">
+        <button type="button" class="act-btn act-view" [disabled]="currentPage === 1" (click)="prevPage()">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button type="button" *ngFor="let p of pageNumbers" class="act-btn"
+          [ngClass]="p === currentPage ? 'act-edit' : 'act-view'"
+          (click)="goToPage(p)">{{ p }}</button>
+        <button type="button" class="act-btn act-view" [disabled]="currentPage === totalPages" (click)="nextPage()">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
   </div>
 </div>

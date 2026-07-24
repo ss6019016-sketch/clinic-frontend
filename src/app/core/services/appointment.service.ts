@@ -6,8 +6,8 @@ import { ApiService } from './api.service';
 export class AppointmentService {
   constructor(private api: ApiService) {}
 
-  getAll(status?: string, search?: string): Observable<any[]> {
-    return this.api.get<any[]>('appointments', { status, search });
+  getAll(status?: string, search?: string, page: number = 1, pageSize: number = 10): Observable<any> {
+    return this.api.get<any>('appointments', { status, search, page, pageSize });
   }
 
   getById(id: number): Observable<any> {

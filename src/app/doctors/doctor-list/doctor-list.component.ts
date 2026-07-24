@@ -10,10 +10,16 @@ import { ConfirmDialogService } from 'src/app/core/services/confirm-dialog.servi
 })
 export class DoctorListComponent implements OnInit {
 
-  doctors:   any[] = [];
+  doctors: any[] = [];
   searchText = '';
-  isLoading  = true;
+  isLoading = true;
 
+  currentPage = 1;
+  pageSize = 10;
+  totalCount = 0;
+  totalPages = 0;
+
+  private searchTimeout: any;
   skeletonRows = [1, 2, 3, 4, 5, 6];
 
   constructor(
@@ -26,18 +32,36 @@ export class DoctorListComponent implements OnInit {
 
   load(): void {
     this.isLoading = true;
-    this.doctorService.getAll().subscribe({
-      next: (data) => { this.doctors = data; this.isLoading = false; },
+    this.doctorService.getAll(this.searchText, this.currentPage, this.pageSize).subscribe({
+      next: (res) => {
+        this.doctors = res.items ?? res;
+        this.totalCount = res.totalCount ?? this.doctors.length;
+        this.totalPages = (res.totalPages ?? Math.ceil(this.totalCount / this.pageSize)) || 1;
+        this.isLoading = false;
+      },
       error: () => { this.toast.error('Failed to load doctors'); this.isLoading = false; }
     });
   }
 
-  get filteredDoctors(): any[] {
-    if (!this.searchText) return this.doctors;
-    return this.doctors.filter(d =>
-      d.fullName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      d.specialization?.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+  onSearchChange(): void {
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      this.currentPage = 1;
+      this.load();
+    }, 400);
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages || page === this.currentPage) return;
+    this.currentPage = page;
+    this.load();
+  }
+
+  nextPage(): void { this.goToPage(this.currentPage + 1); }
+  prevPage(): void { this.goToPage(this.currentPage - 1); }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   async deleteDoctor(id: number): Promise<void> {

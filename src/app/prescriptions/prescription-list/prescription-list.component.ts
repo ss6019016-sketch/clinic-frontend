@@ -11,9 +11,15 @@ import { ConfirmDialogService } from 'src/app/core/services/confirm-dialog.servi
 export class PrescriptionListComponent implements OnInit {
 
   prescriptions: any[] = [];
-  searchText           = '';
-  isLoading            = true;
+  searchText = '';
+  isLoading = true;
 
+  currentPage = 1;
+  pageSize = 10;
+  totalCount = 0;
+  totalPages = 0;
+
+  private searchTimeout: any;
   skeletonRows = [1, 2, 3, 4, 5];
 
   constructor(
@@ -26,19 +32,36 @@ export class PrescriptionListComponent implements OnInit {
 
   load(): void {
     this.isLoading = true;
-    this.rxService.getAll(this.searchText).subscribe({
-      next: (data) => { this.prescriptions = data; this.isLoading = false; },
+    this.rxService.getAll(this.searchText, this.currentPage, this.pageSize).subscribe({
+      next: (res) => {
+        this.prescriptions = res.items ?? res;
+        this.totalCount = res.totalCount ?? this.prescriptions.length;
+        this.totalPages = (res.totalPages ?? Math.ceil(this.totalCount / this.pageSize)) || 1;
+        this.isLoading = false;
+      },
       error: () => { this.toast.error('Failed to load prescriptions'); this.isLoading = false; }
     });
   }
 
-  get filtered(): any[] {
-    if (!this.searchText) return this.prescriptions;
-    return this.prescriptions.filter(p =>
-      p.patientName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      p.doctorName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      p.diagnosis?.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+  onSearchChange(): void {
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      this.currentPage = 1;
+      this.load();
+    }, 400);
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages || page === this.currentPage) return;
+    this.currentPage = page;
+    this.load();
+  }
+
+  nextPage(): void { this.goToPage(this.currentPage + 1); }
+  prevPage(): void { this.goToPage(this.currentPage - 1); }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   async delete(id: number): Promise<void> {

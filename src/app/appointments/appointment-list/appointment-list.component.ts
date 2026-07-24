@@ -10,10 +10,17 @@ import { ConfirmDialogService } from 'src/app/core/services/confirm-dialog.servi
 })
 export class AppointmentListComponent implements OnInit {
   appointments: any[] = [];
-  searchText          = '';
-  statusFilter        = 'All';
-  isLoading           = true;
+  searchText = '';
+  statusFilter = 'All';
+  isLoading = true;
   sendingReminderId: number | null = null;
+
+  currentPage = 1;
+  pageSize = 10;
+  totalCount = 0;
+  totalPages = 0;
+
+  private searchTimeout: any;
 
   constructor(
     private apptService: AppointmentService,
@@ -25,18 +32,47 @@ export class AppointmentListComponent implements OnInit {
 
   loadAppointments(): void {
     this.isLoading = true;
-    this.apptService.getAll(this.statusFilter, this.searchText).subscribe({
-      next: (data) => { this.appointments = data; this.isLoading = false; },
+    this.apptService.getAll(this.statusFilter, this.searchText, this.currentPage, this.pageSize).subscribe({
+      next: (res) => {
+        this.appointments = res.items ?? res;
+        this.totalCount = res.totalCount ?? this.appointments.length;
+        this.totalPages = (res.totalPages ?? Math.ceil(this.totalCount / this.pageSize)) || 1;
+        this.isLoading = false;
+      },
       error: () => { this.toast.error('Failed to load appointments'); this.isLoading = false; }
     });
   }
 
-  get filteredAppointments() { return this.appointments; }
+  onSearchChange(): void {
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      this.currentPage = 1;
+      this.loadAppointments();
+    }, 400);
+  }
+
+  onStatusChange(): void {
+    this.currentPage = 1;
+    this.loadAppointments();
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages || page === this.currentPage) return;
+    this.currentPage = page;
+    this.loadAppointments();
+  }
+
+  nextPage(): void { this.goToPage(this.currentPage + 1); }
+  prevPage(): void { this.goToPage(this.currentPage - 1); }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
 
   getStatusClass(status: string): string {
     const map: any = {
       Confirmed: 'status-confirmed',
-      Pending:   'status-pending',
+      Pending: 'status-pending',
       Completed: 'status-completed',
       Cancelled: 'status-cancelled'
     };

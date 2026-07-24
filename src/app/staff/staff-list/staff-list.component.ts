@@ -10,9 +10,15 @@ import { ConfirmDialogService } from 'src/app/core/services/confirm-dialog.servi
 })
 export class StaffListComponent implements OnInit {
   staff: any[] = [];
-  searchText   = '';
-  isLoading    = true;
+  searchText = '';
+  isLoading = true;
 
+  currentPage = 1;
+  pageSize = 10;
+  totalCount = 0;
+  totalPages = 0;
+
+  private searchTimeout: any;
   skeletonRows = [1, 2, 3, 4, 5];
 
   constructor(
@@ -25,18 +31,36 @@ export class StaffListComponent implements OnInit {
 
   loadStaff(): void {
     this.isLoading = true;
-    this.staffService.getAll(this.searchText).subscribe({
-      next: (data) => { this.staff = data; this.isLoading = false; },
+    this.staffService.getAll(this.searchText, this.currentPage, this.pageSize).subscribe({
+      next: (res) => {
+        this.staff = res.items ?? res;
+        this.totalCount = res.totalCount ?? this.staff.length;
+        this.totalPages = (res.totalPages ?? Math.ceil(this.totalCount / this.pageSize)) || 1;
+        this.isLoading = false;
+      },
       error: () => { this.toast.error('Failed to load staff'); this.isLoading = false; }
     });
   }
 
-  get filtered() {
-    if (!this.searchText) return this.staff;
-    return this.staff.filter(s =>
-      s.fullName.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      s.email.toLowerCase().includes(this.searchText.toLowerCase())
-    );
+  onSearchChange(): void {
+    clearTimeout(this.searchTimeout);
+    this.searchTimeout = setTimeout(() => {
+      this.currentPage = 1;
+      this.loadStaff();
+    }, 400);
+  }
+
+  goToPage(page: number): void {
+    if (page < 1 || page > this.totalPages || page === this.currentPage) return;
+    this.currentPage = page;
+    this.loadStaff();
+  }
+
+  nextPage(): void { this.goToPage(this.currentPage + 1); }
+  prevPage(): void { this.goToPage(this.currentPage - 1); }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   toggleStatus(member: any): void {
