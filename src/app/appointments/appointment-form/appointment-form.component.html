@@ -10,7 +10,7 @@
       <div class="col-md-8">
         <div class="card">
           <div class="card-header bg-white">
-            <div class="form-card-title">📅 Appointment Details</div>
+            <div class="form-card-title"><i class="bi bi-calendar3"></i> Appointment Details</div>
           </div>
           <div class="card-body p-4">
             <div class="row g-3">
@@ -94,14 +94,15 @@
       <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-white">
-            <div class="form-card-title">⚡ Actions</div>
+            <div class="form-card-title"><i class="bi bi-lightning-charge"></i> Actions</div>
           </div>
           <div class="card-body p-4">
 
             <button type="submit" class="btn-primary-custom btn w-100 mb-3"
               [disabled]="isLoading">
               <span *ngIf="!isLoading">
-                {{ isEditMode ? '✏️ Update Appointment' : '📅 Book Appointment' }}
+                <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-calendar-check'"></i>
+                {{ isEditMode ? 'Update Appointment' : 'Book Appointment' }}
               </span>
               <span *ngIf="isLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>
@@ -113,11 +114,11 @@
             </a>
 
             <div class="form-tips mt-4">
-              <div class="tips-title">📋 Quick Tips</div>
+              <div class="tips-title"><i class="bi bi-clipboard-check"></i> Quick Tips</div>
               <ul class="tips-list">
-                <li>Patient aur Doctor list API se aata hai</li>
-                <li>Follow-up select karo returning patients ke liye</li>
-                <li>Status baad mein bhi change kar sakte ho</li>
+                <li>Patient and Doctor list comes from the API</li>
+                <li>Select Follow-up for returning patients</li>
+                <li>Status can be changed later too</li>
               </ul>
             </div>
 

@@ -12,7 +12,7 @@
         <!-- Invoice Info -->
         <div class="card mb-4 fade-up" style="animation-delay:40ms">
           <div class="card-header bg-white">
-            <div class="form-card-title">🧾 Invoice Information</div>
+            <div class="form-card-title"><i class="bi bi-receipt"></i> Invoice Information</div>
           </div>
           <div class="card-body p-4">
             <div class="row g-3">
@@ -58,7 +58,7 @@
         <!-- Invoice Items -->
         <div class="card fade-up" style="animation-delay:80ms">
           <div class="card-header bg-white d-flex justify-content-between align-items-center">
-            <div class="form-card-title">📋 Invoice Items</div>
+            <div class="form-card-title"><i class="bi bi-clipboard-check"></i> Invoice Items</div>
             <button type="button" class="add-item-btn" (click)="addItem()">
               + Add Item
             </button>
@@ -96,7 +96,7 @@
                 <div class="item-col-action">
                   <button type="button" class="remove-item-btn"
                     (click)="removeItem(i)"
-                    *ngIf="items.length > 1">✕</button>
+                    *ngIf="items.length > 1"><i class="bi bi-x-circle"></i></button>
                 </div>
 
               </div>
@@ -133,14 +133,15 @@
       <div class="col-md-4">
         <div class="card fade-up" style="animation-delay:120ms">
           <div class="card-header bg-white">
-            <div class="form-card-title">⚡ Actions</div>
+            <div class="form-card-title"><i class="bi bi-lightning-charge"></i> Actions</div>
           </div>
           <div class="card-body p-4">
 
             <button type="submit" class="btn-primary-custom btn w-100 mb-3"
               [disabled]="isLoading">
               <span *ngIf="!isLoading">
-                {{ isEditMode ? '✏️ Update Invoice' : '💾 Save Invoice' }}
+                <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-save'"></i>
+                {{ isEditMode ? 'Update Invoice' : 'Save Invoice' }}
               </span>
               <span *ngIf="isLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>
@@ -152,7 +153,7 @@
             </a>
 
             <div class="invoice-summary-box">
-              <div class="isb-title">💰 Invoice Summary</div>
+              <div class="isb-title"><i class="bi bi-cash-stack"></i> Invoice Summary</div>
               <div class="isb-row">
                 <span>Items</span>
                 <span>{{ items.length }}</span>

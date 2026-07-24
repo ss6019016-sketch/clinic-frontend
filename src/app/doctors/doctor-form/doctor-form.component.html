@@ -10,7 +10,7 @@
       <div class="col-md-8">
         <div class="card">
           <div class="card-header bg-white">
-            <div class="form-card-title">👨‍⚕️ Doctor Information</div>
+            <div class="form-card-title"><i class="bi bi-person-badge"></i> Doctor Information</div>
           </div>
           <div class="card-body p-4">
 
@@ -20,23 +20,23 @@
                 <img *ngIf="photoPreview" [src]="photoPreview"
                   class="doc-photo-img" alt="Doctor Photo" />
                 <div *ngIf="!photoPreview" class="doc-photo-placeholder">
-                  <span>👨‍⚕️</span>
+                  <i class="bi bi-person-circle" style="font-size:2rem;"></i>
                 </div>
               </div>
               <div class="doc-photo-controls">
                 <div class="doc-photo-title">Doctor Photo</div>
-                <div class="doc-photo-sub">JPG, PNG ya WebP — Max 2MB</div>
+                <div class="doc-photo-sub">JPG, PNG or WebP — Max 2MB</div>
                 <div class="d-flex gap-2 mt-2">
                   <label class="upload-photo-btn">
                     <input type="file" accept="image/*"
                       (change)="onPhotoSelected($event)"
                       style="display:none" />
-                    📷 {{ photoPreview ? 'Change Photo' : 'Upload Photo' }}
+                    <i class="bi bi-camera"></i> {{ photoPreview ? 'Change Photo' : 'Upload Photo' }}
                   </label>
                   <button type="button" class="remove-photo-btn"
                     *ngIf="photoPreview"
                     (click)="removePhoto()">
-                    🗑️ Remove
+                    <i class="bi bi-trash"></i> Remove
                   </button>
                 </div>
               </div>
@@ -140,13 +140,14 @@
       <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-white">
-            <div class="form-card-title">⚡ Actions</div>
+            <div class="form-card-title"><i class="bi bi-lightning-charge"></i> Actions</div>
           </div>
           <div class="card-body p-4">
             <button type="submit" class="btn-primary-custom btn w-100 mb-3"
               [disabled]="isLoading">
               <span *ngIf="!isLoading">
-                {{ isEditMode ? '✏️ Update Doctor' : '💾 Save Doctor' }}
+                <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-save'"></i>
+                {{ isEditMode ? 'Update Doctor' : 'Save Doctor' }}
               </span>
               <span *ngIf="isLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>
@@ -157,11 +158,11 @@
               Cancel
             </a>
             <div class="form-tips mt-4">
-              <div class="tips-title">📋 Quick Tips</div>
+              <div class="tips-title"><i class="bi bi-clipboard-check"></i> Quick Tips</div>
               <ul class="tips-list">
-                <li>Photo upload optional hai</li>
-                <li>PMDC number legally required hai</li>
-                <li>Available days appointments mein use honge</li>
+                <li>Photo upload is optional</li>
+                <li>PMDC number is legally required</li>
+                <li>Available days will be used in appointments</li>
               </ul>
             </div>
           </div>
@@ -170,4 +171,4 @@
 
     </div>
   </form>
-</div>  
+</div>

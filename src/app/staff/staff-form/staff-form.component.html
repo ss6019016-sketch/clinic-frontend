@@ -10,7 +10,7 @@
       <div class="col-md-8">
         <div class="card">
           <div class="card-header bg-white">
-            <div class="form-card-title">👤 Staff Information</div>
+            <div class="form-card-title"><i class="bi bi-person"></i> Staff Information</div>
           </div>
           <div class="card-body p-4">
             <div class="row g-3">
@@ -66,7 +66,7 @@
                     [class.is-invalid]="f['password'].invalid && f['password'].touched" />
                   <button type="button" class="eye-btn"
                     (click)="showPassword = !showPassword">
-                    {{ showPassword ? '🙈' : '👁️' }}
+                    <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
                   </button>
                 </div>
                 <div class="invalid-feedback">Min 6 character password required</div>
@@ -89,14 +89,15 @@
       <div class="col-md-4">
         <div class="card">
           <div class="card-header bg-white">
-            <div class="form-card-title">⚡ Actions</div>
+            <div class="form-card-title"><i class="bi bi-lightning-charge"></i> Actions</div>
           </div>
           <div class="card-body p-4">
 
             <button type="submit" class="btn-primary-custom btn w-100 mb-3"
               [disabled]="isLoading">
               <span *ngIf="!isLoading">
-                {{ isEditMode ? '✏️ Update Staff' : '💾 Add Staff' }}
+                <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-save'"></i>
+                {{ isEditMode ? 'Update Staff' : 'Add Staff' }}
               </span>
               <span *ngIf="isLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>
@@ -113,7 +114,7 @@
         <!-- Role Info -->
         <div class="card mt-4">
           <div class="card-header bg-white">
-            <div class="form-card-title">ℹ️ Role Permissions</div>
+            <div class="form-card-title"><i class="bi bi-info-circle"></i> Role Permissions</div>
           </div>
           <div class="card-body p-4">
             <div class="role-info-item">

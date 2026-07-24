@@ -6,7 +6,7 @@
       <div class="page-title">Dashboard Overview</div>
       <div class="page-subtitle">Welcome back, Sami! Here's what's happening today.</div>
     </div>
-    <div class="dash-date">📅 {{ today | date:'EEE, MMM d, y' }}</div>
+    <div class="dash-date"><i class="bi bi-calendar3"></i> {{ today | date:'EEE, MMM d, y' }}</div>
   </div>
 
   <!-- Skeleton stats -->
@@ -27,7 +27,7 @@
 
     <div class="stat-card fade-up" style="animation-delay:0ms">
       <div class="stat-card-top">
-        <div class="stat-icon" style="background:#e8f4fd;">🧑‍⚕️</div>
+        <div class="stat-icon" style="background:#e8f4fd;"><i class="bi bi-heart-pulse"></i></div>
         <span class="stat-badge badge-blue">+12%</span>
       </div>
       <div class="stat-number">{{ displayStats.totalPatients }}</div>
@@ -39,7 +39,7 @@
 
     <div class="stat-card fade-up" style="animation-delay:80ms">
       <div class="stat-card-top">
-        <div class="stat-icon" style="background:#e8fdf0;">👨‍⚕️</div>
+        <div class="stat-icon" style="background:#e8fdf0;"><i class="bi bi-people-fill"></i></div>
         <span class="stat-badge badge-green">+3%</span>
       </div>
       <div class="stat-number">{{ displayStats.totalDoctors }}</div>
@@ -51,7 +51,7 @@
 
     <div class="stat-card fade-up" style="animation-delay:160ms">
       <div class="stat-card-top">
-        <div class="stat-icon" style="background:#fff8e6;">📅</div>
+        <div class="stat-icon" style="background:#fff8e6;"><i class="bi bi-calendar3"></i></div>
         <span class="stat-badge badge-yellow">Today</span>
       </div>
       <div class="stat-number">{{ displayStats.todayAppointments }}</div>
@@ -63,7 +63,7 @@
 
     <div class="stat-card fade-up" style="animation-delay:240ms">
       <div class="stat-card-top">
-        <div class="stat-icon" style="background:#fdeaea;">💳</div>
+        <div class="stat-icon" style="background:#fdeaea;"><i class="bi bi-credit-card"></i></div>
         <span class="stat-badge badge-red">Urgent</span>
       </div>
       <div class="stat-number">{{ displayStats.pendingBills }}</div>
@@ -129,7 +129,7 @@
       </table>
 
       <div class="empty-row fade-up" *ngIf="recentAppointments.length === 0">
-        <span style="font-size:1.8rem;">📅</span>
+        <span style="font-size:1.8rem;"><i class="bi bi-calendar3"></i></span>
         <p>No recent appointments</p>
       </div>
     </div>

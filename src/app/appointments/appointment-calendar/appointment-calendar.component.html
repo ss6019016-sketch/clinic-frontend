@@ -6,13 +6,13 @@
 
   <div class="card">
     <div class="card-header bg-white d-flex justify-content-between align-items-center">
-      <div class="form-card-title">📆 Schedule Overview</div>
+      <div class="form-card-title"><i class="bi bi-calendar3"></i> Schedule Overview</div>
       <a routerLink="/appointments" class="btn-cancel-sm">← Back to List</a>
     </div>
 
     <div class="card-body p-4">
       <div *ngIf="groupedDates.length === 0" class="empty-cal">
-        <span>📅</span>
+        <span><i class="bi bi-calendar3"></i></span>
         <p>No appointments scheduled</p>
       </div>
 

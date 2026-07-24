@@ -10,7 +10,7 @@
       <div class="col-md-8">
         <div class="card fade-up" style="animation-delay:40ms">
           <div class="card-header bg-white">
-            <div class="form-card-title">🧑‍⚕️ Patient Information</div>
+            <div class="form-card-title"><i class="bi bi-person-badge"></i> Patient Information</div>
           </div>
           <div class="card-body p-4">
             <div class="row g-3">
@@ -111,14 +111,15 @@
       <div class="col-md-4">
         <div class="card fade-up" style="animation-delay:80ms">
           <div class="card-header bg-white">
-            <div class="form-card-title">⚡ Actions</div>
+            <div class="form-card-title"><i class="bi bi-lightning-charge"></i> Actions</div>
           </div>
           <div class="card-body p-4">
 
             <button type="submit" class="btn-primary-custom btn w-100 mb-3"
               [disabled]="isLoading">
               <span *ngIf="!isLoading">
-                {{ isEditMode ? '✏️ Update Patient' : '💾 Save Patient' }}
+                <i class="bi" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-save'"></i>
+                {{ isEditMode ? 'Update Patient' : 'Save Patient' }}
               </span>
               <span *ngIf="isLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>
@@ -130,11 +131,11 @@
             </a>
 
             <div class="form-tips mt-4">
-              <div class="tips-title">📋 Quick Tips</div>
+              <div class="tips-title"><i class="bi bi-clipboard-check"></i> Quick Tips</div>
               <ul class="tips-list">
-                <li>Phone number 11 digits hona chahiye</li>
-                <li>Blood group future mein kaam aayega</li>
-                <li>Medical history doctors ke liye helpful hai</li>
+                <li>Phone number must be 11 digits</li>
+                <li>Blood group will be useful in future</li>
+                <li>Medical history helps doctors</li>
               </ul>
             </div>
 

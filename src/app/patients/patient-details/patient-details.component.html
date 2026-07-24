@@ -47,7 +47,7 @@
               {{ patient.gender }}
             </span>
             <span class="pill pill-gray" *ngIf="patient.bloodGroup">
-              🩸 {{ patient.bloodGroup }}
+              <i class="bi bi-droplet-fill"></i> {{ patient.bloodGroup }}
             </span>
           </div>
 
@@ -76,13 +76,13 @@
     <div class="col-md-8">
       <div class="card fade-up" style="animation-delay:60ms">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
-          <div class="form-card-title">🧑‍⚕️ Patient Information</div>
+          <div class="form-card-title"><i class="bi bi-person-badge"></i> Patient Information</div>
           <div class="d-flex gap-2">
             <a [routerLink]="['/patients/edit', patient.id]" class="act-btn act-edit">
-              ✏️ Edit
+              <i class="bi bi-pencil-square"></i> Edit
             </a>
             <button class="act-btn act-delete" (click)="deletePatient()">
-              🗑️ Delete
+              <i class="bi bi-trash"></i> Delete
             </button>
             <a routerLink="/patients" class="act-btn act-view">
               ← Back

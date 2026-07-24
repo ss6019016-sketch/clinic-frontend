@@ -7,21 +7,21 @@
   <!-- Summary Cards -->
   <div class="billing-summary">
     <div class="summary-card summary-green fade-up" style="animation-delay:0ms">
-      <div class="summary-icon">💰</div>
+      <div class="summary-icon"><i class="bi bi-cash-stack"></i></div>
       <div class="summary-info">
         <div class="summary-val">Rs. {{ displayRevenue | number }}</div>
         <div class="summary-lbl">Total Revenue</div>
       </div>
     </div>
     <div class="summary-card summary-red fade-up" style="animation-delay:70ms">
-      <div class="summary-icon">⏳</div>
+      <div class="summary-icon"><i class="bi bi-hourglass-split"></i></div>
       <div class="summary-info">
         <div class="summary-val">Rs. {{ displayUnpaid | number }}</div>
         <div class="summary-lbl">Total Unpaid</div>
       </div>
     </div>
     <div class="summary-card summary-blue fade-up" style="animation-delay:140ms">
-      <div class="summary-icon">🧾</div>
+      <div class="summary-icon"><i class="bi bi-receipt"></i></div>
       <div class="summary-info">
         <div class="summary-val">{{ displayCount }}</div>
         <div class="summary-lbl">Total Invoices</div>
@@ -34,7 +34,7 @@
       <div class="table-toolbar">
         <div class="d-flex gap-2 align-items-center flex-wrap">
           <div class="search-box">
-            <span class="search-icon">🔍</span>
+            <span class="search-icon"><i class="bi bi-search"></i></span>
             <input type="text" class="search-input"
               placeholder="Search patient or invoice..."
               [(ngModel)]="searchText" (keyup.enter)="load()" />
@@ -107,7 +107,7 @@
           </tr>
           <tr *ngIf="filtered.length === 0">
             <td colspan="8" class="empty-row fade-up">
-              <span style="font-size:1.8rem;">🧾</span>
+              <span style="font-size:1.8rem;"><i class="bi bi-receipt"></i></span>
               <p>No invoices found</p>
             </td>
           </tr>

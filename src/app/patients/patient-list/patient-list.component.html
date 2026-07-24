@@ -8,7 +8,7 @@
     <div class="card-header bg-white">
       <div class="table-toolbar">
         <div class="search-box">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon"><i class="bi bi-search"></i></span>
           <input type="text" class="search-input"
             placeholder="Search patient by name..."
             [(ngModel)]="searchText" />
@@ -81,7 +81,7 @@
           </tr>
           <tr *ngIf="filteredPatients.length === 0">
             <td colspan="7" class="empty-row fade-up">
-              <span style="font-size:1.8rem;">😕</span>
+              <i class="bi bi-inbox" style="font-size:1.8rem;"></i>
               <p>No patients found</p>
             </td>
           </tr>

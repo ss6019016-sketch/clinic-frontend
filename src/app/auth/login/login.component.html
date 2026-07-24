@@ -2,7 +2,7 @@
   <div class="auth-card">
 
     <div class="auth-logo">
-      <div class="auth-logo-icon">🏥</div>
+      <div class="auth-logo-icon"><i class="bi bi-hospital"></i></div>
       <div class="auth-logo-text">
         Clinic Management
         <span>Admin Portal</span>
@@ -39,7 +39,7 @@
             [class.field-error]="f['password'].invalid && f['password'].touched"
           />
           <button type="button" class="eye-btn" (click)="togglePassword()">
-            {{ showPassword ? '🙈' : '👁️' }}
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
           </button>
         </div>
         <div class="error-msg" *ngIf="f['password'].invalid && f['password'].touched">
@@ -57,7 +57,7 @@
       
 
       <div class="error-banner" *ngIf="errorMessage">
-        ⚠️ {{ errorMessage }}
+        <i class="bi bi-exclamation-triangle"></i> {{ errorMessage }}
       </div>
       <p class="text-center mt-3 mb-0">
   Don't have an account? <a routerLink="/auth/register">Register here</a>
