@@ -4,9 +4,11 @@
     class="toast-item toast-{{ toast.type }}"
   >
     <span class="toast-icon">
-      {{ toast.type === 'success' ? '✅' :
-         toast.type === 'error'   ? '❌' :
-         toast.type === 'warning' ? '⚠️' : 'ℹ️' }}
+      <i class="bi"
+        [ngClass]="toast.type === 'success' ? 'bi-check-circle-fill' :
+                   toast.type === 'error'   ? 'bi-x-circle-fill' :
+                   toast.type === 'warning' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill'">
+      </i>
     </span>
     <span class="toast-msg">{{ toast.message }}</span>
     <button class="toast-close" (click)="toastService.remove(toast.id)">×</button>

@@ -20,16 +20,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private sub2!: Subscription;
 
   menuItems = [
-    { label: 'Dashboard',     icon: '📊', route: '/dashboard'     },
-    { label: 'Patients',      icon: '🧑‍⚕️', route: '/patients'      },
-    { label: 'Doctors',       icon: '👨‍⚕️', route: '/doctors'       },
-    { label: 'Appointments',  icon: '📅', route: '/appointments'  },
-    { label: 'Prescriptions', icon: '💊', route: '/prescriptions' },
-    { label: 'Billing',       icon: '🧾', route: '/billing'       },
-    { label: 'Reports',       icon: '📈', route: '/reports'       },
-    { label: 'Staff',         icon: '👥', route: '/staff'         },
-    { label: 'Audit Log', icon: '📜', route: '/audit-log', adminOnly: true },
-    { label: 'Settings',      icon: '⚙️', route: '/settings'      },
+    { label: 'Dashboard',     icon: 'bi-speedometer2',     route: '/dashboard'     },
+    { label: 'Patients',      icon: 'bi-people-fill',      route: '/patients'      },
+    { label: 'Doctors',       icon: 'bi-person-badge-fill', route: '/doctors'       },
+    { label: 'Appointments',  icon: 'bi-calendar-check-fill', route: '/appointments'  },
+    { label: 'Prescriptions', icon: 'bi-capsule',          route: '/prescriptions' },
+    { label: 'Billing',       icon: 'bi-receipt',          route: '/billing'       },
+    { label: 'Reports',       icon: 'bi-graph-up-arrow',   route: '/reports'       },
+    { label: 'Staff',         icon: 'bi-person-vcard-fill', route: '/staff'         },
+    { label: 'Audit Log', icon: 'bi-clock-history', route: '/audit-log', adminOnly: true },
+    { label: 'Settings',      icon: 'bi-gear-fill',        route: '/settings'      },
   ];
 
   constructor(

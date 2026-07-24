@@ -7,13 +7,13 @@
 
   <div class="sidebar-header">
     <div class="sidebar-logo">
-      <div class="sidebar-logo-icon">🏥</div>
+      <div class="sidebar-logo-icon"><i class="bi bi-hospital-fill"></i></div>
       <div class="sidebar-logo-text">
         Clinic Admin
         <span>Management System</span>
       </div>
     </div>
-    <button class="sidebar-close-btn" (click)="close()">✕</button>
+    <button class="sidebar-close-btn" (click)="close()"><i class="bi bi-x-lg"></i></button>
   </div>
 
   <nav class="sidebar-nav">
@@ -24,7 +24,7 @@
           [routerLink]="item.route"
           routerLinkActive="active-link"
           (click)="close()">
-          <div class="nav-icon">{{ item.icon }}</div>
+          <div class="nav-icon"><i class="bi" [ngClass]="item.icon"></i></div>
           <span>{{ item.label }}</span>
         </a>
       </li>
@@ -54,9 +54,9 @@
         <div class="sidebar-user-role">{{ userRole }}</div>
       </div>
 
-      <div class="sidebar-settings-icon">⚙️</div>
+      <div class="sidebar-settings-icon"><i class="bi bi-gear-fill"></i></div>
 
     </a>
   </div>
 
-</div>
+</div>  

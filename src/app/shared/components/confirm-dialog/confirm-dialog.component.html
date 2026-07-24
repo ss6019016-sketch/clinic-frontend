@@ -3,7 +3,7 @@
 
     <div class="dialog-icon" [class.icon-danger]="dialog.type==='danger'"
       [class.icon-warning]="dialog.type==='warning'">
-      {{ dialog.type === 'danger' ? '🗑️' : '⚠️' }}
+      <i class="bi" [ngClass]="dialog.type === 'danger' ? 'bi-trash3-fill' : 'bi-exclamation-triangle-fill'"></i>
     </div>
 
     <h5 class="dialog-title">{{ dialog.title }}</h5>

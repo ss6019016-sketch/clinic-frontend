@@ -14,7 +14,7 @@
 
   <div class="navbar-right">
     <div class="navbar-date">
-      📅 {{ today | date:'EEE, MMM d, y' }}
+      <i class="bi bi-calendar3"></i> {{ today | date:'EEE, MMM d, y' }}
     </div>
     <div class="navbar-divider"></div>
 
@@ -43,7 +43,7 @@
     </div>
 
     <button class="logout-btn" type="button" (click)="logout()">
-      🚪 Logout
+      <i class="bi bi-box-arrow-right"></i> Logout
     </button>
   </div>
 </nav>
