@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { ApiService } from './api.service';
-import { AuthService } from './auth.service';
 
 export interface PermissionEntry {
   moduleName: string;
@@ -18,10 +17,10 @@ export class PermissionService {
   permissions$ = this.permissionsSubject.asObservable();
   private loaded = false;
 
-  constructor(private api: ApiService, private auth: AuthService) {}
+  constructor(private api: ApiService) {}
 
   loadPermissions(): Observable<PermissionEntry[]> {
-    if (!this.auth.isLoggedIn()) {
+    if (!localStorage.getItem('token')) {
       this.clearPermissions();
       return of([]);
     }
