@@ -21,7 +21,7 @@ export interface PermissionUpdateDto {
 }
 
 @Injectable({ providedIn: 'root' })
-export class PermissionService {
+export class PermissionAdminService {
   constructor(private api: ApiService) {}
 
   getAll(): Observable<PermissionRow[]> {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PermissionService, PermissionRow, PermissionUpdateDto } from '../permission.service';
+import { PermissionAdminService, PermissionRow, PermissionUpdateDto } from '../permission-admin.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 
 interface PermissionGroup {
@@ -22,7 +22,7 @@ export class PermissionsListComponent implements OnInit {
   skeletonRows = [1, 2, 3, 4, 5, 6];
 
   constructor(
-    private permissionService: PermissionService,
+    private permissionService: PermissionAdminService,
     private toast: ToastService
   ) {}
 
