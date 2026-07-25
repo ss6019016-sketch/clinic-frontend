@@ -75,3 +75,24 @@
   from { background-position: 200% 0; }
   to { background-position: -200% 0; }
 }
+
+@media (max-width: 576px) {
+  .permissions-page {
+    padding-bottom: 1rem;
+  }
+
+  .permission-group {
+    padding: 1rem;
+  }
+
+  .permission-group-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .permission-skel-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}

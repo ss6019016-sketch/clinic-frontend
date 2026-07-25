@@ -18,8 +18,9 @@
 
   <div *ngIf="isLoading" class="loading">Loading...</div>
 
-  <table *ngIf="!isLoading" class="audit-table">
-    <thead>
+  <div *ngIf="!isLoading" class="audit-table-wrap">
+    <table class="audit-table">
+      <thead>
       <tr>
         <th>Timestamp</th>
         <th>User</th>
@@ -44,5 +45,6 @@
         <td colspan="7" class="empty-row">Koi log nahi mila</td>
       </tr>
     </tbody>
-  </table>
+    </table>
+  </div>
 </div>

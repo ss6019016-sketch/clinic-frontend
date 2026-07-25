@@ -83,3 +83,24 @@
   color: #777;
 }
 
+@media (max-width: 576px) {
+  .audit-log-container {
+    padding: 12px;
+  }
+
+  .filters {
+    flex-direction: column;
+  }
+
+  .filters select,
+  .filters input,
+  .btn-clear {
+    width: 100%;
+  }
+
+  .audit-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+

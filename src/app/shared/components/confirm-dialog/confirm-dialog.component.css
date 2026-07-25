@@ -64,6 +64,24 @@
   display: flex;
   gap: 10px;
   justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 576px) {
+  .dialog-box {
+    padding: 24px 18px;
+    margin: 12px;
+    max-width: calc(100% - 24px);
+  }
+
+  .dialog-actions {
+    flex-direction: column;
+  }
+
+  .dialog-cancel,
+  .dialog-confirm {
+    width: 100%;
+  }
 }
 
 .dialog-cancel {

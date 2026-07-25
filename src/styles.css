@@ -10,6 +10,7 @@ body {
   font-family: 'Inter', sans-serif;
   background-color: #f0f2f5;
   color: #1a1a2e;
+  overflow-x: hidden;
 }
 
 /* Scrollbar */
@@ -74,7 +75,32 @@ body {
   font-size: 0.9rem;
   transition: border-color 0.2s, box-shadow 0.2s;
 } */
+@media (max-width: 767px) {
+  .row > [class*="col-sm-"],
+  .row > [class*="col-md-"],
+  .row > [class*="col-lg-"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
 
+@media (max-width: 576px) {
+  .auth-wrapper {
+    padding: 12px;
+  }
+
+  .auth-card {
+    max-width: 100%;
+  }
+
+  .auth-card .card-body {
+    padding: 24px 18px !important;
+  }
+
+  .page-title {
+    font-size: 1.2rem;
+  }
+}
 .form-control:focus, .form-select:focus {
   border-color: #F5A623;
   box-shadow: 0 0 0 3px rgba(245,166,35,0.15);
@@ -123,6 +149,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
 .auth-wrapper {

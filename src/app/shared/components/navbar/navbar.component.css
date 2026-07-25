@@ -162,6 +162,15 @@
     height: 56px;
   }
 
+  .navbar-left {
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .navbar-right {
+    gap: 8px;
+  }
+
   .navbar-date { display: none; }
   .navbar-divider { display: none; }
   .user-info { display: none; }
@@ -171,5 +180,12 @@
   .logout-btn {
     padding: 6px 10px;
     font-size: 0.75rem;
+  }
+
+  .breadcrumb-current {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

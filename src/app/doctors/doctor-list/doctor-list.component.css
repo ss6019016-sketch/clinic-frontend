@@ -133,6 +133,10 @@ tr:hover .table-avatar { transform: scale(1.08); }
 ═══════════════════════════════ */
 @media (max-width: 576px) {
   .table-toolbar { flex-direction: column; gap: 10px; }
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
   .search-box { max-width: 100%; width: 100%; }
   .btn-primary-custom.btn { width: 100%; text-align: center; justify-content: center; }
 

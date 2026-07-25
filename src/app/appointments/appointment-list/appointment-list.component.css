@@ -133,6 +133,11 @@
   background: #fafafa;
   border-radius: 0 0 16px 16px;
 }@media (max-width: 576px) {
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .table-toolbar {
     flex-direction: column !important;
     gap: 10px !important;

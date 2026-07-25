@@ -48,3 +48,16 @@
 }
 
 .toast-close:hover { color: #444; }
+
+@media (max-width: 576px) {
+  .toast-container {
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    min-width: auto;
+  }
+
+  .toast-item {
+    width: 100%;
+  }
+}
