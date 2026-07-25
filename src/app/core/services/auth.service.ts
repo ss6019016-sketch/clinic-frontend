@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from './api.service';
 import { PermissionService } from './permission.service';
-import { Observable, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface LoginDto {
   email: string;
@@ -26,12 +27,16 @@ export class AuthService {
       tap(res => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('user', JSON.stringify({
-          name:  res.name,
+          name: res.name,
           email: res.email,
-          role:  res.role
+          role: res.role
         }));
-        this.permissionService.loadPermissions().subscribe();
-      })
+      }),
+      switchMap(res =>
+        this.permissionService.loadPermissions().pipe(
+          map(() => res)
+        )
+      )
     );
   }
 
