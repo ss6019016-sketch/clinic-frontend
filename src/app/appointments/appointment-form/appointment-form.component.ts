@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -5,7 +6,7 @@ import { AppointmentService } from 'src/app/core/services/appointment.service';
 import { PatientService } from 'src/app/core/services/patient.service';
 import { DoctorService } from 'src/app/core/services/doctor.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-
+ 
 @Component({
   selector: 'app-appointment-form',
   templateUrl: './appointment-form.component.html',
@@ -16,11 +17,11 @@ export class AppointmentFormComponent implements OnInit {
   isEditMode   = false;
   appointmentId: number | null = null;
   isLoading    = false;
-
+ 
   patients: any[]     = [];
   doctors: any[]      = [];
   statusOptions       = ['Pending', 'Confirmed', 'Completed', 'Cancelled'];
-
+ 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -30,7 +31,7 @@ export class AppointmentFormComponent implements OnInit {
     private doctorService: DoctorService,
     private toast: ToastService
   ) {}
-
+ 
   ngOnInit(): void {
     this.appointmentForm = this.fb.group({
       patientId:       ['', Validators.required],
@@ -42,26 +43,31 @@ export class AppointmentFormComponent implements OnInit {
       type:            ['New'],
       notes:           ['']
     });
-
+ 
     this.loadDropdowns();
-
+ 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode    = true;
       this.appointmentId = +id;
       this.loadAppointment(+id);
+    } else {
+      const dateParam = this.route.snapshot.queryParamMap.get('date');
+      if (dateParam) {
+        this.appointmentForm.patchValue({ appointmentDate: dateParam });
+      }
     }
   }
-
+ 
   loadDropdowns(): void {
-    this.patientService.getAll().subscribe({
-      next: (data) => this.patients = data
+    this.patientService.getAll(undefined, 1, 1000).subscribe({
+      next: (res) => this.patients = res?.items ?? res ?? []
     });
-    this.doctorService.getAll().subscribe({
-      next: (data) => this.doctors = data
+    this.doctorService.getAll(undefined, 1, 1000).subscribe({
+      next: (res) => this.doctors = res?.items ?? res ?? []
     });
   }
-
+ 
   loadAppointment(id: number): void {
     this.apptService.getById(id).subscribe({
       next: (data) => {
@@ -73,21 +79,21 @@ export class AppointmentFormComponent implements OnInit {
       error: () => this.toast.error('Failed to load appointment')
     });
   }
-
+ 
   onSubmit(): void {
     if (this.appointmentForm.invalid) {
       this.appointmentForm.markAllAsTouched();
       this.toast.warning('Please fill all required fields!');
       return;
     }
-
+ 
     this.isLoading = true;
     const data     = this.appointmentForm.value;
-
+ 
     const request = this.isEditMode
       ? this.apptService.update(this.appointmentId!, data)
       : this.apptService.create(data);
-
+ 
     request.subscribe({
       next: () => {
         this.isLoading = false;
@@ -102,6 +108,6 @@ export class AppointmentFormComponent implements OnInit {
       }
     });
   }
-
+ 
   get f() { return this.appointmentForm.controls; }
 }

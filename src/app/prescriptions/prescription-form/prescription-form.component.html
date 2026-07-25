@@ -1,14 +1,15 @@
+
 <div>
   <div class="mb-4 fade-up">
     <div class="page-title">{{ isEditMode ? 'Edit Prescription' : 'New Prescription' }}</div>
     <div class="page-subtitle">{{ isEditMode ? 'Update prescription details' : 'Create a prescription for patient' }}</div>
   </div>
-
+ 
   <form [formGroup]="rxForm" (ngSubmit)="onSubmit()">
     <div class="row g-4">
-
+ 
       <div class="col-md-8">
-
+ 
         <!-- Basic Info -->
         <div class="card mb-4 fade-up" style="animation-delay:40ms">
           <div class="card-header bg-white">
@@ -16,7 +17,7 @@
           </div>
           <div class="card-body p-4">
             <div class="row g-3">
-
+ 
               <div class="col-md-6">
                 <label class="form-label">Patient <span class="req">*</span></label>
                 <div class="skel skel-select" *ngIf="patientsLoading"></div>
@@ -29,7 +30,7 @@
                 </select>
                 <div class="invalid-feedback">Patient is required</div>
               </div>
-
+ 
               <div class="col-md-6">
                 <label class="form-label">Doctor <span class="req">*</span></label>
                 <div class="skel skel-select" *ngIf="doctorsLoading"></div>
@@ -42,7 +43,7 @@
                 </select>
                 <div class="invalid-feedback">Doctor is required</div>
               </div>
-
+ 
               <div class="col-md-8">
                 <label class="form-label">Diagnosis <span class="req">*</span></label>
                 <input type="text" class="form-control" formControlName="diagnosis"
@@ -50,14 +51,14 @@
                   [class.is-invalid]="f['diagnosis'].invalid && f['diagnosis'].touched" />
                 <div class="invalid-feedback">Diagnosis is required</div>
               </div>
-
+ 
               <div class="col-md-4">
                 <label class="form-label">Follow-up Date
                   <span class="optional-tag">Optional</span>
                 </label>
                 <input type="date" class="form-control" formControlName="followUpDate" />
               </div>
-
+ 
               <div class="col-md-12">
                 <label class="form-label">Doctor's Notes
                   <span class="optional-tag">Optional</span>
@@ -65,11 +66,11 @@
                 <textarea class="form-control" rows="2" formControlName="notes"
                   placeholder="Special instructions for patient..."></textarea>
               </div>
-
+ 
             </div>
           </div>
         </div>
-
+ 
         <!-- Medicines -->
         <div class="card fade-up" style="animation-delay:80ms">
           <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -79,20 +80,20 @@
             </button>
           </div>
           <div class="card-body p-4">
-
+ 
             <div formArrayName="medicines">
               <div *ngFor="let med of medicines.controls; let i = index"
                 [formGroupName]="i" class="med-row item-enter">
-
+ 
                 <div class="med-row-header">
                   <span class="med-num"><i class="bi bi-capsule"></i> Medicine {{ i + 1 }}</span>
                   <button type="button" class="remove-med-btn"
                     (click)="removeMedicine(i)"
                     *ngIf="medicines.length > 1"><i class="bi bi-x-lg"></i> Remove</button>
                 </div>
-
+ 
                 <div class="row g-3">
-
+ 
                   <div class="col-md-6">
                     <label class="form-label">Medicine Name <span class="req">*</span></label>
                     <input type="text" class="form-control" formControlName="medicineName"
@@ -100,7 +101,7 @@
                       [class.is-invalid]="med.get('medicineName')!.invalid && med.get('medicineName')!.touched" />
                     <div class="invalid-feedback">Medicine name is required</div>
                   </div>
-
+ 
                   <div class="col-md-3">
                     <label class="form-label">Dosage <span class="req">*</span></label>
                     <input type="text" class="form-control" formControlName="dosage"
@@ -108,7 +109,7 @@
                       [class.is-invalid]="med.get('dosage')!.invalid && med.get('dosage')!.touched" />
                     <div class="invalid-feedback">Required</div>
                   </div>
-
+ 
                   <div class="col-md-3">
                     <label class="form-label">Duration <span class="req">*</span></label>
                     <input type="text" class="form-control" formControlName="duration"
@@ -116,14 +117,14 @@
                       [class.is-invalid]="med.get('duration')!.invalid && med.get('duration')!.touched" />
                     <div class="invalid-feedback">Required</div>
                   </div>
-
+ 
                   <div class="col-md-6">
                     <label class="form-label">Frequency <span class="req">*</span></label>
                     <select class="form-select" formControlName="frequency">
                       <option *ngFor="let f of frequencies" [value]="f">{{ f }}</option>
                     </select>
                   </div>
-
+ 
                   <div class="col-md-6">
                     <label class="form-label">Instructions
                       <span class="optional-tag">Optional</span>
@@ -131,16 +132,16 @@
                     <input type="text" class="form-control" formControlName="instructions"
                       placeholder="e.g. Take with warm water, After meals" />
                   </div>
-
+ 
                 </div>
               </div>
             </div>
-
+ 
           </div>
         </div>
-
+ 
       </div>
-
+ 
       <!-- Right Panel -->
       <div class="col-md-4">
         <div class="card fade-up" style="animation-delay:120ms">
@@ -148,7 +149,7 @@
             <div class="form-card-title"><i class="bi bi-lightning-charge-fill"></i> Actions</div>
           </div>
           <div class="card-body p-4">
-
+ 
             <button type="submit" class="btn-primary-custom btn w-100 mb-3"
               [disabled]="isLoading">
               <span *ngIf="!isLoading">
@@ -160,10 +161,13 @@
                 Saving...
               </span>
             </button>
+            <button type="button" class="btn-cancel w-100 mb-3" *ngIf="isEditMode" (click)="printPrescription()">
+              <i class="bi bi-printer"></i> Print Prescription
+            </button>
             <a routerLink="/prescriptions" class="btn-cancel w-100 text-center d-block">
               Cancel
             </a>
-
+ 
             <div class="rx-tip mt-4">
               <div class="rx-tip-title"><i class="bi bi-clipboard-check"></i> Quick Tips</div>
               <ul class="rx-tip-list">
@@ -172,11 +176,50 @@
                 <li>Guide the patient through instructions</li>
               </ul>
             </div>
-
+ 
           </div>
         </div>
       </div>
-
+ 
     </div>
   </form>
+ 
+  <!-- PRINT-ONLY PRESCRIPTION SLIP -->
+  <div class="print-only" *ngIf="isEditMode">
+    <div class="print-header">
+      <div class="print-clinic-name">Our Digi Zone — Clinic Management System</div>
+      <div class="print-invoice-title">PRESCRIPTION</div>
+    </div>
+ 
+    <div class="print-meta">
+      <div><strong>Patient:</strong> {{ selectedPatientName }}</div>
+      <div><strong>Doctor:</strong> Dr. {{ selectedDoctorName }}</div>
+      <div><strong>Diagnosis:</strong> {{ rxForm.get('diagnosis')?.value }}</div>
+      <div *ngIf="rxForm.get('followUpDate')?.value"><strong>Follow-up:</strong> {{ rxForm.get('followUpDate')?.value }}</div>
+    </div>
+ 
+    <table class="print-table">
+      <thead>
+        <tr>
+          <th>Medicine</th>
+          <th>Dosage</th>
+          <th>Frequency</th>
+          <th>Duration</th>
+          <th>Instructions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let m of medicines.controls">
+          <td>{{ m.get('medicineName')?.value }}</td>
+          <td>{{ m.get('dosage')?.value }}</td>
+          <td>{{ m.get('frequency')?.value }}</td>
+          <td>{{ m.get('duration')?.value }}</td>
+          <td>{{ m.get('instructions')?.value }}</td>
+        </tr>
+      </tbody>
+    </table>
+ 
+    <div class="print-footer">Get well soon.</div>
+  </div>
 </div>
+ 

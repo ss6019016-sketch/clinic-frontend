@@ -1,9 +1,10 @@
+
 <div>
   <div class="mb-4 fade-up">
     <div class="page-title">Patient Profile</div>
     <div class="page-subtitle">Full details of the selected patient</div>
   </div>
-
+ 
   <!-- Skeleton -->
   <div class="row g-4" *ngIf="isLoading">
     <div class="col-md-4">
@@ -31,17 +32,23 @@
       </div>
     </div>
   </div>
-
+ 
+  <!-- Print-only header, hidden on screen -->
+  <div class="print-only-header">
+    <div class="print-clinic-name">Our Digi Zone — Clinic Management System</div>
+    <div class="print-doc-title">Patient Medical Record</div>
+  </div>
+ 
   <!-- Content -->
   <div *ngIf="!isLoading && patient" class="row g-4">
-
+ 
     <!-- Left: Profile Card -->
     <div class="col-md-4">
       <div class="card h-100 fade-up">
         <div class="card-body text-center p-4">
           <div class="profile-avatar">{{ patient.fullName?.charAt(0) }}</div>
           <h5 class="profile-name">{{ patient.fullName }}</h5>
-
+ 
           <div class="d-flex justify-content-center gap-2 mb-3">
             <span class="pill" [ngClass]="patient.gender === 'Male' ? 'pill-blue' : 'pill-pink'">
               {{ patient.gender }}
@@ -50,7 +57,7 @@
               <i class="bi bi-droplet-fill"></i> {{ patient.bloodGroup }}
             </span>
           </div>
-
+ 
           <div class="profile-stats">
             <div class="stat-item">
               <div class="stat-val">{{ patient.age }}</div>
@@ -62,7 +69,7 @@
               <div class="stat-lbl">Phone</div>
             </div>
           </div>
-
+ 
           <div class="status-badge mt-3"
             [style.background]="patient.status === 'Active' ? '#e8fdf0' : '#fdeaea'"
             [style.color]="patient.status === 'Active' ? '#2f9e44' : '#e03131'">
@@ -71,7 +78,7 @@
         </div>
       </div>
     </div>
-
+ 
     <!-- Right: Info -->
     <div class="col-md-8">
       <div class="card fade-up" style="animation-delay:60ms">
@@ -84,96 +91,99 @@
             <button class="act-btn act-delete" (click)="deletePatient()">
               <i class="bi bi-trash"></i> Delete
             </button>
+            <button class="act-btn act-view" (click)="printPatient()">
+              <i class="bi bi-printer"></i> Print
+            </button>
             <a routerLink="/patients" class="act-btn act-view">
-              ← Back
+              <i class="bi bi-arrow-left"></i> Back
             </a>
           </div>
         </div>
-
+ 
         <div class="card-body p-4">
           <div class="row g-3">
-
+ 
             <div class="col-md-6">
               <div class="info-block">
                 <div class="info-label">Full Name</div>
                 <div class="info-value">{{ patient.fullName }}</div>
               </div>
             </div>
-
+ 
             <div class="col-md-3">
               <div class="info-block">
                 <div class="info-label">Age</div>
                 <div class="info-value">{{ patient.age }} years</div>
               </div>
             </div>
-
+ 
             <div class="col-md-3">
               <div class="info-block">
                 <div class="info-label">Gender</div>
                 <div class="info-value">{{ patient.gender }}</div>
               </div>
             </div>
-
+ 
             <div class="col-md-6">
               <div class="info-block">
                 <div class="info-label">Phone</div>
                 <div class="info-value">{{ patient.phone }}</div>
               </div>
             </div>
-
+ 
             <div class="col-md-6">
               <div class="info-block">
                 <div class="info-label">Email</div>
                 <div class="info-value">{{ patient.email || 'N/A' }}</div>
               </div>
             </div>
-
+ 
             <div class="col-md-6">
               <div class="info-block">
                 <div class="info-label">Address</div>
                 <div class="info-value">{{ patient.address || 'N/A' }}</div>
               </div>
             </div>
-
+ 
             <div class="col-md-3">
               <div class="info-block">
                 <div class="info-label">Blood Group</div>
                 <div class="info-value">{{ patient.bloodGroup || 'N/A' }}</div>
               </div>
             </div>
-
+ 
             <div class="col-md-3">
               <div class="info-block">
                 <div class="info-label">Emergency Contact</div>
                 <div class="info-value">{{ patient.emergencyContact || 'N/A' }}</div>
               </div>
             </div>
-
+ 
             <div class="col-md-12">
               <div class="info-block">
                 <div class="info-label">Disease / Symptoms</div>
                 <div class="info-value">{{ patient.disease || 'N/A' }}</div>
               </div>
             </div>
-
+ 
             <div class="col-md-12">
               <div class="info-block">
                 <div class="info-label">Medical History</div>
                 <div class="info-value">{{ patient.medicalHistory || 'N/A' }}</div>
               </div>
             </div>
-
+ 
             <div class="col-md-6">
               <div class="info-block">
                 <div class="info-label">Registered Date</div>
                 <div class="info-value">{{ patient.createdAt | date:'MMM d, y' }}</div>
               </div>
             </div>
-
+ 
           </div>
         </div>
       </div>
     </div>
-
+ 
   </div>
 </div>

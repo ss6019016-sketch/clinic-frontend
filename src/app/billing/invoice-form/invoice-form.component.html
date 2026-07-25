@@ -1,14 +1,15 @@
+
 <div>
   <div class="mb-4 fade-up">
     <div class="page-title">{{ isEditMode ? 'Edit Invoice' : 'Create Invoice' }}</div>
     <div class="page-subtitle">{{ isEditMode ? 'Update invoice details' : 'Generate a new invoice for patient' }}</div>
   </div>
-
+ 
   <form [formGroup]="invoiceForm" (ngSubmit)="onSubmit()">
     <div class="row g-4">
-
+ 
       <div class="col-md-8">
-
+ 
         <!-- Invoice Info -->
         <div class="card mb-4 fade-up" style="animation-delay:40ms">
           <div class="card-header bg-white">
@@ -16,7 +17,7 @@
           </div>
           <div class="card-body p-4">
             <div class="row g-3">
-
+ 
               <div class="col-md-6">
                 <label class="form-label">Patient <span class="req">*</span></label>
                 <div class="skel skel-select" *ngIf="patientsLoading"></div>
@@ -29,32 +30,32 @@
                 </select>
                 <div class="invalid-feedback">Patient is required</div>
               </div>
-
+ 
               <div class="col-md-6">
                 <label class="form-label">Invoice Date <span class="req">*</span></label>
                 <input type="date" class="form-control" formControlName="invoiceDate"
                   [class.is-invalid]="f['invoiceDate'].invalid && f['invoiceDate'].touched" />
                 <div class="invalid-feedback">Date is required</div>
               </div>
-
+ 
               <div class="col-md-6">
                 <label class="form-label">Payment Method</label>
                 <select class="form-select" formControlName="paymentMethod">
                   <option *ngFor="let m of paymentMethods" [value]="m">{{ m }}</option>
                 </select>
               </div>
-
+ 
               <div class="col-md-6">
                 <label class="form-label">Payment Status</label>
                 <select class="form-select" formControlName="status">
                   <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
                 </select>
               </div>
-
+ 
             </div>
           </div>
         </div>
-
+ 
         <!-- Invoice Items -->
         <div class="card fade-up" style="animation-delay:80ms">
           <div class="card-header bg-white d-flex justify-content-between align-items-center">
@@ -64,7 +65,7 @@
             </button>
           </div>
           <div class="card-body p-4">
-
+ 
             <div class="items-header">
               <div class="item-col-name">Item / Service</div>
               <div class="item-col-qty">Qty</div>
@@ -72,11 +73,11 @@
               <div class="item-col-total">Total</div>
               <div class="item-col-action"></div>
             </div>
-
+ 
             <div formArrayName="items">
               <div *ngFor="let item of items.controls; let i = index"
                 [formGroupName]="i" class="item-row item-enter">
-
+ 
                 <div class="item-col-name">
                   <input type="text" class="form-control" formControlName="itemName"
                     placeholder="e.g. Consultation Fee, Lab Test, Medicine"
@@ -98,10 +99,10 @@
                     (click)="removeItem(i)"
                     *ngIf="items.length > 1"><i class="bi bi-x-circle"></i></button>
                 </div>
-
+ 
               </div>
             </div>
-
+ 
             <!-- Totals -->
             <div class="totals-section">
               <div class="total-row">
@@ -123,12 +124,12 @@
                 <span>Rs. {{ grandTotal | number:'1.0-0' }}</span>
               </div>
             </div>
-
+ 
           </div>
         </div>
-
+ 
       </div>
-
+ 
       <!-- Right Panel -->
       <div class="col-md-4">
         <div class="card fade-up" style="animation-delay:120ms">
@@ -136,7 +137,7 @@
             <div class="form-card-title"><i class="bi bi-lightning-charge"></i> Actions</div>
           </div>
           <div class="card-body p-4">
-
+ 
             <button type="submit" class="btn-primary-custom btn w-100 mb-3"
               [disabled]="isLoading">
               <span *ngIf="!isLoading">
@@ -148,10 +149,13 @@
                 Saving...
               </span>
             </button>
+            <button type="button" class="btn-cancel w-100 mb-3" *ngIf="isEditMode" (click)="printInvoice()">
+              <i class="bi bi-printer"></i> Print Invoice
+            </button>
             <a routerLink="/billing" class="btn-cancel w-100 text-center d-block mb-4">
               Cancel
             </a>
-
+ 
             <div class="invoice-summary-box">
               <div class="isb-title"><i class="bi bi-cash-stack"></i> Invoice Summary</div>
               <div class="isb-row">
@@ -171,11 +175,56 @@
                 <span>Rs. {{ grandTotal | number:'1.0-0' }}</span>
               </div>
             </div>
-
+ 
           </div>
         </div>
       </div>
-
+ 
     </div>
   </form>
+ 
+  <!-- PRINT-ONLY RECEIPT (hidden on screen, shown only via @media print) -->
+  <div class="print-only" *ngIf="isEditMode">
+    <div class="print-header">
+      <div class="print-clinic-name">Our Digi Zone — Clinic Management System</div>
+      <div class="print-invoice-title">INVOICE</div>
+    </div>
+ 
+    <div class="print-meta">
+      <div><strong>Invoice #:</strong> {{ invoiceNumber }}</div>
+      <div><strong>Date:</strong> {{ invoiceForm.get('invoiceDate')?.value }}</div>
+      <div><strong>Patient:</strong> {{ selectedPatientName }}</div>
+      <div><strong>Payment Method:</strong> {{ invoiceForm.get('paymentMethod')?.value }}</div>
+      <div><strong>Status:</strong> {{ invoiceForm.get('status')?.value }}</div>
+    </div>
+ 
+    <table class="print-table">
+      <thead>
+        <tr>
+          <th>Item / Service</th>
+          <th>Qty</th>
+          <th>Price (Rs.)</th>
+          <th>Total (Rs.)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items.controls; let i = index">
+          <td>{{ item.get('itemName')?.value }}</td>
+          <td>{{ item.get('quantity')?.value }}</td>
+          <td>{{ item.get('price')?.value | number }}</td>
+          <td>{{ getItemTotal(i) | number }}</td>
+        </tr>
+      </tbody>
+    </table>
+ 
+    <div class="print-totals">
+      <div><span>Subtotal</span><span>Rs. {{ subtotal | number }}</span></div>
+      <div><span>Discount</span><span>- Rs. {{ discountVal | number }}</span></div>
+      <div><span>Tax</span><span>{{ taxVal }}%</span></div>
+      <div class="print-grand-total"><span>Grand Total</span><span>Rs. {{ grandTotal | number:'1.0-0' }}</span></div>
+    </div>
+ 
+    <div class="print-footer">Thank you for choosing our clinic.</div>
+  </div>
 </div>
+ 

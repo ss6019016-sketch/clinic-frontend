@@ -1,27 +1,30 @@
+
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BillingService } from 'src/app/core/services/billing.service';
 import { PatientService } from 'src/app/core/services/patient.service';
 import { ToastService } from 'src/app/core/services/toast.service';
-
+ 
 @Component({
   selector: 'app-invoice-form',
   templateUrl: './invoice-form.component.html',
   styleUrls: ['./invoice-form.component.css']
 })
 export class InvoiceFormComponent implements OnInit {
-
+ 
   invoiceForm!: FormGroup;
   isEditMode    = false;
   invoiceId: number | null = null;
   isLoading     = false;
   patientsLoading = true;
-
+ 
   patients: any[]  = [];
   paymentMethods   = ['Cash', 'Card', 'Online Transfer', 'Cheque'];
   statusOptions    = ['Unpaid', 'Paid', 'Partial'];
-
+ 
+  invoiceNumber = '';
+ 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -30,7 +33,7 @@ export class InvoiceFormComponent implements OnInit {
     private patientService: PatientService,
     private toast: ToastService
   ) {}
-
+ 
   ngOnInit(): void {
     this.invoiceForm = this.fb.group({
       patientId:     ['', Validators.required],
@@ -42,12 +45,12 @@ export class InvoiceFormComponent implements OnInit {
       notes:         [''],
       items: this.fb.array([this.newItem()])
     });
-
-    this.patientService.getAll().subscribe({
-      next: (d) => { this.patients = d; this.patientsLoading = false; },
+ 
+    this.patientService.getAll(undefined, 1, 1000).subscribe({
+      next: (res) => { this.patients = res?.items ?? res ?? []; this.patientsLoading = false; },
       error: () => { this.patientsLoading = false; }
     });
-
+ 
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode = true;
@@ -55,10 +58,11 @@ export class InvoiceFormComponent implements OnInit {
       this.loadInvoice(+id);
     }
   }
-
+ 
   loadInvoice(id: number): void {
     this.billingService.getById(id).subscribe({
       next: (data) => {
+        this.invoiceNumber = data.invoiceNumber || `INV-${id}`;
         this.invoiceForm.patchValue({
           patientId:     data.patientId,
           invoiceDate:   data.createdAt?.split('T')[0],
@@ -80,9 +84,19 @@ export class InvoiceFormComponent implements OnInit {
       error: () => this.toast.error('Failed to load invoice')
     });
   }
-
+ 
+  get selectedPatientName(): string {
+    const id = this.invoiceForm?.get('patientId')?.value;
+    const p = this.patients.find(x => x.id == id);
+    return p ? (p.name || p.fullName) : '';
+  }
+ 
+  printInvoice(): void {
+    window.print();
+  }
+ 
   get items(): FormArray { return this.invoiceForm.get('items') as FormArray; }
-
+ 
   newItem(): FormGroup {
     return this.fb.group({
       itemName: ['', Validators.required],
@@ -90,43 +104,43 @@ export class InvoiceFormComponent implements OnInit {
       price:    [0,  [Validators.required, Validators.min(0)]]
     });
   }
-
+ 
   addItem(): void    { this.items.push(this.newItem()); }
   removeItem(i: number): void {
     if (this.items.length > 1) this.items.removeAt(i);
   }
-
+ 
   getItemTotal(i: number): number {
     const item = this.items.at(i);
     return (item.get('quantity')?.value || 0) * (item.get('price')?.value || 0);
   }
-
+ 
   get subtotal(): number {
     let total = 0;
     for (let i = 0; i < this.items.length; i++) total += this.getItemTotal(i);
     return total;
   }
-
+ 
   get discountVal(): number { return +this.invoiceForm.get('discount')?.value || 0; }
   get taxVal():      number { return +this.invoiceForm.get('tax')?.value || 0; }
   get grandTotal():  number {
     return this.subtotal - this.discountVal + (this.subtotal * this.taxVal / 100);
   }
-
+ 
   onSubmit(): void {
     if (this.invoiceForm.invalid) {
       this.invoiceForm.markAllAsTouched();
       this.toast.warning('Please fill all required fields!');
       return;
     }
-
+ 
     this.isLoading = true;
     const data     = this.invoiceForm.value;
-
+ 
     const request = this.isEditMode
       ? this.billingService.update(this.invoiceId!, data)
       : this.billingService.create(data);
-
+ 
     request.subscribe({
       next: () => {
         this.isLoading = false;
@@ -139,6 +153,6 @@ export class InvoiceFormComponent implements OnInit {
       }
     });
   }
-
+ 
   get f() { return this.invoiceForm.controls; }
 }

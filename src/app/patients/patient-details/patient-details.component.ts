@@ -1,20 +1,21 @@
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PatientService } from 'src/app/core/services/patient.service';
 import { ToastService } from 'src/app/core/services/toast.service';
 import { ConfirmDialogService } from 'src/app/core/services/confirm-dialog.service';
-
+ 
 @Component({
   selector: 'app-patient-details',
   templateUrl: './patient-details.component.html',
   styleUrls: ['./patient-details.component.css']
 })
 export class PatientDetailsComponent implements OnInit {
-
+ 
   patient: any = null;
   isLoading    = true;
   patientId: number = 0;
-
+ 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -22,7 +23,7 @@ export class PatientDetailsComponent implements OnInit {
     private toast: ToastService,
     private confirm: ConfirmDialogService
   ) {}
-
+ 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -30,7 +31,7 @@ export class PatientDetailsComponent implements OnInit {
       this.loadPatient(+id);
     }
   }
-
+ 
   loadPatient(id: number): void {
     this.isLoading = true;
     this.patientService.getById(id).subscribe({
@@ -45,7 +46,11 @@ export class PatientDetailsComponent implements OnInit {
       }
     });
   }
-
+ 
+  printPatient(): void {
+    window.print();
+  }
+ 
   async deletePatient(): Promise<void> {
     const result = await this.confirm.open(
       'Delete Patient',
@@ -53,7 +58,7 @@ export class PatientDetailsComponent implements OnInit {
       'danger'
     );
     if (!result) return;
-
+ 
     this.patientService.delete(this.patientId).subscribe({
       next: () => {
         this.toast.success('Patient deleted successfully!');

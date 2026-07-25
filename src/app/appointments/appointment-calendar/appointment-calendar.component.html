@@ -1,43 +1,66 @@
+ 
 <div>
-  <div class="mb-4">
-    <div class="page-title">Appointments Calendar</div>
-    <div class="page-subtitle">Date-wise view of all appointments</div>
-  </div>
-
-  <div class="card">
-    <div class="card-header bg-white d-flex justify-content-between align-items-center">
-      <div class="form-card-title"><i class="bi bi-calendar3"></i> Schedule Overview</div>
-      <a routerLink="/appointments" class="btn-cancel-sm">← Back to List</a>
+  <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div>
+      <div class="page-title">Appointments Calendar</div>
+      <div class="page-subtitle">Visual month view of all appointments</div>
     </div>
-
-    <div class="card-body p-4">
-      <div *ngIf="groupedDates.length === 0" class="empty-cal">
-        <span><i class="bi bi-calendar3"></i></span>
-        <p>No appointments scheduled</p>
+    <a routerLink="/appointments" class="btn-cancel-sm">
+      <i class="bi bi-list-ul"></i> List View
+    </a>
+  </div>
+ 
+  <div class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div class="form-card-title"><i class="bi bi-calendar3"></i> {{ monthLabel }}</div>
+      <div class="cal-nav">
+        <button type="button" class="act-btn act-view" (click)="prevMonth()">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <button type="button" class="act-btn act-edit" (click)="goToday()">Today</button>
+        <button type="button" class="act-btn act-view" (click)="nextMonth()">
+          <i class="bi bi-chevron-right"></i>
+        </button>
       </div>
-
-      <div *ngFor="let date of groupedDates" class="date-block">
-
-        <div class="date-header">
-          <div class="date-dot"></div>
-          <div class="date-label">{{ date | date:'EEEE, MMMM d, y' }}</div>
-          <div class="date-count">{{ getAppointmentsByDate(date).length }} appointment(s)</div>
-        </div>
-
-        <div class="appt-cards">
-          <div class="appt-card" *ngFor="let appt of getAppointmentsByDate(date)">
-            <div class="appt-time">{{ appt.appointmentTime }}</div>
-            <div class="appt-info">
-              <div class="appt-patient">{{ appt.patientName }}</div>
-              <div class="appt-doctor">with {{ appt.doctorName }}</div>
+    </div>
+ 
+    <div class="card-body p-3">
+ 
+      <div *ngIf="isLoading" class="cal-loading">
+        <i class="bi bi-hourglass-split"></i> Loading appointments...
+      </div>
+ 
+      <div class="cal-grid" *ngIf="!isLoading">
+        <div class="cal-weekday" *ngFor="let d of weekdayLabels">{{ d }}</div>
+ 
+        <ng-container *ngFor="let week of weeks">
+          <div class="cal-day"
+               *ngFor="let day of week"
+               [class.cal-day-out]="!day.inMonth"
+               [class.cal-day-today]="day.isToday"
+               (click)="addAppointment(day)">
+ 
+            <div class="cal-day-top">
+              <span class="cal-day-num">{{ day.date.getDate() }}</span>
+              <i class="bi bi-plus-circle cal-add-icon"
+                 *ngIf="permissionService.canCreate('Appointments')"
+                 title="Add appointment"></i>
             </div>
-            <span class="status-pill" [ngClass]="'status-' + appt.status.toLowerCase()">
-              {{ appt.status }}
-            </span>
+ 
+            <div class="cal-chips">
+              <div class="cal-chip"
+                   *ngFor="let appt of day.appointments"
+                   [ngClass]="statusClass(appt.status)"
+                   (click)="openAppointment(appt, $event)"
+                   [title]="appt.patientName + ' - ' + appt.appointmentTime">
+                <span class="cal-chip-time">{{ appt.appointmentTime }}</span>
+                <span class="cal-chip-name">{{ appt.patientName }}</span>
+              </div>
+            </div>
           </div>
-        </div>
-
+        </ng-container>
       </div>
     </div>
   </div>
 </div>
+ 
