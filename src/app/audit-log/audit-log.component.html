@@ -1,50 +1,111 @@
-<div class="audit-log-container">
-  <div class="page-header">
-    <h2>Audit Log</h2>
-    <p class="subtitle">Track kis staff member ne kya create/update/delete kiya</p>
+<div>
+
+  <div class="mb-4">
+    <div class="page-title">Audit Log</div>
+    <div class="page-subtitle">Track kis staff member ne kya create/update/delete kiya</div>
   </div>
 
-  <div class="filters">
-    <select [(ngModel)]="entityFilter" (change)="load()">
-      <option value="">All Modules</option>
-      <option *ngFor="let e of entityOptions" [value]="e">{{ e }}</option>
-    </select>
-
-    <input type="date" [(ngModel)]="fromFilter" (change)="load()" />
-    <input type="date" [(ngModel)]="toFilter" (change)="load()" />
-
-    <button class="btn-clear" (click)="clearFilters()">Clear</button>
+  <!-- ============ SUMMARY CARDS ============ -->
+  <div class="audit-summary">
+    <div class="summary-card summary-blue fade-up" style="animation-delay:0ms">
+      <div class="summary-icon"><i class="bi bi-clock-history"></i></div>
+      <div class="summary-info">
+        <div class="summary-val">{{ totalActions }}</div>
+        <div class="summary-lbl">Total Actions</div>
+      </div>
+    </div>
+    <div class="summary-card summary-red fade-up" style="animation-delay:70ms">
+      <div class="summary-icon"><i class="bi bi-trash3"></i></div>
+      <div class="summary-info">
+        <div class="summary-val">{{ totalDeletes }}</div>
+        <div class="summary-lbl">Delete Actions</div>
+      </div>
+    </div>
+    <div class="summary-card summary-green fade-up" style="animation-delay:140ms">
+      <div class="summary-icon"><i class="bi bi-person-check"></i></div>
+      <div class="summary-info">
+        <div class="summary-val" style="font-size:1.05rem;">{{ mostActiveUser }}</div>
+        <div class="summary-lbl">Most Active User</div>
+      </div>
+    </div>
   </div>
 
-  <div *ngIf="isLoading" class="loading">Loading...</div>
+  <div class="card">
+    <div class="card-header bg-white">
+      <div class="table-toolbar">
+        <div class="d-flex gap-2 align-items-center flex-wrap">
+          <select class="filter-select" [(ngModel)]="entityFilter" (change)="load()">
+            <option value="">All Modules</option>
+            <option *ngFor="let e of entityOptions" [value]="e">{{ e }}</option>
+          </select>
+          <input type="date" class="filter-select" [(ngModel)]="fromFilter" (change)="load()" />
+          <input type="date" class="filter-select" [(ngModel)]="toFilter" (change)="load()" />
+        </div>
+        <button class="act-btn act-view" (click)="clearFilters()">
+          <i class="bi bi-x-circle"></i> Clear Filters
+        </button>
+      </div>
+    </div>
 
-  <div *ngIf="!isLoading" class="audit-table-wrap">
-    <table class="audit-table">
-      <thead>
-      <tr>
-        <th>Timestamp</th>
-        <th>User</th>
-        <th>Role</th>
-        <th>Action</th>
-        <th>Module</th>
-        <th>Record ID</th>
-        <th>Details</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let log of logs">
-        <td>{{ log.timestamp | date:'medium' }}</td>
-        <td>{{ log.userName }}</td>
-        <td>{{ log.role }}</td>
-        <td><span class="badge" [ngClass]="actionBadgeClass(log.action)">{{ log.action }}</span></td>
-        <td>{{ log.entity }}</td>
-        <td>#{{ log.entityId }}</td>
-        <td>{{ log.details || '-' }}</td>
-      </tr>
-      <tr *ngIf="logs.length === 0">
-        <td colspan="7" class="empty-row">Koi log nahi mila</td>
-      </tr>
-    </tbody>
-    </table>
+    <div class="card-body p-0">
+
+      <!-- Skeleton -->
+      <div class="audit-skel-wrap" *ngIf="isLoading">
+        <div class="audit-skel-row" *ngFor="let s of skeletonRows">
+          <div class="skel skel-avatar"></div>
+          <div class="skel-lines">
+            <div class="skel skel-line-1"></div>
+          </div>
+          <div class="skel skel-pill"></div>
+          <div class="skel skel-pill-sm"></div>
+        </div>
+      </div>
+
+      <div class="table-responsive" *ngIf="!isLoading">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>User</th>
+              <th>Role</th>
+              <th>Action</th>
+              <th>Module</th>
+              <th>Record ID</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let log of logs; let i = index" class="fade-in-row" [style.animation-delay]="(i * 40) + 'ms'">
+              <td class="td-muted" data-label="Timestamp">{{ log.timestamp | date:'MMM d, y • h:mm a' }}</td>
+              <td data-label="User">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="table-avatar">{{ log.userName?.charAt(0) || '?' }}</div>
+                  <span class="patient-name">{{ log.userName }}</span>
+                </div>
+              </td>
+              <td data-label="Role"><span class="role-tag">{{ log.role }}</span></td>
+              <td data-label="Action">
+                <span class="badge audit-badge" [ngClass]="actionBadgeClass(log.action)">
+                  <i class="bi" [ngClass]="actionIcon(log.action)"></i> {{ log.action }}
+                </span>
+              </td>
+              <td class="td-muted" data-label="Module">{{ log.entity }}</td>
+              <td data-label="Record ID"><span class="inv-num">#{{ log.entityId }}</span></td>
+              <td class="td-muted" data-label="Details">{{ log.details || '—' }}</td>
+            </tr>
+            <tr *ngIf="logs.length === 0">
+              <td colspan="7" class="empty-row fade-up">
+                <span style="font-size:1.8rem;"><i class="bi bi-clock-history"></i></span>
+                <p>Koi log nahi mila</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card-footer-bar" *ngIf="!isLoading">
+      <span>Showing {{ logs.length }} log{{ logs.length === 1 ? '' : 's' }}</span>
+    </div>
   </div>
 </div>
