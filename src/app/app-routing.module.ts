@@ -1,4 +1,4 @@
-  import { NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
   import { RouterModule, Routes } from '@angular/router';
   import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
   import { NotFoundComponent } from './shared/components/not-found/not-found.component';
@@ -22,6 +22,7 @@ import { PermissionGuard } from './core/guards/permission.guard';
         { path: 'staff',         loadChildren: () => import('./staff/staff.module').then(m => m.StaffModule), canActivate: [PermissionGuard], data: { module: 'Staff' } },
         { path: 'settings',      loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule), canActivate: [PermissionGuard], data: { module: 'Settings' } },
         { path: 'audit-log', loadChildren: () => import('./audit-log/audit-log.module').then(m => m.AuditLogModule) },
+        { path: 'trash', loadChildren: () => import('./trash-item/trash.module').then(m => m.TrashModule) },
         { path: 'permissions', loadChildren: () => import('./permissions/permissions.module').then(m => m.PermissionsModule) },
       ]
     },

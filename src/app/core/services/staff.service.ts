@@ -29,4 +29,16 @@ export class StaffService {
   delete(id: number): Observable<any> {
     return this.api.delete<any>(`staff/${id}`);
   }
+
+  getTrash(): Observable<any> {
+    return this.api.get<any>('staff/trash');
+  }
+
+  restore(id: number): Observable<any> {
+    return this.api.patch<any>(`staff/${id}/restore`, {});
+  }
+
+  permanentDelete(id: number): Observable<any> {
+    return this.api.delete<any>(`staff/${id}/permanent`);
+  }
 }

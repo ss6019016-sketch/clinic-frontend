@@ -1,0 +1,117 @@
+<div>
+
+  <div class="mb-4">
+    <div class="page-title">Trash</div>
+    <div class="page-subtitle">Deleted records — restore karo ya hamesha ke liye hata do</div>
+  </div>
+
+  <!-- ============ SUMMARY / FILTER CHIPS ============ -->
+  <div class="trash-summary">
+    <div class="summary-chip fade-up" [class.active]="entityFilter === ''" (click)="clearFilter()" style="animation-delay:0ms">
+      <i class="bi bi-trash3-fill"></i>
+      <div>
+        <div class="chip-val">{{ totalCount }}</div>
+        <div class="chip-lbl">All Items</div>
+      </div>
+    </div>
+    <div class="summary-chip fade-up"
+      *ngFor="let e of entityOptions; let i = index"
+      [class.active]="entityFilter === e"
+      (click)="entityFilter = e; applyFilter()"
+      [style.animation-delay.ms]="(i+1) * 60">
+      <i class="bi" [ngClass]="{
+        'bi-person-fill': e === 'Patient',
+        'bi-person-badge-fill': e === 'Doctor',
+        'bi-person-vcard-fill': e === 'Staff',
+        'bi-receipt': e === 'Invoice',
+        'bi-capsule': e === 'Prescription',
+        'bi-calendar-check-fill': e === 'Appointment'
+      }"></i>
+      <div>
+        <div class="chip-val">{{ countFor(e) }}</div>
+        <div class="chip-lbl">{{ e }}{{ e !== 'Staff' ? 's' : '' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-white">
+      <div class="table-toolbar">
+        <div class="d-flex gap-2 align-items-center flex-wrap">
+          <select class="filter-select" [(ngModel)]="entityFilter" (change)="applyFilter()">
+            <option value="">All Modules</option>
+            <option *ngFor="let e of entityOptions" [value]="e">{{ e }}</option>
+          </select>
+        </div>
+        <button class="act-btn act-restore" (click)="load()">
+          <i class="bi bi-arrow-clockwise"></i> Refresh
+        </button>
+      </div>
+    </div>
+
+    <div class="card-body p-0">
+
+      <!-- Skeleton -->
+      <div class="skel-wrap" *ngIf="isLoading">
+        <div class="skel-row" *ngFor="let s of skeletonRows">
+          <div class="skel skel-icon"></div>
+          <div class="skel-lines">
+            <div class="skel skel-line-1"></div>
+            <div class="skel skel-line-2"></div>
+          </div>
+          <div class="skel skel-pill"></div>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-row" *ngIf="!isLoading && items.length === 0">
+        <i class="bi bi-check2-circle"></i>
+        <p>Trash khali hai — koi deleted record nahi mila</p>
+      </div>
+
+      <!-- Data table -->
+      <div class="table-responsive" *ngIf="!isLoading && items.length > 0">
+        <table class="table align-middle mb-0">
+          <thead>
+            <tr>
+              <th>Module</th>
+              <th>Record</th>
+              <th>Deleted At</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of items; let i = index" class="fade-in-row" [style.animation-delay.ms]="i * 30">
+              <td data-label="Module">
+                <span class="entity-badge" [ngClass]="'entity-' + item.entity">
+                  <i class="bi" [ngClass]="item.icon"></i> {{ item.entity }}
+                </span>
+              </td>
+              <td data-label="Record">
+                <div class="item-title">{{ item.title }}</div>
+                <div class="item-subtitle">{{ item.subtitle }}</div>
+              </td>
+              <td data-label="Deleted At">
+                <span class="deleted-at">{{ item.deletedAt ? (item.deletedAt | date:'dd MMM yyyy, h:mm a') : '—' }}</span>
+              </td>
+              <td data-label="Actions">
+                <div class="action-group">
+                  <button class="act-btn act-restore"
+                    [disabled]="restoringId === (item.entity + '-' + item.id)"
+                    (click)="restore(item)">
+                    <i class="bi bi-arrow-counterclockwise"></i> Restore
+                  </button>
+                  <button class="act-btn act-delete" (click)="permanentDelete(item)">
+                    <i class="bi bi-trash3"></i> Delete Forever
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>

@@ -33,4 +33,16 @@ export class AppointmentService {
   sendReminder(id: number): Observable<any> {
     return this.api.post<any>(`appointments/${id}/send-reminder`, {});
   }
+
+  getTrash(): Observable<any> {
+    return this.api.get<any>('appointments/trash');
+  }
+
+  restore(id: number): Observable<any> {
+    return this.api.patch<any>(`appointments/${id}/restore`, {});
+  }
+
+  permanentDelete(id: number): Observable<any> {
+    return this.api.delete<any>(`appointments/${id}/permanent`);
+  }
 }

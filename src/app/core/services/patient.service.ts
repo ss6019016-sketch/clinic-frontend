@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
@@ -26,5 +25,16 @@ export class PatientService {
   delete(id: number): Observable<any> {
     return this.api.delete<any>(`patients/${id}`);
   }
+
+  getTrash(): Observable<any> {
+    return this.api.get<any>('patients/trash');
+  }
+
+  restore(id: number): Observable<any> {
+    return this.api.patch<any>(`patients/${id}/restore`, {});
+  }
+
+  permanentDelete(id: number): Observable<any> {
+    return this.api.delete<any>(`patients/${id}/permanent`);
+  }
 }
- 

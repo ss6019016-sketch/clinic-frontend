@@ -29,4 +29,16 @@ export class PrescriptionService {
   delete(id: number): Observable<any> {
     return this.api.delete<any>(`prescriptions/${id}`);
   }
+
+  getTrash(): Observable<any> {
+    return this.api.get<any>('prescriptions/trash');
+  }
+
+  restore(id: number): Observable<any> {
+    return this.api.patch<any>(`prescriptions/${id}/restore`, {});
+  }
+
+  permanentDelete(id: number): Observable<any> {
+    return this.api.delete<any>(`prescriptions/${id}/permanent`);
+  }
 }
