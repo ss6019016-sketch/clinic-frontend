@@ -1,4 +1,3 @@
-
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -90,4 +89,81 @@
   .card-header.d-flex { flex-direction: column; align-items: flex-start !important; gap: 10px; }
   .card-header .d-flex.gap-2 { width: 100%; }
   .act-btn { flex: 1; justify-content: center; }
+}
+
+/* ═══════════════════════════════
+   WEEKLY SCHEDULE
+═══════════════════════════════ */
+.schedule-form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #f1f3f5;
+  margin-bottom: 1.25rem;
+}
+
+.to-sep { color: #9e9e9e; font-size: 0.85rem; }
+
+.schedule-day-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 0;
+  border-bottom: 1px solid #f8f8f8;
+}
+.schedule-day-group:last-child { border-bottom: none; }
+
+.schedule-day-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #1a1a2e;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.schedule-slot-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff8e6;
+  color: #b06f00;
+  border-radius: 999px;
+  padding: 6px 8px 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.slot-duration { color: #c99b3d; font-weight: 500; }
+
+.slot-remove-btn {
+  border: none;
+  background: rgba(0,0,0,0.06);
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.65rem;
+  color: #e03131;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.slot-remove-btn:hover { background: #fdeaea; }
+
+@media (max-width: 576px) {
+  .schedule-form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .schedule-form-row .filter-select,
+  .schedule-form-row .btn-primary-custom {
+    width: 100%;
+  }
+  .to-sep { display: none; }
+
+  .schedule-day-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }

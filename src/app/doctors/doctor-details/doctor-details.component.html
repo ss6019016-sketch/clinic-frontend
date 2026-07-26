@@ -160,4 +160,62 @@
     </div>
 
   </div>
+
+  <!-- ============ WEEKLY SCHEDULE / AVAILABILITY ============ -->
+  <div class="card mt-4 fade-up" style="animation-delay:120ms" *ngIf="!isLoading && doctor">
+    <div class="card-header bg-white">
+      <div class="form-card-title"><i class="bi bi-calendar-week"></i> Weekly Schedule</div>
+      <div class="page-subtitle">Set working hours per day — appointments will only allow booking inside these slots</div>
+    </div>
+
+    <div class="card-body p-4">
+
+      <!-- Add slot form -->
+      <div class="schedule-form-row">
+        <select class="filter-select" [(ngModel)]="newSlot.dayOfWeek">
+          <option *ngFor="let d of daysOfWeek" [value]="d">{{ d }}</option>
+        </select>
+        <input type="time" class="filter-select" [(ngModel)]="newSlot.startTime" />
+        <span class="to-sep">to</span>
+        <input type="time" class="filter-select" [(ngModel)]="newSlot.endTime" />
+        <select class="filter-select" [(ngModel)]="newSlot.slotDurationMinutes">
+          <option [ngValue]="15">15 min slots</option>
+          <option [ngValue]="20">20 min slots</option>
+          <option [ngValue]="30">30 min slots</option>
+          <option [ngValue]="45">45 min slots</option>
+          <option [ngValue]="60">60 min slots</option>
+        </select>
+        <button class="btn-primary-custom" [disabled]="savingSlot" (click)="addSlot()">
+          <i class="bi bi-plus-circle"></i> {{ savingSlot ? 'Adding...' : 'Add Slot' }}
+        </button>
+      </div>
+
+      <!-- Skeleton -->
+      <div *ngIf="scheduleLoading" class="mt-4">
+        <div class="skel skel-info-block mb-2" *ngFor="let s of [1,2,3]"></div>
+      </div>
+
+      <!-- Empty -->
+      <div *ngIf="!scheduleLoading && schedule.length === 0" class="empty-state-box fade-up mt-3">
+        <span><i class="bi bi-calendar-x"></i></span>
+        <p>Abhi koi schedule set nahi hui</p>
+        <small>Upar se din aur time add karo</small>
+      </div>
+
+      <!-- Grouped schedule -->
+      <div class="schedule-day-group fade-up" *ngFor="let group of scheduleByDay; let i = index" [style.animation-delay]="(i * 50) + 'ms'">
+        <div class="schedule-day-label">{{ group.day }}</div>
+        <div class="schedule-slot-chip" *ngFor="let slot of group.slots">
+          <i class="bi bi-clock"></i>
+          {{ formatTime(slot.startTime) }} - {{ formatTime(slot.endTime) }}
+          <span class="slot-duration">({{ slot.slotDurationMinutes }} min)</span>
+          <button class="slot-remove-btn" (click)="deleteSlot(slot)" title="Remove">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
 </div>
