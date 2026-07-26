@@ -2,6 +2,31 @@
   padding-bottom: 1.5rem;
 }
 
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInRow {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.fade-up     { animation: fadeUp 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+.fade-in-row { animation: fadeInRow 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up, .fade-in-row { animation: none !important; }
+}
+
+/* ═══════════════════════════════
+   PILL BADGES (was missing — header badges were unstyled before)
+═══════════════════════════════ */
+.pill { font-size: 0.75rem; padding: 5px 12px; border-radius: 6px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+.pill-blue  { background: #e8f4fd; color: #1c7ed6; }
+.pill-green { background: #e8fdf0; color: #2f9e44; }
+
+/* ═══════════════════════════════
+   ROLE GROUPS
+═══════════════════════════════ */
 .permission-group {
   border-top: 1px solid #e9ecef;
   padding: 1.25rem 1.5rem;
@@ -18,26 +43,97 @@
   margin-bottom: 0.85rem;
 }
 
+.role-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.95rem; flex-shrink: 0;
+  transition: transform 0.25s;
+}
+.permission-group-header:hover .role-avatar { transform: scale(1.06); }
+.role-avatar-admin   { background: linear-gradient(135deg,#2f9e44,#1c7d34); color: #fff; }
+.role-avatar-default { background: linear-gradient(135deg,#F5A623,#e09500); color: #000; }
+
+/* ═══════════════════════════════
+   MODULE CELL
+═══════════════════════════════ */
+.module-cell { display: flex; align-items: center; gap: 10px; }
+.module-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: #fff8e6; color: #e09500;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; flex-shrink: 0;
+}
 .module-name {
   font-weight: 600;
-  color: #1f2937;
+  color: #1a1a2e;
+  font-size: 0.9rem;
 }
 
-.permission-checkbox {
-  width: 18px;
-  height: 18px;
+.perm-table th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.4px; color: #9e9e9e; }
+
+/* ═══════════════════════════════
+   TOGGLE SWITCH
+═══════════════════════════════ */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 24px;
   cursor: pointer;
 }
-
-.permission-checkbox:disabled {
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+.switch-track {
+  position: absolute;
+  inset: 0;
+  background: #e2e4e8;
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+.switch-thumb {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 18px; height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+  transition: transform 0.2s ease;
+}
+.switch input:checked ~ .switch-track,
+.switch input:checked + .switch-track {
+  background: #F5A623;
+}
+.switch input:checked ~ .switch-track .switch-thumb,
+.switch input:checked + .switch-track .switch-thumb {
+  transform: translateX(18px);
+}
+.switch-danger input:checked ~ .switch-track,
+.switch-danger input:checked + .switch-track {
+  background: #e03131;
+}
+.switch input:disabled {
   cursor: not-allowed;
+}
+.switch input:disabled ~ .switch-track {
   opacity: 0.55;
 }
+.switch:hover .switch-track { box-shadow: 0 0 0 4px rgba(245,166,35,0.12); }
+.switch-danger:hover .switch-track { box-shadow: 0 0 0 4px rgba(224,49,49,0.12); }
 
 .row-disabled {
   background: #f8fafc;
 }
 
+/* ═══════════════════════════════
+   SKELETON
+═══════════════════════════════ */
 .permission-skel-wrap {
   padding: 1rem 1.5rem;
 }
@@ -76,6 +172,9 @@
   to { background-position: -200% 0; }
 }
 
+/* ═══════════════════════════════
+   RESPONSIVE
+═══════════════════════════════ */
 @media (max-width: 576px) {
   .permissions-page {
     padding-bottom: 1rem;
@@ -94,5 +193,38 @@
   .permission-skel-row {
     grid-template-columns: 1fr;
     gap: 0.5rem;
+  }
+
+  .perm-table thead { display: none; }
+
+  .perm-table tbody tr {
+    display: block;
+    background: #fff;
+    border: 1.5px solid #f0f0f0;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 14px;
+  }
+
+  .perm-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f8f8f8;
+    text-align: left !important;
+  }
+
+  .perm-table tbody td:last-child { border-bottom: none; }
+
+  .perm-table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    font-size: 0.72rem;
+    color: #9e9e9e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 12px;
+    flex-shrink: 0;
   }
 }

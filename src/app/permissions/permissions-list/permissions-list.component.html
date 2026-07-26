@@ -10,7 +10,7 @@
         <h5 class="mb-1">Permission Matrix</h5>
         <div class="page-subtitle">Toggle access to each module and save automatically</div>
       </div>
-      <span class="badge pill pill-blue">Admin protected</span>
+      <span class="badge pill pill-blue"><i class="bi bi-shield-lock"></i> Admin protected</span>
     </div>
 
     <div class="permission-skel-wrap" *ngIf="isLoading">
@@ -24,54 +24,75 @@
     </div>
 
     <div class="card-body p-0" *ngIf="!isLoading">
-      <div class="permission-group" *ngFor="let group of groupedPermissions">
+      <div class="permission-group fade-up" *ngFor="let group of groupedPermissions; let gi = index" [style.animation-delay]="(gi * 80) + 'ms'">
         <div class="permission-group-header">
-          <div>
-            <h6 class="mb-1">{{ group.roleName }}</h6>
-            <small class="text-muted" *ngIf="group.isAdmin">Admin always has full access</small>
+          <div class="d-flex align-items-center gap-2">
+            <div class="role-avatar" [ngClass]="group.isAdmin ? 'role-avatar-admin' : 'role-avatar-default'">
+              {{ getRoleInitial(group.roleName) }}
+            </div>
+            <div>
+              <h6 class="mb-0">{{ group.roleName }}</h6>
+              <small class="text-muted" *ngIf="group.isAdmin">Admin always has full access</small>
+              <small class="text-muted" *ngIf="!group.isAdmin">{{ group.rows.length }} modules</small>
+            </div>
           </div>
           <span class="badge" [ngClass]="group.isAdmin ? 'pill pill-green' : 'pill pill-blue'">{{ group.roleName }}</span>
         </div>
 
         <div class="table-responsive">
-          <table class="table mb-0">
+          <table class="table mb-0 perm-table">
             <thead>
               <tr>
                 <th>Module</th>
-                <th>View</th>
-                <th>Create</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th class="text-center">View</th>
+                <th class="text-center">Create</th>
+                <th class="text-center">Edit</th>
+                <th class="text-center">Delete</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of group.rows" [class.row-disabled]="group.isAdmin">
-                <td>
-                  <span class="module-name">{{ row.moduleName }}</span>
+              <tr *ngFor="let row of group.rows; let ri = index" class="fade-in-row" [style.animation-delay]="(ri * 40) + 'ms'" [class.row-disabled]="group.isAdmin">
+                <td data-label="Module">
+                  <div class="module-cell">
+                    <span class="module-icon"><i class="bi" [ngClass]="getModuleIcon(row.moduleName)"></i></span>
+                    <span class="module-name">{{ row.moduleName }}</span>
+                  </div>
                 </td>
-                <td>
-                  <input class="form-check-input permission-checkbox" type="checkbox"
-                    [checked]="row.canView"
-                    [disabled]="group.isAdmin"
-                    (change)="togglePermission(row, 'canView', $any($event.target).checked)" />
+                <td data-label="View" class="text-center">
+                  <label class="switch">
+                    <input type="checkbox"
+                      [checked]="row.canView"
+                      [disabled]="group.isAdmin"
+                      (change)="togglePermission(row, 'canView', $any($event.target).checked)" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
                 </td>
-                <td>
-                  <input class="form-check-input permission-checkbox" type="checkbox"
-                    [checked]="row.canCreate"
-                    [disabled]="group.isAdmin"
-                    (change)="togglePermission(row, 'canCreate', $any($event.target).checked)" />
+                <td data-label="Create" class="text-center">
+                  <label class="switch">
+                    <input type="checkbox"
+                      [checked]="row.canCreate"
+                      [disabled]="group.isAdmin"
+                      (change)="togglePermission(row, 'canCreate', $any($event.target).checked)" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
                 </td>
-                <td>
-                  <input class="form-check-input permission-checkbox" type="checkbox"
-                    [checked]="row.canEdit"
-                    [disabled]="group.isAdmin"
-                    (change)="togglePermission(row, 'canEdit', $any($event.target).checked)" />
+                <td data-label="Edit" class="text-center">
+                  <label class="switch">
+                    <input type="checkbox"
+                      [checked]="row.canEdit"
+                      [disabled]="group.isAdmin"
+                      (change)="togglePermission(row, 'canEdit', $any($event.target).checked)" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
                 </td>
-                <td>
-                  <input class="form-check-input permission-checkbox" type="checkbox"
-                    [checked]="row.canDelete"
-                    [disabled]="group.isAdmin"
-                    (change)="togglePermission(row, 'canDelete', $any($event.target).checked)" />
+                <td data-label="Delete" class="text-center">
+                  <label class="switch switch-danger">
+                    <input type="checkbox"
+                      [checked]="row.canDelete"
+                      [disabled]="group.isAdmin"
+                      (change)="togglePermission(row, 'canDelete', $any($event.target).checked)" />
+                    <span class="switch-track"><span class="switch-thumb"></span></span>
+                  </label>
                 </td>
               </tr>
             </tbody>

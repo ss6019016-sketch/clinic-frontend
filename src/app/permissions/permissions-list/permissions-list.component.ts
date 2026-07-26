@@ -65,6 +65,26 @@ export class PermissionsListComponent implements OnInit {
     });
   }
 
+  private moduleIcons: Record<string, string> = {
+    Patients: 'bi-heart-pulse',
+    Doctors: 'bi-person-badge',
+    Appointments: 'bi-calendar3',
+    Prescriptions: 'bi-capsule',
+    Billing: 'bi-cash-stack',
+    Staff: 'bi-people',
+    Reports: 'bi-bar-chart',
+    AuditLog: 'bi-clock-history',
+    Settings: 'bi-gear'
+  };
+
+  getModuleIcon(moduleName: string): string {
+    return this.moduleIcons[moduleName] || 'bi-grid';
+  }
+
+  getRoleInitial(roleName: string): string {
+    return roleName?.charAt(0) || '?';
+  }
+
   private buildGroups(rows: PermissionRow[]): PermissionGroup[] {
     const orderedRoles = ['Admin', 'Receptionist', 'Doctor'];
 
