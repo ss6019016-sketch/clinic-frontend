@@ -1,0 +1,142 @@
+/* Shares the same visual language as invoice-print — same toolbar,
+   letterhead, info-grid, and totals-style building blocks, so both
+   printable documents feel like they came from the same clinic. */
+
+.print-toolbar {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px;
+}
+
+.act-btn {
+  padding: 9px 18px; border-radius: 10px; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; border: none; text-decoration: none; transition: all 0.18s;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.act-view  { background: #f1f2f4; color: #495057; }
+.act-view:hover { background: #e2e4e8; }
+.act-print { background: #F5A623; color: #000; }
+.act-print:hover { background: #e09500; }
+.act-print:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.print-sheet {
+  background: #fff;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 48px;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  color: #1a1a2e;
+}
+
+.letterhead {
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 20px;
+}
+.clinic-name { font-size: 1.5rem; font-weight: 800; color: #1a1a2e; }
+.clinic-meta { font-size: 0.82rem; color: #6c757d; margin-top: 4px; }
+
+.invoice-tag { text-align: right; }
+.invoice-tag-label {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px;
+  color: #F5A623; text-transform: uppercase;
+}
+.invoice-tag-num { font-size: 1.15rem; font-weight: 700; color: #1a1a2e; margin-top: 2px; }
+
+.divider { height: 1px; background: #e9ecef; margin: 20px 0; }
+
+.info-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px;
+}
+.info-caption { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #9e9e9e; font-weight: 600; margin-bottom: 4px; }
+.info-main { font-size: 0.95rem; font-weight: 600; color: #1a1a2e; }
+
+.diagnosis-block {
+  background: #fff8e6;
+  border-left: 3px solid #F5A623;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.rx-symbol {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #F5A623;
+  font-family: Georgia, serif;
+  margin-bottom: 8px;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+}
+.items-table th {
+  background: #1a1a2e; color: #fff;
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.4px;
+  padding: 10px 12px; text-align: left;
+}
+.items-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.85rem;
+  vertical-align: top;
+}
+.med-name { font-weight: 700; color: #1a1a2e; }
+
+.notes-block {
+  padding: 14px 16px;
+  background: #fafafa;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #495057;
+  margin-bottom: 20px;
+}
+
+.mt-3 { margin-top: 24px; }
+
+.signature-block {
+  margin-top: 60px;
+  margin-left: auto;
+  width: 220px;
+  text-align: center;
+}
+.signature-line {
+  border-top: 1.5px solid #1a1a2e;
+  margin-bottom: 6px;
+}
+.signature-label { font-size: 0.82rem; font-weight: 600; color: #495057; }
+
+.print-footer {
+  margin-top: 32px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #9e9e9e;
+}
+.print-footer p { margin: 4px 0; }
+.generated-on { font-size: 0.72rem; }
+
+@media print {
+  .print-sheet { box-shadow: none; max-width: 100%; padding: 0; margin: 0; }
+  .items-table th, .diagnosis-block {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+@media (max-width: 576px) {
+  .print-sheet { padding: 20px; }
+  .info-grid { grid-template-columns: 1fr; gap: 12px; }
+  .print-toolbar { flex-direction: column; gap: 10px; align-items: stretch; }
+  .items-table { display: block; overflow-x: auto; white-space: nowrap; }
+}
+
+.skel {
+  background: linear-gradient(90deg, #eef0f3 25%, #f7f8fa 37%, #eef0f3 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}

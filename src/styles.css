@@ -878,3 +878,22 @@ html, body {
     grid-template-columns: 1fr 1fr !important;
   }
 }
+/* ═══════════════════════════════
+   GLOBAL PRINT RULES
+   Hides app chrome (sidebar/navbar/footer) on any print/save-as-pdf,
+   so print components don't each need to repeat this.
+═══════════════════════════════ */
+@media print {
+  app-sidebar, app-navbar, app-footer, .no-print {
+    display: none !important;
+  }
+  .layout-wrapper, .content-wrapper, .page-content {
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #fff !important;
+  }
+  body {
+    background: #fff !important;
+  }
+}

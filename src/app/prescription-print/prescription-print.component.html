@@ -1,0 +1,106 @@
+<div>
+
+  <div class="print-toolbar no-print">
+    <a routerLink="/prescriptions" class="act-btn act-view"><i class="bi bi-arrow-left"></i> Back to Prescriptions</a>
+    <button class="act-btn act-print" (click)="print()" [disabled]="isLoading">
+      <i class="bi bi-printer"></i> Print / Save as PDF
+    </button>
+  </div>
+
+  <!-- Skeleton -->
+  <div class="print-sheet" *ngIf="isLoading">
+    <div class="skel skel-line-1" style="height:40px; width:60%; margin-bottom:24px;"></div>
+    <div class="skel skel-line-1" style="height:100px; margin-bottom:24px;"></div>
+    <div class="skel skel-line-1" style="height:200px;"></div>
+  </div>
+
+  <!-- Printable prescription -->
+  <div class="print-sheet" *ngIf="!isLoading && prescription">
+
+    <div class="letterhead">
+      <div>
+        <div class="clinic-name">{{ clinic?.clinicName || 'Clinic Management System' }}</div>
+        <div class="clinic-meta" *ngIf="clinic?.address">{{ clinic.address }}</div>
+        <div class="clinic-meta">
+          <span *ngIf="clinic?.phone"><i class="bi bi-telephone"></i> {{ clinic.phone }}</span>
+          <span *ngIf="clinic?.email"> &nbsp;•&nbsp; <i class="bi bi-envelope"></i> {{ clinic.email }}</span>
+        </div>
+      </div>
+      <div class="invoice-tag">
+        <div class="invoice-tag-label">PRESCRIPTION</div>
+        <div class="invoice-tag-num">Rx #{{ prescription.id }}</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="info-grid">
+      <div>
+        <div class="info-caption">Patient</div>
+        <div class="info-main">{{ prescription.patientName }}</div>
+      </div>
+      <div>
+        <div class="info-caption">Doctor</div>
+        <div class="info-main">{{ prescription.doctorName }}</div>
+      </div>
+      <div>
+        <div class="info-caption">Date</div>
+        <div class="info-main">{{ prescription.createdAt | date:'MMM d, y' }}</div>
+      </div>
+    </div>
+
+    <div class="diagnosis-block" *ngIf="prescription.diagnosis">
+      <div class="info-caption">Diagnosis</div>
+      <div class="info-main" style="font-weight:500;">{{ prescription.diagnosis }}</div>
+    </div>
+
+    <div class="rx-symbol">℞</div>
+
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Medicine</th>
+          <th>Dosage</th>
+          <th>Frequency</th>
+          <th>Duration</th>
+          <th>Instructions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let med of prescription.medicines; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td class="med-name">{{ med.medicineName }}</td>
+          <td>{{ med.dosage }}</td>
+          <td>{{ med.frequency }}</td>
+          <td>{{ med.duration }}</td>
+          <td>{{ med.instructions || '—' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="notes-block" *ngIf="prescription.notes">
+      <div class="info-caption">Notes</div>
+      <div>{{ prescription.notes }}</div>
+    </div>
+
+    <div class="info-grid mt-3" *ngIf="prescription.followUpDate">
+      <div>
+        <div class="info-caption">Follow-up Date</div>
+        <div class="info-main">{{ prescription.followUpDate | date:'MMM d, y' }}</div>
+      </div>
+    </div>
+
+    <div class="signature-block">
+      <div class="signature-line"></div>
+      <div class="signature-label">{{ prescription.doctorName }}</div>
+    </div>
+
+    <div class="print-footer">
+      <div class="divider"></div>
+      <p>{{ clinic?.clinicName || 'Clinic' }} — system-generated prescription.</p>
+      <p class="generated-on">Generated on {{ today() | date:'MMM d, y, h:mm a' }}</p>
+    </div>
+
+  </div>
+</div>

@@ -68,6 +68,7 @@
             <td class="td-muted" data-label="Date">{{ rx.createdAt | date:'MMM d, y' }}</td>
             <td data-label="Actions">
               <div class="action-group">
+                <a [routerLink]="['/prescriptions/print', rx.id]" class="act-btn act-view" title="Print / Save as PDF"><i class="bi bi-printer"></i></a>
                 <a *ngIf="permissionService.canEdit('Prescriptions')" [routerLink]="['/prescriptions/edit', rx.id]"
                   class="act-btn act-edit"><i class="bi bi-pencil-square"></i> Edit</a>
                 <button *ngIf="permissionService.canDelete('Prescriptions')" class="act-btn act-delete"
