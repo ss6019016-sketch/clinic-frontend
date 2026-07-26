@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,6 +5,7 @@ import { AppointmentService } from 'src/app/core/services/appointment.service';
 import { PatientService } from 'src/app/core/services/patient.service';
 import { DoctorService } from 'src/app/core/services/doctor.service';
 import { ToastService } from 'src/app/core/services/toast.service';
+import { AvailableSlot, DoctorAvailabilityService } from 'src/app/core/services/doctor-avalilability.service';
  
 @Component({
   selector: 'app-appointment-form',
@@ -21,7 +21,12 @@ export class AppointmentFormComponent implements OnInit {
   patients: any[]     = [];
   doctors: any[]      = [];
   statusOptions       = ['Pending', 'Confirmed', 'Completed', 'Cancelled'];
- 
+
+  // ── Slot picking, driven by the doctor's Weekly Schedule ──
+  availableSlots: AvailableSlot[] = [];
+  slotsLoading = false;
+  slotsChecked = false; // becomes true once doctor+date have been picked at least once
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -29,7 +34,8 @@ export class AppointmentFormComponent implements OnInit {
     private apptService: AppointmentService,
     private patientService: PatientService,
     private doctorService: DoctorService,
-    private toast: ToastService
+    private toast: ToastService,
+    private availabilityService: DoctorAvailabilityService
   ) {}
  
   ngOnInit(): void {
@@ -45,6 +51,10 @@ export class AppointmentFormComponent implements OnInit {
     });
  
     this.loadDropdowns();
+
+    // Re-fetch available slots any time doctor or date changes
+    this.appointmentForm.get('doctorId')?.valueChanges.subscribe(() => this.refreshSlots());
+    this.appointmentForm.get('appointmentDate')?.valueChanges.subscribe(() => this.refreshSlots());
  
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -75,8 +85,40 @@ export class AppointmentFormComponent implements OnInit {
           ...data,
           appointmentDate: data.appointmentDate?.split('T')[0]
         });
+        this.refreshSlots();
       },
       error: () => this.toast.error('Failed to load appointment')
+    });
+  }
+
+  refreshSlots(): void {
+    const doctorId = this.appointmentForm.get('doctorId')?.value;
+    const date = this.appointmentForm.get('appointmentDate')?.value;
+    const currentTime = this.appointmentForm.get('appointmentTime')?.value;
+
+    if (!doctorId || !date) {
+      this.availableSlots = [];
+      return;
+    }
+
+    this.slotsLoading = true;
+    this.slotsChecked = true;
+    this.availabilityService.getSlots(+doctorId, date).subscribe({
+      next: (slots) => {
+        this.availableSlots = slots;
+        this.slotsLoading = false;
+
+        // If the currently-selected time isn't one of the valid slots
+        // (e.g. doctor was just switched), clear it so a stale time
+        // can't be submitted silently.
+        if (currentTime && !slots.some(s => s.time === currentTime)) {
+          this.appointmentForm.get('appointmentTime')?.setValue('');
+        }
+      },
+      error: () => {
+        this.availableSlots = [];
+        this.slotsLoading = false;
+      }
     });
   }
  
@@ -110,4 +152,11 @@ export class AppointmentFormComponent implements OnInit {
   }
  
   get f() { return this.appointmentForm.controls; }
+
+  formatSlot(t: string): string {
+    const [h, m] = t.split(':').map(Number);
+    const period = h >= 12 ? 'PM' : 'AM';
+    const hour12 = h % 12 === 0 ? 12 : h % 12;
+    return `${hour12}:${m.toString().padStart(2, '0')} ${period}`;
+  }
 }

@@ -172,19 +172,31 @@
 
       <!-- Add slot form -->
       <div class="schedule-form-row">
-        <select class="filter-select" [(ngModel)]="newSlot.dayOfWeek">
-          <option *ngFor="let d of daysOfWeek" [value]="d">{{ d }}</option>
-        </select>
-        <input type="time" class="filter-select" [(ngModel)]="newSlot.startTime" />
+        <div class="sched-field">
+          <label class="form-label">Day</label>
+          <select class="filter-select" [(ngModel)]="newSlot.dayOfWeek">
+            <option *ngFor="let d of daysOfWeek" [value]="d">{{ d }}</option>
+          </select>
+        </div>
+        <div class="sched-field">
+          <label class="form-label">Start Time</label>
+          <input type="time" class="filter-select" [(ngModel)]="newSlot.startTime" />
+        </div>
         <span class="to-sep">to</span>
-        <input type="time" class="filter-select" [(ngModel)]="newSlot.endTime" />
-        <select class="filter-select" [(ngModel)]="newSlot.slotDurationMinutes">
-          <option [ngValue]="15">15 min slots</option>
-          <option [ngValue]="20">20 min slots</option>
-          <option [ngValue]="30">30 min slots</option>
-          <option [ngValue]="45">45 min slots</option>
-          <option [ngValue]="60">60 min slots</option>
-        </select>
+        <div class="sched-field">
+          <label class="form-label">End Time</label>
+          <input type="time" class="filter-select" [(ngModel)]="newSlot.endTime" />
+        </div>
+        <div class="sched-field">
+          <label class="form-label">Slot Length</label>
+          <select class="filter-select" [(ngModel)]="newSlot.slotDurationMinutes">
+            <option [ngValue]="15">15 min slots</option>
+            <option [ngValue]="20">20 min slots</option>
+            <option [ngValue]="30">30 min slots</option>
+            <option [ngValue]="45">45 min slots</option>
+            <option [ngValue]="60">60 min slots</option>
+          </select>
+        </div>
         <button class="btn-primary-custom" [disabled]="savingSlot" (click)="addSlot()">
           <i class="bi bi-plus-circle"></i> {{ savingSlot ? 'Adding...' : 'Add Slot' }}
         </button>

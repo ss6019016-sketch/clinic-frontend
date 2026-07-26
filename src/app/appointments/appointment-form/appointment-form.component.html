@@ -48,9 +48,20 @@
 
               <div class="col-md-3">
                 <label class="form-label">Time <span class="req">*</span></label>
-                <input type="time" class="form-control" formControlName="appointmentTime"
-                  [class.is-invalid]="f['appointmentTime'].invalid && f['appointmentTime'].touched" />
+                <select class="form-select" formControlName="appointmentTime"
+                  [class.is-invalid]="f['appointmentTime'].invalid && f['appointmentTime'].touched"
+                  [disabled]="!appointmentForm.get('doctorId')?.value || !appointmentForm.get('appointmentDate')?.value">
+                  <option value="">
+                    {{ slotsLoading ? 'Loading slots...' : '-- Select Time --' }}
+                  </option>
+                  <option *ngFor="let s of availableSlots" [value]="s.time" [disabled]="s.isBooked">
+                    {{ formatSlot(s.time) }}{{ s.isBooked ? ' (Booked)' : '' }}
+                  </option>
+                </select>
                 <div class="invalid-feedback">Time is required</div>
+                <small class="text-muted d-block mt-1" *ngIf="!slotsLoading && slotsChecked && availableSlots.length === 0">
+                  Is doctor ki koi schedule set nahi — Doctor Profile se Weekly Schedule add karo
+                </small>
               </div>
 
               <div class="col-md-3">
