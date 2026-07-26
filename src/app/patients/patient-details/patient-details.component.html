@@ -1,4 +1,3 @@
-
 <div>
   <div class="mb-4 fade-up">
     <div class="page-title">Patient Profile</div>
@@ -186,4 +185,70 @@
     </div>
  
   </div>
+
+  <!-- ============ LAB REPORTS ============ -->
+  <div class="card mt-4 fade-up no-print" style="animation-delay:120ms" *ngIf="!isLoading && patient">
+    <div class="card-header bg-white">
+      <div class="form-card-title"><i class="bi bi-file-earmark-medical"></i> Lab Reports</div>
+      <div class="page-subtitle">Test results ke scans ya PDFs upload aur view karo</div>
+    </div>
+
+    <div class="card-body p-4">
+
+      <!-- Upload form -->
+      <div class="lab-upload-row" *ngIf="permissionService.canCreate('LabReports')">
+        <div class="lab-field lab-field-grow">
+          <label class="form-label">Test Name</label>
+          <input type="text" class="filter-select" placeholder="e.g. CBC, X-Ray Chest" [(ngModel)]="newReport.testName" />
+        </div>
+        <div class="lab-field">
+          <label class="form-label">Report Date</label>
+          <input type="date" class="filter-select" [(ngModel)]="newReport.reportDate" />
+        </div>
+        <div class="lab-field">
+          <label class="form-label">Doctor (optional)</label>
+          <select class="filter-select" [(ngModel)]="newReport.doctorId">
+            <option value="">-- None --</option>
+            <option *ngFor="let d of doctors" [value]="d.id">Dr. {{ d.fullName }}</option>
+          </select>
+        </div>
+        <div class="lab-field lab-field-grow">
+          <label class="form-label">File (JPG / PNG / PDF, max 5MB)</label>
+          <input type="file" class="filter-select" accept=".jpg,.jpeg,.png,.webp,.pdf" (change)="onFileSelected($event)" />
+        </div>
+        <button class="btn-primary-custom" [disabled]="uploading" (click)="uploadReport()">
+          <i class="bi bi-upload"></i> {{ uploading ? 'Uploading...' : 'Upload' }}
+        </button>
+      </div>
+
+      <!-- Skeleton -->
+      <div *ngIf="reportsLoading" class="mt-4">
+        <div class="skel skel-info-block mb-2" *ngFor="let s of [1,2,3]"></div>
+      </div>
+
+      <!-- Empty -->
+      <div *ngIf="!reportsLoading && labReports.length === 0" class="empty-state-box fade-up mt-3">
+        <span><i class="bi bi-file-earmark-x"></i></span>
+        <p>Abhi koi lab report upload nahi hui</p>
+        <small>Upar se test name aur file select karo</small>
+      </div>
+
+      <!-- Reports list -->
+      <div class="lab-report-row fade-in-row" *ngFor="let r of labReports; let i = index" [style.animation-delay]="(i * 50) + 'ms'">
+        <div class="lab-file-icon"><i class="bi" [ngClass]="fileIcon(r.fileType)"></i></div>
+        <div class="lab-report-info">
+          <div class="lab-report-title">{{ r.testName }}</div>
+          <div class="lab-report-meta">
+            {{ r.reportDate | date:'MMM d, y' }}
+            <span *ngIf="r.doctorName"> • Dr. {{ r.doctorName }}</span>
+            <span *ngIf="r.notes"> • {{ r.notes }}</span>
+          </div>
+        </div>
+        <button class="act-btn act-view" (click)="viewReport(r)"><i class="bi bi-eye"></i> View</button>
+        <button *ngIf="permissionService.canDelete('LabReports')" class="act-btn act-delete" (click)="deleteReport(r)"><i class="bi bi-trash"></i></button>
+      </div>
+
+    </div>
+  </div>
+
 </div>
