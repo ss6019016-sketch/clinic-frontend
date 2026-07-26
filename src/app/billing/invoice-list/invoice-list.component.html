@@ -97,6 +97,7 @@
             </td>
             <td data-label="Actions">
               <div class="action-group">
+                <a [routerLink]="['/billing/print', inv.id]" class="act-btn act-view" title="Print / Save as PDF"><i class="bi bi-printer"></i></a>
                 <a *ngIf="permissionService.canEdit('Billing')" [routerLink]="['/billing/edit', inv.id]" class="act-btn act-edit">Edit</a>
                 <button *ngIf="permissionService.canDelete('Billing')" class="act-btn act-delete" (click)="delete(inv.id)">Delete</button>
               </div>

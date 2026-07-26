@@ -1,0 +1,111 @@
+<div>
+
+  <!-- Toolbar — hidden when printing -->
+  <div class="print-toolbar no-print">
+    <a routerLink="/billing" class="act-btn act-view"><i class="bi bi-arrow-left"></i> Back to Invoices</a>
+    <button class="act-btn act-print" (click)="print()" [disabled]="isLoading">
+      <i class="bi bi-printer"></i> Print / Save as PDF
+    </button>
+  </div>
+
+  <!-- Skeleton -->
+  <div class="print-sheet" *ngIf="isLoading">
+    <div class="skel skel-line-1" style="height:40px; width:60%; margin-bottom:24px;"></div>
+    <div class="skel skel-line-1" style="height:120px; margin-bottom:24px;"></div>
+    <div class="skel skel-line-1" style="height:200px;"></div>
+  </div>
+
+  <!-- Printable invoice -->
+  <div class="print-sheet" *ngIf="!isLoading && invoice">
+
+    <div class="letterhead">
+      <div>
+        <div class="clinic-name">{{ clinic?.clinicName || 'Clinic Management System' }}</div>
+        <div class="clinic-meta" *ngIf="clinic?.address">{{ clinic.address }}</div>
+        <div class="clinic-meta">
+          <span *ngIf="clinic?.phone"><i class="bi bi-telephone"></i> {{ clinic.phone }}</span>
+          <span *ngIf="clinic?.email"> &nbsp;•&nbsp; <i class="bi bi-envelope"></i> {{ clinic.email }}</span>
+        </div>
+      </div>
+      <div class="invoice-tag">
+        <div class="invoice-tag-label">INVOICE</div>
+        <div class="invoice-tag-num">{{ invoice.invoiceNumber }}</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="info-grid">
+      <div>
+        <div class="info-caption">Billed To</div>
+        <div class="info-main">{{ invoice.patientName }}</div>
+      </div>
+      <div>
+        <div class="info-caption">Invoice Date</div>
+        <div class="info-main">{{ invoice.createdAt | date:'MMM d, y' }}</div>
+      </div>
+      <div>
+        <div class="info-caption">Status</div>
+        <div class="info-main">
+          <span class="status-chip" [ngClass]="'chip-' + invoice.status?.toLowerCase()">{{ invoice.status }}</span>
+        </div>
+      </div>
+    </div>
+
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item / Service</th>
+          <th class="text-center">Qty</th>
+          <th class="text-end">Price</th>
+          <th class="text-end">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of invoice.items; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.itemName }}</td>
+          <td class="text-center">{{ item.quantity }}</td>
+          <td class="text-end">Rs. {{ item.price | number }}</td>
+          <td class="text-end">Rs. {{ item.total | number }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="totals-block">
+      <div class="totals-row">
+        <span>Subtotal</span>
+        <span>Rs. {{ invoice.totalAmount | number }}</span>
+      </div>
+      <div class="totals-row" *ngIf="invoice.discount">
+        <span>Discount</span>
+        <span>- Rs. {{ invoice.discount | number }}</span>
+      </div>
+      <div class="totals-row" *ngIf="invoice.tax">
+        <span>Tax</span>
+        <span>+ Rs. {{ invoice.tax | number }}</span>
+      </div>
+      <div class="totals-row totals-grand">
+        <span>Grand Total</span>
+        <span>Rs. {{ invoice.grandTotal | number }}</span>
+      </div>
+      <div class="totals-row" *ngIf="invoice.paymentMethod">
+        <span>Payment Method</span>
+        <span>{{ invoice.paymentMethod }}</span>
+      </div>
+    </div>
+
+    <div class="notes-block" *ngIf="invoice.notes">
+      <div class="info-caption">Notes</div>
+      <div>{{ invoice.notes }}</div>
+    </div>
+
+    <div class="print-footer">
+      <div class="divider"></div>
+      <p>Thank you for choosing {{ clinic?.clinicName || 'us' }}. This is a system-generated invoice.</p>
+      <p class="generated-on">Generated on {{ today() | date:'MMM d, y, h:mm a' }}</p>
+    </div>
+
+  </div>
+</div>
