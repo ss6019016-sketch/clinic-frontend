@@ -21,4 +21,12 @@ export class ReportsService {
   getSummary(): Observable<any> {
     return this.api.get<any>('reports/summary');
   }
+
+  getInvoiceStatusBreakdown(): Observable<any[]> {
+    return this.api.get<any[]>('reports/invoice-status');
+  }
+
+  getPaymentMethodBreakdown(): Observable<any[]> {
+    return this.api.get<any[]>('reports/payment-methods');
+  }
 }

@@ -257,4 +257,95 @@
     </div>
   </div>
 
+  <!-- ============ INVOICE STATUS & PAYMENT METHOD BREAKDOWN ============ -->
+  <div class="charts-row mt-4">
+
+    <!-- Invoice Status Breakdown -->
+    <div class="card chart-card-small">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <div class="form-card-title"><i class="bi bi-receipt"></i> Invoice Status Breakdown</div>
+        <span class="chart-total-badge" *ngIf="!invoiceStatusLoading">
+          Rs. {{ invoiceStatusTotal | number }} total
+        </span>
+      </div>
+      <div class="card-body p-4">
+
+        <!-- Skeleton -->
+        <div *ngIf="invoiceStatusLoading">
+          <div class="appt-bar-row" *ngFor="let s of [1,2,3]">
+            <div class="skel skel-day"></div>
+            <div class="skel skel-track" style="flex:1;"></div>
+            <div class="skel skel-num"></div>
+          </div>
+        </div>
+
+        <!-- Empty -->
+        <div *ngIf="!invoiceStatusLoading && invoiceStatusBreakdown.length === 0" class="empty-state-box fade-up">
+          No invoices yet.
+        </div>
+
+        <!-- Real -->
+        <div *ngIf="!invoiceStatusLoading && invoiceStatusBreakdown.length > 0">
+          <div class="appt-bar-row fade-in-row" *ngFor="let s of invoiceStatusBreakdown; let i = index" [style.animation-delay]="(i * 50) + 'ms'">
+            <span class="appt-bar-day" style="min-width:70px;">{{ s.status }}</span>
+            <div class="appt-bar-track">
+              <div class="appt-bar-fill grow-bar"
+                [style.width.%]="getSharePercent(s.totalAmount, invoiceStatusTotal)"
+                [style.background]="getStatusColor(s.status)">
+              </div>
+            </div>
+            <span class="appt-bar-num" style="min-width:110px; text-align:right;">
+              Rs. {{ s.totalAmount | number }} ({{ s.count }})
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Payment Method Breakdown -->
+    <div class="card chart-card-small">
+      <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <div class="form-card-title"><i class="bi bi-credit-card"></i> Payment Method Breakdown</div>
+        <span class="chart-total-badge" *ngIf="!paymentMethodLoading">
+          Rs. {{ paymentMethodTotal | number }} total
+        </span>
+      </div>
+      <div class="card-body p-4">
+
+        <!-- Skeleton -->
+        <div *ngIf="paymentMethodLoading">
+          <div class="appt-bar-row" *ngFor="let s of [1,2,3]">
+            <div class="skel skel-day"></div>
+            <div class="skel skel-track" style="flex:1;"></div>
+            <div class="skel skel-num"></div>
+          </div>
+        </div>
+
+        <!-- Empty -->
+        <div *ngIf="!paymentMethodLoading && paymentMethodBreakdown.length === 0" class="empty-state-box fade-up">
+          No paid invoices yet.
+        </div>
+
+        <!-- Real -->
+        <div *ngIf="!paymentMethodLoading && paymentMethodBreakdown.length > 0">
+          <div class="appt-bar-row fade-in-row" *ngFor="let s of paymentMethodBreakdown; let i = index" [style.animation-delay]="(i * 50) + 'ms'">
+            <span class="appt-bar-day" style="min-width:70px;">{{ s.paymentMethod }}</span>
+            <div class="appt-bar-track">
+              <div class="appt-bar-fill grow-bar"
+                [style.width.%]="getSharePercent(s.totalAmount, paymentMethodTotal)"
+                [style.background]="getPaymentColor(s.paymentMethod)">
+              </div>
+            </div>
+            <span class="appt-bar-num" style="min-width:110px; text-align:right;">
+              Rs. {{ s.totalAmount | number }} ({{ s.count }})
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
 </div>
