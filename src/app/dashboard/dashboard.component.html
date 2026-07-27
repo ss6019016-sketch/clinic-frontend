@@ -168,5 +168,19 @@
       </div>
     </div>
   </div>
+  <div class="quick-actions">
+  <h3>Quick Actions</h3>
+  <div class="quick-actions-grid">
+    <a *ngFor="let action of quickActions" [routerLink]="action.route" class="quick-action-card">
+      <i class="bi" [ngClass]="action.icon"></i>
+      <span>{{ action.label }}</span>
+    </a>
+  </div>
+</div>
+
+<div class="stat-card low-stock-card" *ngIf="stats?.lowStockCount > 0" routerLink="/pharmacy/medicines">
+  <i class="bi bi-exclamation-triangle-fill"></i>
+  <div>{{ stats.lowStockCount }} medicines low on stock</div>
+</div>
  
 </div>

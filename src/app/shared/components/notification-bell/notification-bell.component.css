@@ -1,0 +1,14 @@
+.notif-wrapper { position: relative; }
+.notif-btn { position: relative; background: none; border: none; font-size: 20px; cursor: pointer; padding: 6px; }
+.notif-badge { position: absolute; top: 0; right: 0; background: #dc3545; color: #fff; font-size: 10px; padding: 1px 5px; border-radius: 10px; }
+.notif-dropdown { position: absolute; right: 0; top: 40px; width: 340px; max-height: 400px; background: #fff; border: 1px solid #eee; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); z-index: 100; overflow: hidden; }
+.notif-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid #eee; font-weight: 600; }
+.notif-header button { border: none; background: none; color: #0d6efd; font-size: 12px; cursor: pointer; }
+.notif-list { max-height: 340px; overflow-y: auto; }
+.notif-item { display: flex; gap: 10px; padding: 10px 14px; border-bottom: 1px solid #f5f5f5; cursor: pointer; }
+.notif-item:hover { background: #f9f9f9; }
+.notif-item.unread { background: #f0f7ff; }
+.notif-title { font-weight: 600; font-size: 13px; }
+.notif-message { font-size: 12px; color: #555; }
+.notif-time { font-size: 11px; color: #999; }
+.notif-empty { padding: 20px; text-align: center; color: #999; }

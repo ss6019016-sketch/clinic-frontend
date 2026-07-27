@@ -23,6 +23,7 @@ import { PermissionGuard } from './core/guards/permission.guard';
         { path: 'settings',      loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule), canActivate: [PermissionGuard], data: { module: 'Settings' } },
         { path: 'audit-log', loadChildren: () => import('./audit-log/audit-log.module').then(m => m.AuditLogModule) },
         { path: 'trash', loadChildren: () => import('./trash-item/trash.module').then(m => m.TrashModule) },
+        { path: 'pharmacy', loadChildren: () => import('./pharmacy/pharmacy.module').then(m => m.PharmacyModule), canActivate: [PermissionGuard], data: { module: 'Pharmacy' } },
         { path: 'permissions', loadChildren: () => import('./permissions/permissions.module').then(m => m.PermissionsModule) },
       ]
     },

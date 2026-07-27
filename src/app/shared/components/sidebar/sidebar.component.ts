@@ -75,6 +75,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       { label: 'Billing', icon: 'bi-receipt', route: '/billing', module: 'Billing' },
       { label: 'Reports', icon: 'bi-graph-up-arrow', route: '/reports', module: 'Reports' },
       { label: 'Staff', icon: 'bi-person-vcard-fill', route: '/staff', module: 'Staff' },
+      { label: 'Pharmacy', icon: 'bi-capsule', route: '/pharmacy', module: 'Pharmacy' },
       { label: 'Roles & Permissions', icon: 'bi-shield-lock-fill', route: '/permissions', adminOnly: true },
       { label: 'Audit Log', icon: 'bi-clock-history', route: '/audit-log', adminOnly: true },
     { label: 'Trash', icon: 'bi-trash3-fill', route: '/trash', adminOnly: true },

@@ -14,7 +14,8 @@ import { LoaderComponent } from './shared/components/loader/loader.component';
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
-
+import { NotificationBellComponent } from './shared/components/notification-bell/notification-bell.component';
+// ... declarations array mein NotificationBellComponent bhi add karo
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
@@ -27,7 +28,7 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
     LoaderComponent,
     ToastComponent,
     ConfirmDialogComponent,
-    NotFoundComponent
+    NotificationBellComponent
   ],
   imports: [
     BrowserModule,

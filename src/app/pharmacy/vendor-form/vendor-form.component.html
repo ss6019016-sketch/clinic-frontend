@@ -1,0 +1,14 @@
+<div class="page-header"><h2>{{ isEdit ? 'Edit' : 'Add' }} Vendor</h2></div>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="form-card">
+  <div class="form-row"><label>Name *</label><input type="text" formControlName="name" /></div>
+  <div class="form-row"><label>Contact Person</label><input type="text" formControlName="contactPerson" /></div>
+  <div class="form-row"><label>Phone</label><input type="text" formControlName="phone" /></div>
+  <div class="form-row"><label>Email</label><input type="email" formControlName="email" /></div>
+  <div class="form-row"><label>Address</label><textarea formControlName="address"></textarea></div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn-primary">Save</button>
+    <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+  </div>
+</form>

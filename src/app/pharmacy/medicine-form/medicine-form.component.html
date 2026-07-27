@@ -1,0 +1,54 @@
+<div class="page-header"><h2>{{ isEdit ? 'Edit' : 'Add' }} Medicine</h2></div>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="form-card">
+  <div class="form-row">
+    <label>Name *</label>
+    <input type="text" formControlName="name" />
+  </div>
+  <div class="form-row">
+    <label>Generic Name</label>
+    <input type="text" formControlName="genericName" />
+  </div>
+  <div class="form-row">
+    <label>Category</label>
+    <input type="text" formControlName="category" placeholder="e.g. Antibiotic, Painkiller" />
+  </div>
+  <div class="form-row">
+    <label>Unit *</label>
+    <select formControlName="unit">
+      <option *ngFor="let u of units" [value]="u">{{ u }}</option>
+    </select>
+  </div>
+  <div class="form-row">
+    <label>Stock Quantity {{ isEdit ? '(use Adjust Stock to change)' : '*' }}</label>
+    <input type="number" formControlName="stockQuantity" />
+  </div>
+  <div class="form-row">
+    <label>Reorder Level *</label>
+    <input type="number" formControlName="reorderLevel" />
+  </div>
+  <div class="form-row">
+    <label>Purchase Price *</label>
+    <input type="number" formControlName="purchasePrice" />
+  </div>
+  <div class="form-row">
+    <label>Selling Price *</label>
+    <input type="number" formControlName="sellingPrice" />
+  </div>
+  <div class="form-row">
+    <label>Expiry Date</label>
+    <input type="date" formControlName="expiryDate" />
+  </div>
+  <div class="form-row">
+    <label>Vendor</label>
+    <select formControlName="vendorId">
+      <option [ngValue]="null">-- None --</option>
+      <option *ngFor="let v of vendors" [ngValue]="v.id">{{ v.name }}</option>
+    </select>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn-primary">Save</button>
+    <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+  </div>
+</form>

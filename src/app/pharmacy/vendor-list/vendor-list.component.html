@@ -1,0 +1,28 @@
+<div class="page-header">
+  <h2>Vendors</h2>
+  <a routerLink="/pharmacy/vendors/add" class="btn-primary" *ngIf="permissionService.canCreate('Pharmacy')">
+    <i class="bi bi-plus-lg"></i> Add Vendor
+  </a>
+</div>
+
+<div class="toolbar">
+  <input type="text" placeholder="Search vendor..." [(ngModel)]="searchText" (ngModelChange)="onSearchChange()" />
+  <a routerLink="/pharmacy/medicines" class="btn-secondary"><i class="bi bi-capsule"></i> Medicines</a>
+</div>
+
+<table class="data-table">
+  <thead><tr><th>Name</th><th>Contact Person</th><th>Phone</th><th>Email</th><th>Actions</th></tr></thead>
+  <tbody>
+    <tr *ngFor="let v of vendors">
+      <td>{{ v.name }}</td>
+      <td>{{ v.contactPerson }}</td>
+      <td>{{ v.phone }}</td>
+      <td>{{ v.email }}</td>
+      <td class="actions">
+        <a [routerLink]="['/pharmacy/vendors/edit', v.id]" *ngIf="permissionService.canEdit('Pharmacy')"><i class="bi bi-pencil-square"></i></a>
+        <button (click)="delete(v.id)" *ngIf="permissionService.canDelete('Pharmacy')"><i class="bi bi-trash3"></i></button>
+      </td>
+    </tr>
+    <tr *ngIf="!isLoading && vendors.length === 0"><td colspan="5">Koi vendor nahi mila.</td></tr>
+  </tbody>
+</table>

@@ -171,5 +171,12 @@ export class DashboardComponent implements OnInit {
  
     requestAnimationFrame(tick);
   }
+  quickActions = [
+  { label: 'New Patient', icon: 'bi-person-plus-fill', route: '/patients/add' },
+  { label: 'New Appointment', icon: 'bi-calendar-plus', route: '/appointments/add' },
+  { label: 'New Prescription', icon: 'bi-capsule', route: '/prescriptions/add' },
+  { label: 'New Invoice', icon: 'bi-receipt', route: '/billing/add' },
+  { label: 'Add Medicine', icon: 'bi-box-seam', route: '/pharmacy/medicines/add' },
+];
 }
  
