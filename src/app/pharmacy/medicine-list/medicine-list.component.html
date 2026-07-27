@@ -18,27 +18,31 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngIf="isLoading" *ngFor="let s of skeletonRows"><td colspan="8">Loading...</td></tr>
+    <ng-container *ngIf="isLoading">
+      <tr *ngFor="let s of skeletonRows"><td colspan="8">Loading...</td></tr>
+    </ng-container>
 
-    <tr *ngFor="let m of medicines" [class.low-stock-row]="m.isLowStock">
-      <td>{{ m.name }} <small>{{ m.genericName }}</small></td>
-      <td>{{ m.category }}</td>
-      <td>
-        {{ m.stockQuantity }} {{ m.unit }}
-        <span *ngIf="m.isLowStock" class="badge-low-stock"><i class="bi bi-exclamation-triangle-fill"></i> Low</span>
-      </td>
-      <td>{{ m.reorderLevel }}</td>
-      <td>Rs. {{ m.sellingPrice }}</td>
-      <td>{{ m.vendorName || '-' }}</td>
-      <td><span class="status-badge">{{ m.status }}</span></td>
-      <td class="actions">
-        <button (click)="adjustStock(m)" title="Adjust Stock"><i class="bi bi-boxes"></i></button>
-        <a [routerLink]="['/pharmacy/medicines/edit', m.id]" *ngIf="permissionService.canEdit('Pharmacy')"><i class="bi bi-pencil-square"></i></a>
-        <button (click)="delete(m.id)" *ngIf="permissionService.canDelete('Pharmacy')"><i class="bi bi-trash3"></i></button>
-      </td>
-    </tr>
+    <ng-container *ngIf="!isLoading">
+      <tr *ngFor="let m of medicines" [class.low-stock-row]="m.isLowStock">
+        <td>{{ m.name }} <small>{{ m.genericName }}</small></td>
+        <td>{{ m.category }}</td>
+        <td>
+          {{ m.stockQuantity }} {{ m.unit }}
+          <span *ngIf="m.isLowStock" class="badge-low-stock"><i class="bi bi-exclamation-triangle-fill"></i> Low</span>
+        </td>
+        <td>{{ m.reorderLevel }}</td>
+        <td>Rs. {{ m.sellingPrice }}</td>
+        <td>{{ m.vendorName || '-' }}</td>
+        <td><span class="status-badge">{{ m.status }}</span></td>
+        <td class="actions">
+          <button (click)="adjustStock(m)" title="Adjust Stock"><i class="bi bi-boxes"></i></button>
+          <a [routerLink]="['/pharmacy/medicines/edit', m.id]" *ngIf="permissionService.canEdit('Pharmacy')"><i class="bi bi-pencil-square"></i></a>
+          <button (click)="delete(m.id)" *ngIf="permissionService.canDelete('Pharmacy')"><i class="bi bi-trash3"></i></button>
+        </td>
+      </tr>
 
-    <tr *ngIf="!isLoading && medicines.length === 0"><td colspan="8">Koi medicine nahi mili.</td></tr>
+      <tr *ngIf="medicines.length === 0"><td colspan="8">Koi medicine nahi mili.</td></tr>
+    </ng-container>
   </tbody>
 </table>
 

@@ -21,21 +21,22 @@ export class DashboardComponent implements OnInit {
   private revenueChart?: Chart;
   private statusChart?: Chart;
  
-  stats = {
-    totalPatients:     0,
-    totalDoctors:      0,
-    todayAppointments: 0,
-    pendingBills:      0
-  };
+ stats = {
+  totalPatients: 0,
+  totalDoctors: 0,
+  todayAppointments: 0,
+  pendingBills: 0,
+  lowStockCount: 0
+};
  
   // Animated display values shown in the cards
-  displayStats = {
-    totalPatients:     0,
-    totalDoctors:      0,
-    todayAppointments: 0,
-    pendingBills:      0
-  };
- 
+displayStats = {
+  totalPatients: 0,
+  totalDoctors: 0,
+  todayAppointments: 0,
+  pendingBills: 0,
+  lowStockCount: 0
+};
   recentAppointments: any[] = [];
  
   skeletonCards = [1, 2, 3, 4];
@@ -49,12 +50,13 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.dashService.getStats().subscribe({
       next: (data) => {
-        this.stats = {
-          totalPatients:     data.totalPatients,
-          totalDoctors:      data.totalDoctors,
-          todayAppointments: data.todayAppointments,
-          pendingBills:      data.pendingBills
-        };
+      this.stats = {
+  totalPatients: data.totalPatients,
+  totalDoctors: data.totalDoctors,
+  todayAppointments: data.todayAppointments,
+  pendingBills: data.pendingBills,
+  lowStockCount: data.lowStockCount || 0
+};
         this.recentAppointments = data.recentAppointments || [];
         this.isLoading          = false;
         this.animateStats();
@@ -159,12 +161,13 @@ export class DashboardComponent implements OnInit {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
  
-      this.displayStats = {
-        totalPatients:     Math.round(from.totalPatients     + (to.totalPatients     - from.totalPatients)     * eased),
-        totalDoctors:      Math.round(from.totalDoctors      + (to.totalDoctors      - from.totalDoctors)      * eased),
-        todayAppointments: Math.round(from.todayAppointments + (to.todayAppointments - from.todayAppointments) * eased),
-        pendingBills:      Math.round(from.pendingBills      + (to.pendingBills      - from.pendingBills)      * eased),
-      };
+     this.displayStats = {
+  totalPatients: Math.round(from.totalPatients + (to.totalPatients - from.totalPatients) * eased),
+  totalDoctors: Math.round(from.totalDoctors + (to.totalDoctors - from.totalDoctors) * eased),
+  todayAppointments: Math.round(from.todayAppointments + (to.todayAppointments - from.todayAppointments) * eased),
+  pendingBills: Math.round(from.pendingBills + (to.pendingBills - from.pendingBills) * eased),
+  lowStockCount: Math.round(from.lowStockCount + (to.lowStockCount - from.lowStockCount) * eased)
+};
  
       if (progress < 1) requestAnimationFrame(tick);
     };
